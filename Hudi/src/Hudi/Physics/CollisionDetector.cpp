@@ -59,7 +59,7 @@ namespace Hudi {
 		for (auto& component : ECS::Coordinator::GetComponents(entt_1))
 		{
 			if (component->Is<MonoBehaviour>())
-				std::static_pointer_cast<MonoBehaviour>(component)->OnCollisionEnter2D(Collision2D(entt_2, entt_2));
+				std::static_pointer_cast<MonoBehaviour>(component)->OnCollisionEnter2D(Collision2D(entt_1, entt_2));
 		}
 	}
 

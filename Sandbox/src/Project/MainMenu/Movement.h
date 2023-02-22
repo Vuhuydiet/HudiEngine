@@ -96,6 +96,11 @@ public:
 		}
 	}
 
+	void Print()
+	{
+		HD_INFO("{0}", 0);
+	}
+
 private:
 	bool grounded = false;
 

@@ -22,6 +22,20 @@ CodeGenerator::CodeGenerator()
 	GenerateCode();
 }
 
+
+CodeGenerator::CodeGenerator(std::string input, std::string output)
+{
+	read.open(input, std::ios::in);
+	if (read.fail())
+		std::cout << "Cannot read.\n";
+
+	write.open(output, std::ios::out);
+	if (write.fail())
+		std::cout << "Cannot write.\n";
+
+	GenerateCode();
+}
+
 CodeGenerator::~CodeGenerator()
 {
 	write.close();
@@ -405,7 +419,7 @@ void CodeGenerator::OnCreateObject(std::string& instruction)
 				if (attribute == "filePath")
 				{
 					GetWord(ins);
-					Tab(2); Assign(name + ".filePath", GetWord(ins));
+					Tab(2); Assign(name + ".filePath", GetLink(ins));
 				}
 				else if (attribute == "frameTimes")
 				{
@@ -424,9 +438,9 @@ void CodeGenerator::OnCreateObject(std::string& instruction)
 					GetWord(ins);
 					auto order = GetWord(ins); order.pop_back();
 					auto objectType = GetWord(ins); objectType.pop_back();
-					auto method = GetWord(ins); method.pop_back();
+					auto method = GetWord(ins);
 					Tab(2);  write << name + ".AddAnimationEvent(" + order + ", std::bind(&" + objectType + "::" + method
-						+ ", &" + name + ".GetComponent<" + objectType + ">());"; EndLine();
+						+ ", &go.GetComponent<" + objectType + ">()));"; EndLine();
 				}
 			}
 			else

@@ -20,12 +20,14 @@ void CreatePlayer1(Scene& scene)
 	auto& body = go.GetComponent<RigidBody2D>();
 		body.bodyType = RigidBody2D::BodyType::Dynamic;
 		body.gravityScale = 3000.0f;
+		body.SetMass(1.f);
 	go.AddComponent<BoxCollider2D>();
 	auto& box = go.GetComponent<BoxCollider2D>();
-		box.minPoint.x = 310;
-		box.minPoint.y = 340;
-		box.maxPoint.x = 360;
-		box.maxPoint.y = 444;
+		box.tag = "";
+		box.minPoint.x = transform.position.x + 10;
+		box.minPoint.y = transform.position.y + 40;
+		box.maxPoint.x = transform.position.x + 60;
+		box.maxPoint.y = transform.position.y + 144;
 		box.isDrawn = true;
 	Animation Idle("Idle");
 		Idle.filePath = "assets/CyberPunk/Knife/Characters/2 Punk/Idle.png";

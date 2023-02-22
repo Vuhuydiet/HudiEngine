@@ -18,6 +18,7 @@ project "Sandbox"
 	{
 		"src",
 		"src/Project",
+		"%{wks.location}/CodeGenerator/src",
 		"%{wks.location}/ECS/src",
 		"%{wks.location}/Hudi/src",
 
@@ -28,6 +29,7 @@ project "Sandbox"
 
 	links
 	{
+		"CodeGenerator",
 		"Hudi"
 	}
 

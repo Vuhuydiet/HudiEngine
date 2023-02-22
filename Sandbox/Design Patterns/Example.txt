@@ -33,12 +33,12 @@
 		+ maxPoint : 60, 144
 
 	++ Animation "Idle"
-		+ filePath : "assets/CyberPunk/Knife/Characters/Punk/Idle.png"
+		+ filePath : "assets/CyberPunk/Knife/Characters/2 Punk/Idle.png"
 		+ frameTimes : { 0.1f, 0.1f, 0.1f, 0.1f }
 		+ frameSize : 48, 48
-		// + add_animation_event : 0,  script1, function_name
+		// + add_animation_event : 0, Movement, Print
 	++ Animation "Run"
-		+ filePath : "assets/CyberPunk/Knife/Characters/Punk/Run.png"
+		+ filePath : "assets/CyberPunk/Knife/Characters/2 Punk/Run.png"
 		+ frameTimes : { 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f }
 		+ frameSize : 48, 48
 	- Animator

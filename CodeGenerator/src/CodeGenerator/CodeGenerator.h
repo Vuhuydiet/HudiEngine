@@ -5,6 +5,7 @@ class CodeGenerator
 {
 public:
 	CodeGenerator();
+	CodeGenerator(std::string input, std::string output);
 	~CodeGenerator();
 private:
 	void GenerateCode();
