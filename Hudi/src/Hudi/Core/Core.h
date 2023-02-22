@@ -11,7 +11,11 @@
 		#define HUDI_API
 	#endif
 #else
-	#error Hudi only supports Windows!
+	#ifdef HD_PLATFORM_MACOS
+		#define HUDI_API
+	#else
+		#error Hudi only supports Windows!
+	#endif
 #endif
 
 #include <memory>

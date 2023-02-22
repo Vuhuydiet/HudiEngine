@@ -56,6 +56,12 @@ project "Hudi"
 			"{COPY} ../Dependencies/ ../bin/" .. outputdir .. "/%{prj.name}"
 		}
 
+	filter "system:not windows"
+		defines
+		{
+			"HD_PLATFORM_MACOS"
+		}
+
 
 	filter "configurations:Debug"
 		defines "HD_DEBUG"
