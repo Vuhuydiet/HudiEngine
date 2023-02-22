@@ -79,15 +79,17 @@ namespace Hudi {
 					dstRect.x -= dstRect.w/2;
 				}
 
-				//SDL_RenderCopy(Renderer::s_Renderer, sprite.texture, &sprite.srcRect, &destRect);
 				SDL_RenderCopyEx(Renderer::s_Renderer, sprite.m_Texture, &sprite.m_SrcRect, &dstRect, NULL, NULL, flip);
+			}
+		}
 
-				if (ECS::Coordinator::HasComponent<BoxCollider2D>(entt))
+		for (auto& entt : m_Entities)
+		{
+			if (ECS::Coordinator::HasComponent<BoxCollider2D>(entt))
+			{
+				if (ECS::Coordinator::GetComponent<BoxCollider2D>(entt).isDrawn)
 				{
-					if (ECS::Coordinator::GetComponent<BoxCollider2D>(entt).isDrawn)
-					{
-						Renderer::DrawRect(ECS::Coordinator::GetComponent<BoxCollider2D>(entt));
-					}
+					Renderer::DrawRect(ECS::Coordinator::GetComponent<BoxCollider2D>(entt));
 				}
 			}
 		}

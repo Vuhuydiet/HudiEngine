@@ -10,6 +10,6 @@ void MainMenuScene(Hudi::Scene& scene)
 {
 	CreatePlayer1(scene);
 	CreatePlayer2(scene);
-	//CreateBackground(scene);
+	CreateBackground(scene);
 	CreateGround(scene);
 }

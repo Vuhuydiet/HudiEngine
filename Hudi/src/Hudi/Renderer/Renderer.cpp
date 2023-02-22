@@ -19,10 +19,19 @@ namespace Hudi {
 
 	SDL_Texture* Renderer::CreateTexture(const char* image)
 	{
+		std::fstream test;
+		test.open(image);
+		if (test.fail())
+		{
+			HD_CORE_WARN("Creating texture from an unexisted file!");
+			test.close();
+			return nullptr;
+		}
+		test.close();
+		
 		SDL_Surface* tempSur = IMG_Load(image);
 		SDL_Texture* text = SDL_CreateTextureFromSurface(s_Renderer, tempSur);
 		SDL_FreeSurface(tempSur);
-
 		return text;
 	}
 

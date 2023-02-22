@@ -20,7 +20,7 @@ void CreateGround(Hudi::Scene& scene)
 
 		auto& sprite = g.GetComponent<Hudi::SpriteRenderer>();
 		sprite.order = 1;
-		sprite.SetFile("assets/IndustrialZoneTileSet/Animated objects/Transporter2.png");
+		sprite.SetFile("assets/IndustrialZoneTileSet/4 Animated objects/Transporter2.png");
 
 		g.AddComponent<Hudi::RigidBody2D>();
 		auto& rigid = g.GetComponent<Hudi::RigidBody2D>();
@@ -30,5 +30,6 @@ void CreateGround(Hudi::Scene& scene)
 		box.tag = "ground";
 		box.minPoint = { trans.position.x, trans.position.y };
 		box.maxPoint = { trans.position.x + 128 * scale, trans.position.y + 48 / 2 * scale };
+		box.isDrawn = true;
 	}
 }

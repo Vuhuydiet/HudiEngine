@@ -4,7 +4,7 @@
 
 void CreatePlayer2(Hudi::Scene& scene)
 {
-	Hudi::GameObject& p1 = scene.CreateGameObject("Player1");
+	Hudi::GameObject& p1 = scene.CreateGameObject("Player2");
 	// Transform
 	auto& trans = p1.GetComponent<Hudi::Transform>();
 	trans.position.x = 700;
@@ -25,8 +25,8 @@ void CreatePlayer2(Hudi::Scene& scene)
 	// BoxCollider
 	p1.AddComponent<Hudi::BoxCollider2D>();
 	auto& box = p1.GetComponent<Hudi::BoxCollider2D>();
-	box.minPoint = { trans.position.x + 25, trans.position.y + 25 };
-	box.maxPoint = { trans.position.x + 48 * trans.scale.x - 25, trans.position.y + 48 * trans.scale.y };
+	box.minPoint = { trans.position.x + 10, trans.position.y + 40 };
+	box.maxPoint = { trans.position.x + 60, trans.position.y + 144 };
 	box.isDrawn = true;
 
 	// Script
@@ -35,12 +35,12 @@ void CreatePlayer2(Hudi::Scene& scene)
 
 	// Animations
 	Hudi::Animation idle("Idle");
-	idle.filePath = "assets/CyberPunk/Knife/Characters/Cyborg/Idle.png";
+	idle.filePath = "assets/CyberPunk/Knife/Characters/3 Cyborg/Idle.png";
 	idle.SetFrameTimes(std::vector<float>(4, 0.1f));
 	idle.SetFrameSize(48, 48);
 
 	Hudi::Animation run("Run");
-	run.filePath = "assets/CyberPunk/Knife/Characters/Cyborg/Run.png";
+	run.filePath = "assets/CyberPunk/Knife/Characters/3 Cyborg/Run.png";
 	run.SetFrameTimes(std::vector<float>(6, 0.1f));
 	run.SetFrameSize(48, 48);
 

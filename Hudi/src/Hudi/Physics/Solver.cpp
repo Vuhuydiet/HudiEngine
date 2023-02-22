@@ -7,15 +7,15 @@ namespace Hudi {
 		ECS::Entity entt_1, Vec3& ds_1,
 		ECS::Entity entt_2, Vec3& ds_2)
 	{
-		auto& rigid_1 = ECS::Coordinator::GetComponent<RigidBody2D>(entt_1);
+		auto& body_1 = ECS::Coordinator::GetComponent<RigidBody2D>(entt_1);
 		auto& collider_1 = ECS::Coordinator::GetComponent<BoxCollider2D>(entt_1);
 
-		auto& rigid_2 = ECS::Coordinator::GetComponent<RigidBody2D>(entt_2);
+		auto& body_2 = ECS::Coordinator::GetComponent<RigidBody2D>(entt_2);
 		auto& collider_2 = ECS::Coordinator::GetComponent<BoxCollider2D>(entt_2);
 
-		if (rigid_1.IsStatic())
+		if (body_1.IsStatic())
 		{
-			if (rigid_2.IsDynamic()) 
+			if (body_2.IsDynamic()) 
 			{
 				Solver::DynamicStatic(
 					entt_2, ds_2,
@@ -23,16 +23,16 @@ namespace Hudi {
 				);
 			}
 		}
-		else  if (rigid_1.IsDynamic()) 
+		else  if (body_1.IsDynamic()) 
 		{
-			if (rigid_2.IsStatic())
+			if (body_2.IsStatic())
 			{
 				Solver::DynamicStatic(
 					entt_1, ds_1,
 					entt_2, ds_2
 				);
 			}
-			else if (rigid_2.IsDynamic())
+			else if (body_2.IsDynamic())
 			{
 				Solver::DynamicDynamic(
 					entt_1, ds_1,
@@ -47,7 +47,7 @@ namespace Hudi {
 		ECS::Entity sta_entt, Vec3& ds_2)
 	{
 		const auto& dyn_collider = ECS::Coordinator::GetComponent<BoxCollider2D>(dyn_entt);
-		auto& dyn_rigid = ECS::Coordinator::GetComponent<RigidBody2D>(dyn_entt);
+		auto& dyn_body = ECS::Coordinator::GetComponent<RigidBody2D>(dyn_entt);
 
 		const auto& sta_collider = ECS::Coordinator::GetComponent<BoxCollider2D>(sta_entt);
 
@@ -65,7 +65,7 @@ namespace Hudi {
 			else 
 			{
 				ds_dyn.x = sta_collider.minPoint.x - dyn_collider.maxPoint.x - 1;
-				dyn_rigid.velocity.x = 0.f;
+				dyn_body.velocity.x = 0.f;
 			}
 		}
 		else if (dyn_collider.minPoint.x > sta_collider.maxPoint.x) 
@@ -82,7 +82,7 @@ namespace Hudi {
 			else 
 			{
 				ds_dyn.x = sta_collider.maxPoint.x - dyn_collider.minPoint.x + 1;
-				dyn_rigid.velocity.x = 0.f;
+				dyn_body.velocity.x = 0.f;
 			}
 		}
 		else
@@ -91,13 +91,13 @@ namespace Hudi {
 			if (dyn_collider.maxPoint.y < sta_collider.minPoint.y) 
 			{
 				ds_dyn.y = sta_collider.minPoint.y - dyn_collider.maxPoint.y - 1;
-				dyn_rigid.velocity.y = 0.f;
+				dyn_body.velocity.y = 0.f;
 			}
 			//8
 			else if (dyn_collider.minPoint.y > sta_collider.maxPoint.y) 
 			{
 				ds_dyn.y = sta_collider.maxPoint.y - dyn_collider.minPoint.y + 1;
-				dyn_rigid.velocity.y = 0.f;
+				dyn_body.velocity.y = 0.f;
 			}
 		}
 	}
@@ -107,10 +107,10 @@ namespace Hudi {
 		ECS::Entity entt_2, Vec3& ds_2)
 	{
 		const auto& collider_1 = ECS::Coordinator::GetComponent<BoxCollider2D>(entt_1);
-		auto& rigid_1 = ECS::Coordinator::GetComponent<RigidBody2D>(entt_1);
+		auto& body_1 = ECS::Coordinator::GetComponent<RigidBody2D>(entt_1);
 
 		const auto& collider_2 = ECS::Coordinator::GetComponent<BoxCollider2D>(entt_2);
-		auto& rigid_2 = ECS::Coordinator::GetComponent<RigidBody2D>(entt_2);
+		auto& body_2 = ECS::Coordinator::GetComponent<RigidBody2D>(entt_2);
 
 		if (collider_1.maxPoint.x < collider_2.minPoint.x)
 		{
@@ -125,8 +125,37 @@ namespace Hudi {
 			//4
 			else 
 			{
-				ds_1.x = 0;
-				ds_2.x = 0;
+				float s = collider_2.minPoint.x - collider_1.maxPoint.x - 1;
+				if (body_1.velocity.Length() * body_1.Mass() > body_2.velocity.Length() * body_2.Mass())
+				{
+					ds_1.x *= 0.3f;
+					ds_2.x = ds_1.x;
+					ds_1.x += s;
+				}
+				else if (body_1.velocity.Length() * body_1.Mass() < body_2.velocity.Length() * body_2.Mass())
+				{
+					ds_2.x *= 0.3f;
+					ds_1.x = ds_2.x;
+					ds_2.x -= s;
+				}
+				else
+				{
+					if (1)
+					{
+						int ss = static_cast<int>(abs(s));
+						int s1 = ss / 2, s2 = ss / 2;
+						if (s < 0.0f)
+							s1 *= -1;
+						else
+							s2 *= -1;
+						ds_1.x = static_cast<float>(s1);
+						ds_2.x = static_cast<float>(s2);
+						HD_CORE_INFO("{0}, {1}", ds_1.x, ds_2.x);
+					}
+
+					body_1.velocity.x = 0;
+					body_2.velocity.x = 0;
+				}
 			}
 		}
 		else if (collider_1.minPoint.x > collider_2.maxPoint.x) 
@@ -142,8 +171,37 @@ namespace Hudi {
 			//6
 			else 
 			{
-				ds_1.x = 0;
-				ds_2.x = 0;
+				float s = collider_2.maxPoint.x - collider_1.minPoint.x + 1;
+				if (body_1.velocity.Length() * body_1.Mass() > body_2.velocity.Length() * body_2.Mass())
+				{
+					ds_1.x *= 0.3f;
+					ds_2.x = ds_1.x;
+					ds_1.x += s;
+				}
+				else if (body_1.velocity.Length() * body_1.Mass() < body_2.velocity.Length() * body_2.Mass())
+				{
+					ds_2.x *= 0.3f;
+					ds_1.x = ds_2.x;
+					ds_2.x -= s;
+				}
+				else
+				{
+					if (1)
+					{
+						int ss = static_cast<int>(abs(s));
+						int s1 = ss / 2, s2 = ss / 2;
+						if (s < 0.0f)
+							s1 *= -1;
+						else
+							s2 *= -1;
+						ds_1.x = static_cast<float>(s1);
+						ds_2.x = static_cast<float>(s2);
+						HD_CORE_INFO("{0}, {1}", ds_1.x, ds_2.x);
+					}
+
+					body_1.velocity.x = 0;
+					body_2.velocity.x = 0;
+				}
 			}
 		}
 		else
@@ -152,13 +210,13 @@ namespace Hudi {
 			if (collider_1.maxPoint.y < collider_2.minPoint.y) 
 			{
 				ds_1.y = collider_2.minPoint.y - collider_1.maxPoint.y - 1;
-				rigid_1.velocity.y = 0.f;
+				body_1.velocity.y = 0.f;
 			}
 			//8
 			else if (collider_1.minPoint.y > collider_2.maxPoint.y) 
 			{
 				ds_2.y = collider_1.minPoint.y - collider_2.maxPoint.y - 1;
-				rigid_2.velocity.y = 0.f;
+				body_2.velocity.y = 0.f;
 			}
 		}
 	}

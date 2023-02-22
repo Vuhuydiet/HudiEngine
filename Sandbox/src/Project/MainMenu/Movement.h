@@ -11,6 +11,7 @@ public:
 		anim = &GetComponent<Animator>();
 		ani = &GetComponent<Animation>();
 		sprite = &GetComponent<SpriteRenderer>();
+		box = &GetComponent<BoxCollider2D>();
 	}
 
 	void Update()
@@ -18,6 +19,31 @@ public:
 		Move();
 		Jump();
 		Slow(0.1f);
+		int rate = 1;
+		if (Input::IsKeyDown(Key::D1))
+		{
+			box->minPoint.x -= rate;
+		}
+		if (Input::IsKeyDown(Key::D2))
+		{
+			box->minPoint.x += rate;
+		}
+		if (Input::IsKeyDown(Key::D3))
+		{
+			box->minPoint.y -= rate;
+		}
+		if (Input::IsKeyDown(Key::D4))
+		{
+			box->minPoint.y += rate;
+		}
+		if (Input::IsKeyDown(Key::D5))
+		{
+			box->maxPoint.x -= rate;
+		}
+		if (Input::IsKeyDown(Key::D6))
+		{
+			box->maxPoint.x += rate;
+		}
 	}
 
 	void OnCollisionEnter2D(Collision2D collision)
@@ -30,7 +56,7 @@ public:
 	{
 		if (Input::IsKeyDown(Key::A))
 		{
-			body->velocity.x = -300;;
+			body->velocity.x = -300;
 			trans->scale.x = -abs(trans->scale.x);
 		}
 		if (Input::IsKeyDown(Key::D))
@@ -79,4 +105,5 @@ private:
 	Animator* anim;
 	Animation* ani;
 	SpriteRenderer* sprite;
+	BoxCollider2D* box;
 };

@@ -295,16 +295,16 @@ void CodeGenerator::OnComponent(std::string& instruction)
 					GetWord(ins);
 					auto x = GetWord(ins); x.pop_back();
 					auto y = GetWord(ins);
-					Tab(2); Assign("box.minPoint.x", "transform.x + " + x);
-					Tab(2); Assign("box.minPoint.y", "transform.y + " + y);
+					Tab(2); Assign("box.minPoint.x", "transform.position.x + " + x);
+					Tab(2); Assign("box.minPoint.y", "transform.position.y + " + y);
 				}
 				else if (attribute == "maxPoint")
 				{
 					GetWord(ins);
 					auto x = GetWord(ins); x.pop_back();
 					auto y = GetWord(ins);
-					Tab(2); Assign("box.maxPoint.x", "transform.x + " + x);
-					Tab(2); Assign("box.maxPoint.y", "transform.y + " + y);
+					Tab(2); Assign("box.maxPoint.x", "transform.position.x + " + x);
+					Tab(2); Assign("box.maxPoint.y", "transform.position.y + " + y);
 				}
 				else if (attribute == "isDrawn")
 				{

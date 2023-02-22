@@ -10,6 +10,7 @@ namespace Hudi {
 	public:
 		const char* ToString() const override { return "RigidBody2D"; }
 
+		// if m is 0 or less than 0, mass = 0.0001f
 		void SetMass(float m) { m_Mass = std::max(m, 0.0001f); }
 		float Mass() const { return m_Mass; }
 
