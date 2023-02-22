@@ -150,7 +150,7 @@ namespace Hudi {
 							s2 *= -1;
 						ds_1.x = static_cast<float>(s1);
 						ds_2.x = static_cast<float>(s2);
-						HD_CORE_INFO("{0}, {1}", ds_1.x, ds_2.x);
+						// HD_CORE_INFO("{0}, {1}", ds_1.x, ds_2.x);
 					}
 
 					body_1.velocity.x = 0;
@@ -196,7 +196,7 @@ namespace Hudi {
 							s2 *= -1;
 						ds_1.x = static_cast<float>(s1);
 						ds_2.x = static_cast<float>(s2);
-						HD_CORE_INFO("{0}, {1}", ds_1.x, ds_2.x);
+						//HD_CORE_INFO("{0}, {1}", ds_1.x, ds_2.x);
 					}
 
 					body_1.velocity.x = 0;
