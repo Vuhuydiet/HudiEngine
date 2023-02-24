@@ -19,9 +19,10 @@ namespace Hudi {
 		ShutDown();
 	}
 
-	void RenderSystem::Init(SDL_Window* window)
+	void RenderSystem::Init(Ref<Window> window)
 	{
-		Renderer::Init(window);
+		Renderer::Init(window->GetSDL_Window());
+		m_Window = window;
 	}
 
 	void RenderSystem::ShutDown()

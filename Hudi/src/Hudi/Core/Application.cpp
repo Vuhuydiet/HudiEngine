@@ -29,7 +29,7 @@ namespace Hudi {
 
 		// Init Render System
 		m_RenderSystem = ECS::Coordinator::RegisterSystem<RenderSystem>();
-		m_RenderSystem->Init(m_Window->GetSDL_Window());
+		m_RenderSystem->Init(m_Window);
 
 		// Start the app
 		m_Running = true;

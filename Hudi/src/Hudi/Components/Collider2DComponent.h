@@ -9,7 +9,7 @@ namespace Hudi {
 		virtual ~Collider() = default;
 		virtual const char* ToString() const override { return "Collider"; }
 
-		virtual void Translate(int x, int y) = 0;
+		virtual void Translate(float x, float y) = 0;
 		virtual void Translate(Vec3 v) = 0;
 
 		virtual bool TestCollision(Collider* cb) = 0;
@@ -27,10 +27,10 @@ namespace Hudi {
 	{
 		const char* ToString() const override { return "BoxCollider"; }
 
-		void Translate(int x, int y) override
+		void Translate(float x, float y) override
 		{
-			minPoint += Vec3(static_cast<float>(x), static_cast<float>(y));
-			maxPoint += Vec3(static_cast<float>(x), static_cast<float>(y));
+			minPoint += Vec3(x, y);
+			maxPoint += Vec3(x, y);
 		}
 		void Translate(Vec3 v)
 		{
@@ -62,9 +62,9 @@ namespace Hudi {
 	{
 		const char* ToString() const override { return "CircleCollider"; }
 
-		void Translate(int x, int y) override
+		void Translate(float x, float y) override
 		{
-			center += Vec3(static_cast<float>(x), static_cast<float>(y));
+			center += Vec3(x, y);
 		}
 		void Translate(Vec3 v)
 		{

@@ -38,7 +38,7 @@ namespace Hudi {
 
 		bool m_Running = false;
 
-		Scope<Window> m_Window;
+		Ref<Window> m_Window;
 
 	private:
 		Ref<PhysicsSystem> m_PhysicsSystem;

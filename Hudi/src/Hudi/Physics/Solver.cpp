@@ -56,10 +56,18 @@ namespace Hudi {
 			//1
 			if (dyn_collider.maxPoint.y < sta_collider.minPoint.y)
 			{
+				Vec3 A = dyn_collider.maxPoint;
+				Vec3 B = sta_collider.minPoint;
+
+				DynamicStaticCorner(A, B, ds_dyn);
 			}
 			//7
 			else if (dyn_collider.minPoint.y > sta_collider.maxPoint.y)
 			{
+				Vec3 A = { dyn_collider.maxPoint.x, dyn_collider.minPoint.y };
+				Vec3 B = { sta_collider.minPoint.x, sta_collider.maxPoint.y };
+				
+				DynamicStaticCorner(A, B, ds_dyn);
 			}
 			//4
 			else 
@@ -73,10 +81,18 @@ namespace Hudi {
 			//3
 			if (dyn_collider.maxPoint.y < sta_collider.minPoint.y) 
 			{
+				Vec3 A = { dyn_collider.minPoint.x, dyn_collider.maxPoint.y };
+				Vec3 B = { sta_collider.maxPoint.x, sta_collider.minPoint.y };
+
+				DynamicStaticCorner(A, B, ds_dyn);
 			}
 			//9
 			else if (dyn_collider.minPoint.y > sta_collider.maxPoint.y)
 			{
+				Vec3 A = dyn_collider.minPoint;
+				Vec3 B = sta_collider.maxPoint;
+
+				DynamicStaticCorner(A, B, ds_dyn);
 			}
 			//6
 			else 
@@ -102,14 +118,33 @@ namespace Hudi {
 		}
 	}
 
+	void Solver:: DynamicStaticCorner(Vec3 A, Vec3 B, Vec3& ds_dyn)
+	{
+		float tanDS = abs(ds_dyn.x / ds_dyn.y);
+		float tanAB = abs((A.x - B.x) / (A.y - B.y));
+
+		if (tanDS > tanAB)
+		{
+			ds_dyn.y = 0;
+		}
+		else if (tanDS < tanAB)
+		{
+			ds_dyn.y = 0;
+		}
+		else
+		{
+			ds_dyn = Vec3(0);
+		}
+	}
+
 	void Solver::DynamicDynamic(
 		ECS::Entity entt_1, Vec3& ds_1,
 		ECS::Entity entt_2, Vec3& ds_2)
 	{
-		const auto& collider_1 = ECS::Coordinator::GetComponent<BoxCollider2D>(entt_1);
+		auto& collider_1 = ECS::Coordinator::GetComponent<BoxCollider2D>(entt_1);
 		auto& body_1 = ECS::Coordinator::GetComponent<RigidBody2D>(entt_1);
 
-		const auto& collider_2 = ECS::Coordinator::GetComponent<BoxCollider2D>(entt_2);
+		auto& collider_2 = ECS::Coordinator::GetComponent<BoxCollider2D>(entt_2);
 		auto& body_2 = ECS::Coordinator::GetComponent<RigidBody2D>(entt_2);
 
 		if (collider_1.maxPoint.x < collider_2.minPoint.x)
@@ -117,10 +152,24 @@ namespace Hudi {
 			//1
 			if (collider_1.maxPoint.y < collider_2.minPoint.y)
 			{
+				ECS::Coordinator::GetComponent<Transform>(entt_2).Translate(ds_2);
+				ds_2 = Vec3(0);
+
+				Vec3 A = collider_1.maxPoint;
+				Vec3 B = collider_2.minPoint;
+
+				DynamicStaticCorner(A, B, ds_1);
 			}
 			//7
 			else if (collider_1.minPoint.y > collider_2.maxPoint.y) 
 			{
+				ECS::Coordinator::GetComponent<Transform>(entt_1).Translate(ds_1);
+				ds_1 = Vec3(0);
+
+				Vec3 A = { collider_2.maxPoint.x, collider_2.minPoint.y };
+				Vec3 B = { collider_1.minPoint.x, collider_1.maxPoint.y };
+
+				DynamicStaticCorner(A, B, ds_2);
 			}
 			//4
 			else 
@@ -163,10 +212,24 @@ namespace Hudi {
 			//3
 			if (collider_1.maxPoint.y < collider_2.minPoint.y)
 			{
+				ECS::Coordinator::GetComponent<Transform>(entt_2).Translate(ds_2);
+				ds_2 = Vec3(0);
+
+				Vec3 A = { collider_1.minPoint.x, collider_1.maxPoint.y };
+				Vec3 B = { collider_2.maxPoint.x, collider_2.minPoint.y };
+
+				DynamicStaticCorner(A, B, ds_1);
 			}
 			//9
 			else if (collider_1.minPoint.y > collider_2.maxPoint.y) 
 			{
+				ECS::Coordinator::GetComponent<Transform>(entt_1).Translate(ds_1);
+				ds_1 = Vec3(0);
+
+				Vec3 A = collider_2.minPoint;
+				Vec3 B = collider_1.maxPoint;
+
+				DynamicStaticCorner(A, B, ds_2);
 			}
 			//6
 			else 
@@ -209,13 +272,17 @@ namespace Hudi {
 			//2
 			if (collider_1.maxPoint.y < collider_2.minPoint.y) 
 			{
+				HD_CORE_INFO("2");
+				ECS::Coordinator::GetComponent<Transform>(entt_2).Translate(ds_2);
 				ds_1.y = collider_2.minPoint.y - collider_1.maxPoint.y - 1;
 				body_1.velocity.y = 0.f;
 			}
 			//8
 			else if (collider_1.minPoint.y > collider_2.maxPoint.y) 
 			{
-				ds_2.y = collider_1.minPoint.y - collider_2.maxPoint.y - 1;
+				HD_CORE_INFO("8");
+				ECS::Coordinator::GetComponent<Transform>(entt_1).Translate(ds_1);
+				ds_2.y = collider_2.minPoint.y - collider_1.maxPoint.y + 1;
 				body_2.velocity.y = 0.f;
 			}
 		}

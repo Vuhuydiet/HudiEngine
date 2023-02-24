@@ -13,7 +13,6 @@ namespace Hudi {
 
 		for (auto& [entt, ds] : Entities_ds)
 		{
-			ECS::Coordinator::GetComponent<BoxCollider2D>(entt).Translate(ds);
 			ECS::Coordinator::GetComponent<Transform>(entt).Translate(ds);
 		}
 	}
