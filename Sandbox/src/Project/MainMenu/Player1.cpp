@@ -16,13 +16,11 @@ void CreatePlayer1(Scene& scene)
 		transform.scale.z = 0;
 	auto& sprite = go.GetComponent<SpriteRenderer>();;
 		sprite.order = 1;
-	go.AddComponent<RigidBody2D>();
-	auto& body = go.GetComponent<RigidBody2D>();
+	auto& body = go.AddComponent<RigidBody2D>();
 		body.bodyType = RigidBody2D::BodyType::Dynamic;
 		body.gravityScale = 3000.0f;
 		body.SetMass(1.f);
-	go.AddComponent<BoxCollider2D>();
-	auto& box = go.GetComponent<BoxCollider2D>();
+	auto& box = go.AddComponent<BoxCollider2D>();
 		box.tag = "";
 		box.minPoint.x = transform.position.x + 10;
 		box.minPoint.y = transform.position.y + 40;
@@ -37,8 +35,7 @@ void CreatePlayer1(Scene& scene)
 		Run.filePath = "assets/CyberPunk/Knife/Characters/2 Punk/Run.png";
 		Run.SetFrameTimes( { 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f } );
 		Run.SetFrameSize(48, 48);
-	go.AddComponent<Animator>();
-	auto& anim = go.GetComponent<Animator>();
+	auto& anim = go.AddComponent<Animator>();
 		anim.Add_Bool_Parameter("isRunning");
 		anim.AddAnimation(Idle);
 		anim.AddAnimation(Run);

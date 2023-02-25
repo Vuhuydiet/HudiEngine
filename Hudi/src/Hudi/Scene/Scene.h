@@ -2,6 +2,7 @@
 #include "hdpch.h"
 
 #include "GameObject.h"
+#include "CameraComponent.h"
 
 namespace Hudi {
 
@@ -18,11 +19,14 @@ namespace Hudi {
 
 		void SetLoadFunction(std::function<void(Scene&)> fn) { m_LoadFn = fn; }
 
+		Camera* GetActiveCamera() { return m_ActiveCamera; }
 	public:
 		uint8_t buildIndex;
 	private:
 		std::function<void(Scene&)> m_LoadFn = nullptr;
 		std::unordered_map<std::string, Ref<GameObject>> m_GameObjects;
+
+		Camera* m_ActiveCamera = nullptr;
 	};
 
 }

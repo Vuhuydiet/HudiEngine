@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Hudi">
+      <UniqueIdentifier>{CF89867C-BBC0-870D-64AD-6D1050C3030F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hudi\Components">
+      <UniqueIdentifier>{844FB40B-F0DA-21D0-F9EB-A4C465F67DD0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hudi\Core">
+      <UniqueIdentifier>{872759B9-F391-0D30-3CD0-BED5A879EB84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hudi\Events">
+      <UniqueIdentifier>{D3366379-3FEC-DB6E-C8E0-D5453495D272}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hudi\Physics">
+      <UniqueIdentifier>{41EC4ED5-2D4F-DE79-D6D4-1630C216AAFC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hudi\Renderer">
+      <UniqueIdentifier>{55460756-C106-838C-8A41-CC09F6C0C768}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hudi\Renderer\AnimatorComponent">
+      <UniqueIdentifier>{52894F25-BE6C-5E65-C76F-8CA133D224B6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hudi\Scene">
+      <UniqueIdentifier>{2CD698E5-188E-DA32-8195-B38E6D6C7523}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hudi\Source">
+      <UniqueIdentifier>{EF989599-5B4E-0E8F-E442-086650F70493}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\Windows">
+      <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Hudi.h" />
+    <ClInclude Include="src\Hudi\Components\BehaviourComponent.h">
+      <Filter>Hudi\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Components\Collider2DComponent.h">
+      <Filter>Hudi\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Components\RigidBody2DComponent.h">
+      <Filter>Hudi\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Components\TransformComponent.h">
+      <Filter>Hudi\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Core\Application.h">
+      <Filter>Hudi\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Core\Core.h">
+      <Filter>Hudi\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Core\EntryPoint.h">
+      <Filter>Hudi\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Core\Input.h">
+      <Filter>Hudi\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Core\Log.h">
+      <Filter>Hudi\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Core\Window.h">
+      <Filter>Hudi\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Events\Event.h">
+      <Filter>Hudi\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Physics\Collision2D.h">
+      <Filter>Hudi\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Physics\CollisionDetector.h">
+      <Filter>Hudi\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Physics\PhysicsSystem.h">
+      <Filter>Hudi\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Physics\Solver.h">
+      <Filter>Hudi\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Renderer\AnimatorComponent\AnimationComponent.h">
+      <Filter>Hudi\Renderer\AnimatorComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Renderer\AnimatorComponent\AnimatorComponent.h">
+      <Filter>Hudi\Renderer\AnimatorComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Renderer\AnimatorComponent\Condition.h">
+      <Filter>Hudi\Renderer\AnimatorComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Renderer\AnimatorComponent\Transition.h">
+      <Filter>Hudi\Renderer\AnimatorComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Renderer\RenderSystem.h">
+      <Filter>Hudi\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Renderer\Renderer.h">
+      <Filter>Hudi\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Renderer\SpriteRendererComponent.h">
+      <Filter>Hudi\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Scene\CameraComponent.h">
+      <Filter>Hudi\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Scene\GameObject.h">
+      <Filter>Hudi\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Scene\Scene.h">
+      <Filter>Hudi\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Scene\SceneManager.h">
+      <Filter>Hudi\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Source\KeyCodes.h">
+      <Filter>Hudi\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Source\MouseCodes.h">
+      <Filter>Hudi\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Source\Time.h">
+      <Filter>Hudi\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Source\Vec2.h">
+      <Filter>Hudi\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Source\Vec3.h">
+      <Filter>Hudi\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HudiEngine.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hdpch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Hudi\Core\Application.cpp">
+      <Filter>Hudi\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Core\Log.cpp">
+      <Filter>Hudi\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Events\Event.cpp">
+      <Filter>Hudi\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Physics\CollisionDetector.cpp">
+      <Filter>Hudi\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Physics\PhysicsSystem.cpp">
+      <Filter>Hudi\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Physics\Solver.cpp">
+      <Filter>Hudi\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Physics\algo.cpp">
+      <Filter>Hudi\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Renderer\AnimatorComponent\AnimationComponent.cpp">
+      <Filter>Hudi\Renderer\AnimatorComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Renderer\AnimatorComponent\AnimatorComponent.cpp">
+      <Filter>Hudi\Renderer\AnimatorComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Renderer\RenderSystem.cpp">
+      <Filter>Hudi\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Renderer\Renderer.cpp">
+      <Filter>Hudi\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Scene\GameObject.cpp">
+      <Filter>Hudi\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Scene\Scene.cpp">
+      <Filter>Hudi\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Scene\SceneManager.cpp">
+      <Filter>Hudi\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Source\Time.cpp">
+      <Filter>Hudi\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hdpch.cpp" />
+  </ItemGroup>
+</Project>

@@ -34,11 +34,14 @@ Hudi::WindowProps Sandbox::WindowProperties()
 }
 
 void MainMenuScene(Hudi::Scene& scene);
+void skdfskdhf(Hudi::Scene& scene);
 void Sandbox::Preprocess()
 {
 	Hudi::Time::SetFPS(60);
 	
 	Hudi::SceneManager::GetScene("MainMenu").SetLoadFunction(MainMenuScene);
+	Hudi::SceneManager::CreateNewScene("sjdhfksd");
+
 }
 
 

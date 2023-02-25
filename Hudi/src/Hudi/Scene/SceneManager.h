@@ -15,6 +15,8 @@ namespace Hudi {
 		static Scene& GetScene(uint8_t index);
 		static Scene& GetScene(const char* _name);
 
+		static Camera* GetActiveCamera() { return s_Scenes.at(s_ActiveScene)->GetActiveCamera(); }
+
 		static void LoadScene(uint8_t index);
 		static void LoadScene(const char* _name);
 

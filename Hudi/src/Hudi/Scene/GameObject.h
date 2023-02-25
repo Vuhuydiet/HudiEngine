@@ -22,13 +22,13 @@ namespace Hudi {
 		bool Exist() { return ECS::Coordinator::Exist(m_Entt); }
 
 		template <typename T>
-		void AddComponent() { ECS::Coordinator::AddComponent<T>(m_Entt, NewRef<T>()); }
+		T& AddComponent() { return ECS::Coordinator::AddComponent<T>(m_Entt, NewRef<T>()); }
 
 		template <typename T>
-		void AddComponent(Ref<ECS::Component> comp) { ECS::Coordinator::AddComponent<T>(m_Entt, comp); }
+		T& AddComponent(Ref<ECS::Component> comp) { return ECS::Coordinator::AddComponent<T>(m_Entt, comp); }
 
 		template <typename T>
-		void AddComponent(T component) { ECS::Coordinator::AddComponent<T>(m_Entt, NewRef<T>(comp)); }
+		T& AddComponent(T component) { return ECS::Coordinator::AddComponent<T>(m_Entt, NewRef<T>(comp)); }
 
 		template <typename T>
 		bool HasComponent() { return ECS::Coordinator::HasComponent<T>(m_Entt); }

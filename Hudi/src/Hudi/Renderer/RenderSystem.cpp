@@ -6,6 +6,8 @@
 
 #include "Hudi/Components/Collider2DComponent.h"
 
+#include "Hudi/Scene/SceneManager.h"
+
 namespace Hudi {
 
 	RenderSystem::RenderSystem()
@@ -43,6 +45,8 @@ namespace Hudi {
 
 	void RenderSystem::OnRender()
 	{
+		activeCamera = SceneManager::GetActiveCamera();
+
 		SDL_SetRenderDrawColor(Renderer::s_Renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
 		SDL_RenderClear(Renderer::s_Renderer);
 
@@ -69,7 +73,8 @@ namespace Hudi {
 				SDL_RendererFlip flip = transform.scale.x < 0.0f ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
 
 				// Dest Rect
-				SDL_Rect dstRect;
+				SDL_Rect dstRect;// = CalculateDstRect(entt);
+
 				dstRect.w = static_cast<int>(sprite.m_SrcRect.w * abs(transform.scale.x));
 				dstRect.h = static_cast<int>(sprite.m_SrcRect.h * abs(transform.scale.y));
 				dstRect.x = static_cast<int>(transform.position.x);
@@ -98,4 +103,29 @@ namespace Hudi {
 		SDL_RenderPresent(Renderer::s_Renderer);
 	}
 
+	SDL_Rect RenderSystem::CalculateDstRect(ECS::Entity entt)
+	{
+		const auto& transform = ECS::Coordinator::GetComponent<Transform>(entt);
+		const auto& sprite = ECS::Coordinator::GetComponent<SpriteRenderer>(entt);
+
+		SDL_Rect dstRect;
+
+		switch (activeCamera->type)
+		{
+			case Camera::Perspective:
+			{
+				break;
+			}
+			case Camera::Orthographic:
+			{
+				dstRect.w = static_cast<int>(sprite.m_SrcRect.w * abs(transform.scale.x));
+				dstRect.h = static_cast<int>(sprite.m_SrcRect.h * abs(transform.scale.y));
+				dstRect.x = static_cast<int>(transform.position.x);
+				dstRect.y = static_cast<int>(transform.position.y);
+				break;
+			}
+		}
+
+		return dstRect;
+	}
 }

@@ -44,6 +44,9 @@ public:
 		{
 			box->maxPoint.x += rate;
 		}
+
+		Vec2<int> pos = Input::GetMousePosition();
+		HD_INFO("{0}", pos);
 	}
 
 	void OnCollisionEnter2D(Collision2D collision)

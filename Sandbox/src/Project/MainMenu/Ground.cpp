@@ -23,10 +23,8 @@ void CreateGround(Hudi::Scene& scene)
 		sprite.SetFile("assets/IndustrialZoneTileSet/4 Animated objects/Transporter2.png");
 
 		g.AddComponent<Hudi::RigidBody2D>();
-		auto& rigid = g.GetComponent<Hudi::RigidBody2D>();
 
-		g.AddComponent<Hudi::BoxCollider2D>();
-		auto& box = g.GetComponent<Hudi::BoxCollider2D>();
+		auto& box = g.AddComponent<Hudi::BoxCollider2D>();
 		box.tag = "ground";
 		box.minPoint = { trans.position.x, trans.position.y };
 		box.maxPoint = { trans.position.x + 128 * scale, trans.position.y + 48 / 2 * scale };
@@ -44,10 +42,8 @@ void CreateGround(Hudi::Scene& scene)
 	sprite.SetFile("assets/IndustrialZoneTileSet/4 Animated objects/Transporter2.png");
 
 	g.AddComponent<Hudi::RigidBody2D>();
-	auto& rigid = g.GetComponent<Hudi::RigidBody2D>();
 
-	g.AddComponent<Hudi::BoxCollider2D>();
-	auto& box = g.GetComponent<Hudi::BoxCollider2D>();
+	auto& box = g.AddComponent<Hudi::BoxCollider2D>();
 	box.tag = "ground";
 	box.minPoint = { trans.position.x, trans.position.y };
 	box.maxPoint = { trans.position.x + 128 * scale, trans.position.y + 48 / 2 * scale };

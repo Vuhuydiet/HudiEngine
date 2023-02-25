@@ -1,6 +1,8 @@
 #include "hdpch.h"
 #include "Scene.h"
 
+#include "CameraComponent.h"
+
 namespace Hudi {
 
 	Scene::Scene()
@@ -12,6 +14,11 @@ namespace Hudi {
 	void Scene::BeginScene()
 	{
 		HD_CORE_INFO("Start scene {0}", buildIndex);
+
+		GameObject& mainCamera = CreateGameObject("Main Camera");
+		mainCamera.AddComponent<Camera>();
+		m_ActiveCamera = &mainCamera.GetComponent<Camera>();
+
 		if (m_LoadFn)
 			m_LoadFn(*this);
 	}

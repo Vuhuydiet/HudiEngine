@@ -17,14 +17,12 @@ void CreatePlayer2(Hudi::Scene& scene)
 	sprite.order = 1;
 
 	// RigidBody2D
-	p1.AddComponent<Hudi::RigidBody2D>();
-	auto& rigid = p1.GetComponent<Hudi::RigidBody2D>();
-	rigid.bodyType = Hudi::RigidBody2D::BodyType::Dynamic;
-	rigid.gravityScale = 3000.0f;
+	auto& body = p1.AddComponent<Hudi::RigidBody2D>();
+	body.bodyType = Hudi::RigidBody2D::BodyType::Dynamic;
+	body.gravityScale = 3000.0f;
 
 	// BoxCollider
-	p1.AddComponent<Hudi::BoxCollider2D>();
-	auto& box = p1.GetComponent<Hudi::BoxCollider2D>();
+	auto& box = p1.AddComponent<Hudi::BoxCollider2D>();
 	box.minPoint = { trans.position.x + 10, trans.position.y + 40 };
 	box.maxPoint = { trans.position.x + 60, trans.position.y + 144 };
 	box.isDrawn = true;
@@ -45,8 +43,7 @@ void CreatePlayer2(Hudi::Scene& scene)
 	run.SetFrameSize(48, 48);
 
 	// Animator
-	p1.AddComponent<Hudi::Animator>();
-	auto& animator = p1.GetComponent<Hudi::Animator>();
+	auto& animator = p1.AddComponent<Hudi::Animator>();
 
 	animator.Add_Bool_Parameter("isRunning");
 

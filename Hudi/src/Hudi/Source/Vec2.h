@@ -110,4 +110,12 @@ namespace Hudi {
 		}
 	};
 
+	template <typename T>
+	inline std::ostream& operator<<(std::ostream& os, const Vec2<T>& v)
+	{
+		std::string s;
+		s = "[" + std::to_string(v.x) + ", " + std::to_string(v.y) + "]";
+		return os << s;
+	}
+
 }

@@ -23,7 +23,7 @@ namespace ECS {
 
 	public:
 		template <typename T>
-		static void AddComponent(Entity entt, std::shared_ptr<Component> component);
+		static T& AddComponent(Entity entt, std::shared_ptr<Component> component);
 
 		template <typename T>
 		static void AddSystem(Entity entt);
@@ -87,7 +87,7 @@ namespace ECS {
 	}
 
 	template <typename T>
-	inline void Coordinator::AddComponent(Entity entt, std::shared_ptr<Component> component)
+	inline T& Coordinator::AddComponent(Entity entt, std::shared_ptr<Component> component)
 	{
 		ComponentID id = GetComponentID<T>();
 		Signature& sig = s_EntityManager->GetComponentSignature(entt);
@@ -99,6 +99,8 @@ namespace ECS {
 		component->Init();
 
 		s_SystemManager->AddEntity(entt, sig);
+
+		return *std::static_pointer_cast<T>(component);
 	}
 
 	template <typename T>

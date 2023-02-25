@@ -20,14 +20,16 @@ namespace ECS {
 		bool Is() { return dynamic_cast<T*>(this); }
 
 		template <typename T>
-		void AddComponent() { Coordinator::AddComponent<T>(m_Entt, std::make_shared<T>()); }
+		T& AddComponent() { Coordinator::AddComponent<T>(m_Entt, std::make_shared<T>()); return GetComponent<T>(); }
 			
 		template <typename T>
-		void AddComponent(std::shared_ptr<T> comp) { Coordinator::AddComponent<T>(m_Entt, comp); }
+		T& AddComponent(std::shared_ptr<T> comp) { Coordinator::AddComponent<T>(m_Entt, comp); return GetComponent<T>();
+		}
 
 		template <typename T>
-		void AddComponent(T component) { Coordinator::AddComponent<T>(m_Entt, std::make_shared<T>(component)); }
-
+		T& AddComponent(T component) { Coordinator::AddComponent<T>(m_Entt, std::make_shared<T>(component)); return GetComponent<T>();
+		}
+		
 		template <typename T>
 		bool HasComponent() { return Coordinator::HasComponent<T>(m_Entt); }
 

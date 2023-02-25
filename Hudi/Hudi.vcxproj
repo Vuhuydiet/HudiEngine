@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Dist|x64">
+      <Configuration>Dist</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{CF89867C-BBC0-870D-64AD-6D1050C3030F}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Hudi</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>..\bin\Debug-windows-x86_64\Hudi\</OutDir>
+    <IntDir>..\bin-int\Debug-windows-x86_64\Hudi\</IntDir>
+    <TargetName>Hudi</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>..\bin\Release-windows-x86_64\Hudi\</OutDir>
+    <IntDir>..\bin-int\Release-windows-x86_64\Hudi\</IntDir>
+    <TargetName>Hudi</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
+    <OutDir>..\bin\Dist-windows-x86_64\Hudi\</OutDir>
+    <IntDir>..\bin-int\Dist-windows-x86_64\Hudi\</IntDir>
+    <TargetName>Hudi</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>hdpch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>HD_PLATFORM_WINDOWS;HD_BUILD_DLL;HD_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;..\ECS\src;vendor\spdlog\include;vendor\SDL2\include;vendor\SDL2_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>vendor\SDL2\lib\x64;vendor\SDL2_image\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+    <PreBuildEvent>
+      <Command>IF EXIST ..\Dependencies\ (xcopy /Q /E /Y /I ..\Dependencies ..\bin\Debug-windows-x86_64\$(ProjectName) &gt; nul) ELSE (xcopy /Q /Y /I ..\Dependencies ..\bin\Debug-windows-x86_64\$(ProjectName) &gt; nul)</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>hdpch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>HD_PLATFORM_WINDOWS;HD_BUILD_DLL;HD_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;..\ECS\src;vendor\spdlog\include;vendor\SDL2\include;vendor\SDL2_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>vendor\SDL2\lib\x64;vendor\SDL2_image\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+    <PreBuildEvent>
+      <Command>IF EXIST ..\Dependencies\ (xcopy /Q /E /Y /I ..\Dependencies ..\bin\Release-windows-x86_64\$(ProjectName) &gt; nul) ELSE (xcopy /Q /Y /I ..\Dependencies ..\bin\Release-windows-x86_64\$(ProjectName) &gt; nul)</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>hdpch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>HD_PLATFORM_WINDOWS;HD_BUILD_DLL;HD_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;..\ECS\src;vendor\spdlog\include;vendor\SDL2\include;vendor\SDL2_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>vendor\SDL2\lib\x64;vendor\SDL2_image\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+    <PreBuildEvent>
+      <Command>IF EXIST ..\Dependencies\ (xcopy /Q /E /Y /I ..\Dependencies ..\bin\Dist-windows-x86_64\$(ProjectName) &gt; nul) ELSE (xcopy /Q /Y /I ..\Dependencies ..\bin\Dist-windows-x86_64\$(ProjectName) &gt; nul)</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Hudi.h" />
+    <ClInclude Include="src\Hudi\Components\BehaviourComponent.h" />
+    <ClInclude Include="src\Hudi\Components\Collider2DComponent.h" />
+    <ClInclude Include="src\Hudi\Components\RigidBody2DComponent.h" />
+    <ClInclude Include="src\Hudi\Components\TransformComponent.h" />
+    <ClInclude Include="src\Hudi\Core\Application.h" />
+    <ClInclude Include="src\Hudi\Core\Core.h" />
+    <ClInclude Include="src\Hudi\Core\EntryPoint.h" />
+    <ClInclude Include="src\Hudi\Core\Input.h" />
+    <ClInclude Include="src\Hudi\Core\Log.h" />
+    <ClInclude Include="src\Hudi\Core\Window.h" />
+    <ClInclude Include="src\Hudi\Events\Event.h" />
+    <ClInclude Include="src\Hudi\Physics\Collision2D.h" />
+    <ClInclude Include="src\Hudi\Physics\CollisionDetector.h" />
+    <ClInclude Include="src\Hudi\Physics\PhysicsSystem.h" />
+    <ClInclude Include="src\Hudi\Physics\Solver.h" />
+    <ClInclude Include="src\Hudi\Renderer\AnimatorComponent\AnimationComponent.h" />
+    <ClInclude Include="src\Hudi\Renderer\AnimatorComponent\AnimatorComponent.h" />
+    <ClInclude Include="src\Hudi\Renderer\AnimatorComponent\Condition.h" />
+    <ClInclude Include="src\Hudi\Renderer\AnimatorComponent\Transition.h" />
+    <ClInclude Include="src\Hudi\Renderer\RenderSystem.h" />
+    <ClInclude Include="src\Hudi\Renderer\Renderer.h" />
+    <ClInclude Include="src\Hudi\Renderer\SpriteRendererComponent.h" />
+    <ClInclude Include="src\Hudi\Scene\CameraComponent.h" />
+    <ClInclude Include="src\Hudi\Scene\GameObject.h" />
+    <ClInclude Include="src\Hudi\Scene\Scene.h" />
+    <ClInclude Include="src\Hudi\Scene\SceneManager.h" />
+    <ClInclude Include="src\Hudi\Source\KeyCodes.h" />
+    <ClInclude Include="src\Hudi\Source\MouseCodes.h" />
+    <ClInclude Include="src\Hudi\Source\Time.h" />
+    <ClInclude Include="src\Hudi\Source\Vec2.h" />
+    <ClInclude Include="src\Hudi\Source\Vec3.h" />
+    <ClInclude Include="src\HudiEngine.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
+    <ClInclude Include="src\hdpch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Hudi\Core\Application.cpp" />
+    <ClCompile Include="src\Hudi\Core\Log.cpp" />
+    <ClCompile Include="src\Hudi\Events\Event.cpp" />
+    <ClCompile Include="src\Hudi\Physics\CollisionDetector.cpp" />
+    <ClCompile Include="src\Hudi\Physics\PhysicsSystem.cpp" />
+    <ClCompile Include="src\Hudi\Physics\Solver.cpp" />
+    <ClCompile Include="src\Hudi\Physics\algo.cpp" />
+    <ClCompile Include="src\Hudi\Renderer\AnimatorComponent\AnimationComponent.cpp" />
+    <ClCompile Include="src\Hudi\Renderer\AnimatorComponent\AnimatorComponent.cpp" />
+    <ClCompile Include="src\Hudi\Renderer\RenderSystem.cpp" />
+    <ClCompile Include="src\Hudi\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Hudi\Scene\GameObject.cpp" />
+    <ClCompile Include="src\Hudi\Scene\Scene.cpp" />
+    <ClCompile Include="src\Hudi\Scene\SceneManager.cpp" />
+    <ClCompile Include="src\Hudi\Source\Time.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
+    <ClCompile Include="src\hdpch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ECS\ECS.vcxproj">
+      <Project>{60E1870B-CCEA-877C-5566-9E7CC16E937C}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
