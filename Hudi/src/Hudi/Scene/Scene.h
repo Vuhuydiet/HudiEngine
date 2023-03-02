@@ -19,14 +19,15 @@ namespace Hudi {
 
 		void SetLoadFunction(std::function<void(Scene&)> fn) { m_LoadFn = fn; }
 
-		Camera* GetActiveCamera() { return m_ActiveCamera; }
+		void SetActiveCamera(GameObject& go);
+		const GameObject& GetActiveCamera();
 	public:
 		uint8_t buildIndex;
 	private:
 		std::function<void(Scene&)> m_LoadFn = nullptr;
 		std::unordered_map<std::string, Ref<GameObject>> m_GameObjects;
 
-		Camera* m_ActiveCamera = nullptr;
+		GameObject* m_ActiveCamera = nullptr;
 	};
 
 }

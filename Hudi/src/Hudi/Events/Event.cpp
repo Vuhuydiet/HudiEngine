@@ -3,12 +3,6 @@
 
 namespace Hudi {
 
-	int PollEvent(Event* e)
-	{
-		return SDL_PollEvent(e);
-	}
-
-
 	bool EventManager::m_QuitEvent = false;
 
 	std::unordered_set<KeyCode> EventManager::m_KeyJustDown;
@@ -35,11 +29,13 @@ namespace Hudi {
 		m_ButtonJustUp.clear();
 	}
 
-	void EventManager::OnUpdate()
+	void EventManager::OnUpdate(std::queue<Event>& event_queue)
 	{
-		Event e;
-		while (PollEvent(&e))
+		SDL_Event e;
+		while (SDL_PollEvent(&e))
 		{
+			event_queue.push(Event(e));
+
 			switch (e.type)
 			{
 				case QUIT:

@@ -11,8 +11,6 @@
 
 namespace Hudi {
 
-	using Event = SDL_Event;
-	
 	enum EventType {
 		QUIT				= SDL_QUIT,
 		KEYDOWN				= SDL_KEYDOWN,
@@ -23,9 +21,23 @@ namespace Hudi {
 		MOUSEWHEEL			= SDL_MOUSEWHEEL
 	};
 
-	int PollEvent(Event* e);
+	class Event
+	{
+	public:
+		Event() {}
+		Event(SDL_Event e)
+			: m_Event(e) {}
 
-	
+		operator SDL_Event() const
+		{
+			return m_Event;
+		}
+
+		bool handled = false;
+	private:
+		SDL_Event m_Event;
+		friend class EventManager;
+	};
 
 	class EventManager
 	{
@@ -33,7 +45,7 @@ namespace Hudi {
 		static void Init();
 		static void Clear();
 
-		static void OnUpdate();
+		static void OnUpdate(std::queue<Event>& event_queue);
 		
 		static bool Quit();
 		

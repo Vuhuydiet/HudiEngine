@@ -11,8 +11,10 @@ workspace "HudiEngine"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-include "CodeGenerator/premake5.lua"
-include "ECS/premake5.lua"
-include "Hudi/premake5.lua"
-include "Sandbox/premake5.lua"
-include "PKGod/premake5.lua"
+include "Hudi/vendor/Glad"
+include "Hudi/vendor/ImGui"
+
+include "CodeGenerator"
+include "ECS"
+include "Hudi"
+include "Sandbox"

@@ -30,6 +30,7 @@ Hudi::WindowProps Sandbox::WindowProperties()
 	props.title = "Sandbox";
 	props.height = 648;
 	props.width = 1152;
+	props.flags = 0;
 	return props;
 }
 
@@ -39,7 +40,8 @@ void Sandbox::Preprocess()
 {
 	Hudi::Time::SetFPS(60);
 	
-	Hudi::SceneManager::GetScene("MainMenu").SetLoadFunction(MainMenuScene);
+	auto MainMenu = Hudi::SceneManager::CreateNewScene("Main Menu");
+	Hudi::SceneManager::GetScene("Main Menu").SetLoadFunction(MainMenuScene);
 	Hudi::SceneManager::CreateNewScene("sjdhfksd");
 
 }

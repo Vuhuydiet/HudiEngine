@@ -18,7 +18,7 @@ namespace Hudi {
 	public:
 		Type type = Orthographic;
 		uint32_t w, h;
-		int C = 0;
+		int C = 50;
 	};
 
 }

@@ -2,7 +2,7 @@
 
 #include "Movement2.h"
 
-void CreatePlayer2(Hudi::Scene& scene)
+Hudi::GameObject& CreatePlayer2(Hudi::Scene& scene)
 {
 	Hudi::GameObject& p1 = scene.CreateGameObject("Player2");
 	// Transform
@@ -54,4 +54,6 @@ void CreatePlayer2(Hudi::Scene& scene)
 	animator.MakeTransition("Run", "Idle");
 	animator.GetTransition("Idle", "Run").AddCondition("isRunning", true);
 	animator.GetTransition("Run", "Idle").AddCondition("isRunning", false);
+
+	return p1;
 }

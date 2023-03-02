@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Hudi/Renderer/Renderer.h"
+#include "Hudi/Core/Renderer.h"
 
 #include <ECS.h>
 #include <SDL.h>

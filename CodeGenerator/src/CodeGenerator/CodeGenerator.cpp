@@ -214,7 +214,7 @@ void CodeGenerator::OnComponent(std::string& instruction)
 	}
 	else if (component == "Sprite_Renderer")
 	{
-		Tab(1); Assign("auto& sprite", "go.GetComponent<SpriteRenderer>();");
+		Tab(1); Assign("auto& sprite", "go.GetComponent<SpriteRenderer>()");
 		while (!instructions.empty())
 		{
 			auto ins = GetInstruction();

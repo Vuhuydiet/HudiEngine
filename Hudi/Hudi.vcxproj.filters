@@ -13,6 +13,9 @@
     <Filter Include="Hudi\Events">
       <UniqueIdentifier>{D3366379-3FEC-DB6E-C8E0-D5453495D272}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Hudi\ImGui">
+      <UniqueIdentifier>{39DEE8E4-2596-2A32-8E9D-038E7A74C522}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Hudi\Physics">
       <UniqueIdentifier>{41EC4ED5-2D4F-DE79-D6D4-1630C216AAFC}</UniqueIdentifier>
     </Filter>
@@ -61,6 +64,12 @@
     <ClInclude Include="src\Hudi\Core\Input.h">
       <Filter>Hudi\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Hudi\Core\Layer.h">
+      <Filter>Hudi\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Core\LayerStack.h">
+      <Filter>Hudi\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Hudi\Core\Log.h">
       <Filter>Hudi\Core</Filter>
     </ClInclude>
@@ -69,6 +78,9 @@
     </ClInclude>
     <ClInclude Include="src\Hudi\Events\Event.h">
       <Filter>Hudi\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\ImGui\ImGuiLayer.h">
+      <Filter>Hudi\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="src\Hudi\Physics\Collision2D.h">
       <Filter>Hudi\Physics</Filter>
@@ -97,7 +109,7 @@
     <ClInclude Include="src\Hudi\Renderer\RenderSystem.h">
       <Filter>Hudi\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hudi\Renderer\Renderer.h">
+    <ClInclude Include="src\Hudi\Core\Renderer.h">
       <Filter>Hudi\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Hudi\Renderer\SpriteRendererComponent.h">
@@ -135,9 +147,14 @@
       <Filter>Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\hdpch.h" />
+    <ClInclude Include="src\Platform\SDL2\imgui_impl_sdl2.h" />
+    <ClInclude Include="src\Platform\SDL2\imgui_impl_sdlrenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Hudi\Core\Application.cpp">
+      <Filter>Hudi\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Core\LayerStack.cpp">
       <Filter>Hudi\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Hudi\Core\Log.cpp">
@@ -145,6 +162,9 @@
     </ClCompile>
     <ClCompile Include="src\Hudi\Events\Event.cpp">
       <Filter>Hudi\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\ImGui\ImGuiLayer.cpp">
+      <Filter>Hudi\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="src\Hudi\Physics\CollisionDetector.cpp">
       <Filter>Hudi\Physics</Filter>
@@ -167,7 +187,7 @@
     <ClCompile Include="src\Hudi\Renderer\RenderSystem.cpp">
       <Filter>Hudi\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\Hudi\Renderer\Renderer.cpp">
+    <ClCompile Include="src\Hudi\Core\Renderer.cpp">
       <Filter>Hudi\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Hudi\Scene\GameObject.cpp">
@@ -189,5 +209,7 @@
       <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\hdpch.cpp" />
+    <ClCompile Include="src\Platform\SDL2\imgui_impl_sdl2.cpp" />
+    <ClCompile Include="src\Platform\SDL2\imgui_impl_sdlrenderer.cpp" />
   </ItemGroup>
 </Project>

@@ -1,6 +1,6 @@
 #include <Hudi.h>
 
-void CreateBackground(Hudi::Scene& scene)
+Hudi::GameObject& CreateBackground(Hudi::Scene& scene)
 {
 	Hudi::GameObject& bg = scene.CreateGameObject("background");
 
@@ -11,4 +11,6 @@ void CreateBackground(Hudi::Scene& scene)
 	auto& sprite = bg.GetComponent<Hudi::SpriteRenderer>();
 	sprite.order = 0;
 	sprite.SetFile("assets/IndustrialZoneTileSet/Background/Background.png");
+
+	return bg;
 }

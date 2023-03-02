@@ -18,6 +18,8 @@
 #include "Hudi/Renderer/AnimatorComponent/AnimatorComponent.h"
 
 #include "Hudi/Scene/GameObject.h"
+#include "Hudi/Scene/Scene.h"
+#include "Hudi/Scene/SceneManager.h"
 
 using namespace ECS;
 using namespace Hudi;

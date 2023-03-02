@@ -73,7 +73,6 @@ public:
 private:
 	bool grounded = false;
 
-
 	Transform* trans;
 	RigidBody2D* body;
 	Animator* anim;

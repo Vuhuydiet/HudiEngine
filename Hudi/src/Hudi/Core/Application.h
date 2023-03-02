@@ -2,6 +2,9 @@
 
 #include "Core.h"
 #include "Window.h"
+#include "Renderer.h"
+
+#include "LayerStack.h"
 
 #include "Hudi/Scene/SceneManager.h"
 
@@ -17,6 +20,7 @@ namespace Hudi {
 		virtual ~Application();
 
 		void Init();
+		void ShutDown();
 
 		virtual void Preprocess() = 0;
 
@@ -34,15 +38,15 @@ namespace Hudi {
 
 	private:
 		void Run();
-		friend int ::main(int argc, char** argv);
-
 		bool m_Running = false;
 
-		Ref<Window> m_Window;
-
+		Ref<Window> m_Window = nullptr;
+		LayerStack m_LayerStack;
 	private:
-		Ref<PhysicsSystem> m_PhysicsSystem;
-		Ref<RenderSystem> m_RenderSystem;
+		PhysicsSystem* m_PhysicsSystem;
+		RenderSystem* m_RenderSystem;
+
+		friend int ::main(int argc, char** argv);
 	};
 
 	Application* CreateApplication();

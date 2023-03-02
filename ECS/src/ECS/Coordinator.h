@@ -19,7 +19,7 @@ namespace ECS {
 
 	public:
 		template <typename T>
-		static std::shared_ptr<T> RegisterSystem() { return s_SystemManager->RegisterSystem<T>(); }
+		static T* RegisterSystem() { return s_SystemManager->RegisterSystem<T>(); }
 
 	public:
 		template <typename T>

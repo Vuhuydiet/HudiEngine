@@ -1,6 +1,6 @@
 #include <Hudi.h>
 #include "Movement.h"
-void CreatePlayer1(Scene& scene)
+Hudi::GameObject& CreatePlayer1(Scene& scene)
 {
 	auto& go = scene.CreateGameObject("Player1");
 	go.AddComponent<Movement>();
@@ -43,4 +43,6 @@ void CreatePlayer1(Scene& scene)
 		anim.MakeTransition("Run", "Idle");
 		anim.GetTransition("Idle", "Run").AddCondition("isRunning", true);
 		anim.GetTransition("Run", "Idle").AddCondition("isRunning", false);
+
+		return go;
 }

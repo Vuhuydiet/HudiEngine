@@ -12,6 +12,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Project\MainMenu\CameraMovement.h">
+      <Filter>Project\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Project\MainMenu\Controller.h">
+      <Filter>Project\MainMenu</Filter>
+    </ClInclude>
     <ClInclude Include="src\Project\MainMenu\Movement.h">
       <Filter>Project\MainMenu</Filter>
     </ClInclude>
@@ -26,7 +32,13 @@
     <ClCompile Include="src\Project\MainMenu\Background.cpp">
       <Filter>Project\MainMenu</Filter>
     </ClCompile>
+    <ClCompile Include="src\Project\MainMenu\Controller.cpp">
+      <Filter>Project\MainMenu</Filter>
+    </ClCompile>
     <ClCompile Include="src\Project\MainMenu\Ground.cpp">
+      <Filter>Project\MainMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Project\MainMenu\MainCamera.cpp">
       <Filter>Project\MainMenu</Filter>
     </ClCompile>
     <ClCompile Include="src\Project\MainMenu\MainMenuScene.cpp">

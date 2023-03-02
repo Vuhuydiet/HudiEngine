@@ -2,10 +2,11 @@
 
 #include <ECS.h>
 #include "Hudi/Core/Window.h"
-#include "Renderer.h"
+#include "Hudi/Core/Renderer.h"
 #include "SpriteRendererComponent.h"
 
 #include "Hudi/Scene/CameraComponent.h"
+#include "Hudi/Scene/GameObject.h"
 
 namespace Hudi {
 
@@ -18,17 +19,19 @@ namespace Hudi {
 		void OnUpdate() override;
 		void OnRender();
 
-		void Init(Ref<Window> window);
-		void ShutDown();
+		void Init(const WindowProps& props);
 
-		void SetActiveCamera(Camera* cam) { activeCamera = cam; }
+		void SetActiveCamera(const GameObject& cam) { activeCamera = cam; }
 
 	private:
+		void DrawTextures();
+		void DrawBoxCollider2Ds();
+
 		SDL_Rect CalculateDstRect(ECS::Entity entt);
 	private:
-		Ref<Window> m_Window = nullptr;
+		WindowProps windowProps;
 
-		Camera* activeCamera = nullptr;
+		GameObject activeCamera;
 	};
 
 }

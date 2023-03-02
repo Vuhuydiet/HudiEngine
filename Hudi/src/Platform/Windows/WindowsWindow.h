@@ -13,11 +13,14 @@ namespace Hudi {
 		WindowsWindow(const WindowProps& props);
 		virtual ~WindowsWindow();
 
-		// Gets all the events in a frame
+		bool PollEvent(Event& e) override;
+		// Get all the events in a frame
 		void OnUpdate() override;
 
-		inline uint32_t GetWidth() const override { return WIDTH; }
-		inline uint32_t GetHeight() const override { return HEIGHT; }
+		inline WindowProps GetWindowProps() const override { return m_Properties; }
+
+		inline uint32_t GetWidth() const override { return m_Properties.width; }
+		inline uint32_t GetHeight() const override { return m_Properties.height; }
 		
 		SDL_Window* GetSDL_Window() { return m_Window; }
 	private:
@@ -27,9 +30,9 @@ namespace Hudi {
 	private:
 		SDL_Window* m_Window = nullptr;
 
-		const char* m_Title;
-		uint32_t WIDTH, HEIGHT;
+		WindowProps m_Properties;
 
+		std::queue<Event> m_EventQueue;
 	};
 
 }

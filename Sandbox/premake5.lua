@@ -16,15 +16,15 @@ project "Sandbox"
 
 	includedirs
 	{
+		"%{wks.location}/Hudi/vendor/spdlog/include",
+		"%{wks.location}/Hudi/vendor/SDL2/include",
+		"%{wks.location}/Hudi/vendor/SDL2_image/include",
+
 		"src",
 		"src/Project",
 		"%{wks.location}/CodeGenerator/src",
 		"%{wks.location}/ECS/src",
-		"%{wks.location}/Hudi/src",
-
-		"%{wks.location}/Hudi/vendor/spdlog/include",
-		"%{wks.location}/Hudi/vendor/SDL2/include",
-		"%{wks.location}/Hudi/vendor/SDL2_image/include"
+		"%{wks.location}/Hudi/src"
 	}
 
 	links

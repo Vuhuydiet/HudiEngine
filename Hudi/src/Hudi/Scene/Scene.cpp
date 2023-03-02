@@ -15,9 +15,9 @@ namespace Hudi {
 	{
 		HD_CORE_INFO("Start scene {0}", buildIndex);
 
-		GameObject& mainCamera = CreateGameObject("Main Camera");
+		/*GameObject& mainCamera = CreateGameObject("Main Camera");
 		mainCamera.AddComponent<Camera>();
-		m_ActiveCamera = &mainCamera.GetComponent<Camera>();
+		m_ActiveCamera = &mainCamera;*/
 
 		if (m_LoadFn)
 			m_LoadFn(*this);
@@ -42,6 +42,27 @@ namespace Hudi {
 	void Scene::DestroyGameObject(const std::string& _name)
 	{
 		m_GameObjects.erase(_name);
+	}
+
+	void Scene::SetActiveCamera(GameObject& cam)
+	{
+		if (!cam.HasComponent<Camera>())
+		{
+			HD_CORE_ERROR("Set the object that is not a camera gameobject to be the camera object.");
+			return;
+		}
+		m_ActiveCamera = &cam;
+	}
+
+	const GameObject& Scene::GetActiveCamera()
+	{
+		if (!m_ActiveCamera)
+		{
+			HD_CORE_ERROR("No active camera!");
+			static GameObject cam;
+			return cam;
+		}
+		return *m_ActiveCamera;
 	}
 
 }

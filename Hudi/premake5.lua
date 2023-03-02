@@ -18,13 +18,15 @@ project "Hudi"
 
 	includedirs
 	{
-		"src",
-
-		"%{wks.location}/ECS/src",
-		
 		"vendor/spdlog/include",
 		"vendor/SDL2/include",
-		"vendor/SDL2_image/include"
+		"vendor/SDL2_image/include",
+		"vendor/Glad/include",
+		"vendor/ImGui",
+
+		"src",
+		"src/Hudi/ImGui",
+		"%{wks.location}/ECS/src"
 	}
 
 	libdirs
@@ -38,6 +40,8 @@ project "Hudi"
 		"SDL2.lib",
 		"SDL2main.lib",
 		"SDL2_image.lib",
+		"Glad",
+		"ImGui",
 		
 		"ECS"
 	}

@@ -6,11 +6,12 @@ namespace Hudi {
 	const char* SceneManager::s_ActiveScene = nullptr;
 	std::unordered_map<const char*, Ref<Scene>> SceneManager::s_Scenes;
 
-	void SceneManager::CreateNewScene(const char* _name)
+	Scene& SceneManager::CreateNewScene(const char* _name)
 	{
 		s_Scenes[_name] = NewRef<Scene>();
 		if (!s_ActiveScene)
 			s_ActiveScene = _name;
+		return *s_Scenes[_name];
 	}
 
 	Scene& SceneManager::GetActiveScene()

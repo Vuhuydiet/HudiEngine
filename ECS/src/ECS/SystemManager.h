@@ -44,19 +44,26 @@ namespace ECS {
 	class SystemManager 
 	{
 	public:
+		~SystemManager()
+		{
+			for (auto& system : m_Systems)
+			{
+				delete system;
+			}
+		}
 
 		template <typename T>
-		std::shared_ptr<T> RegisterSystem()
+		T* RegisterSystem()
 		{
 			SystemID id = GetSystemID<T>();
 
 			if (id==m_Size) 
 			{
-				m_Systems[id] = std::make_shared<T>();
+				m_Systems[id] = new T();
 				m_Size++;
 			}
 
-			return std::static_pointer_cast<T>(m_Systems[id]);
+			return static_cast<T*>(m_Systems[id]);
 		}
 
 		template <typename T>
@@ -102,7 +109,7 @@ namespace ECS {
 		}
 
 	private:
-		std::array<std::shared_ptr<System>, MAX_SYSTEMS> m_Systems;
+		std::array<System*, MAX_SYSTEMS> m_Systems;
 		size_t m_Size = 0;
 	};
 

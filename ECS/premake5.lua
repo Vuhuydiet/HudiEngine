@@ -2,7 +2,7 @@ project "ECS"
 	kind "StaticLib"
 	language "C++"
 	cppdialect "C++17"
-	staticruntime "on"
+	staticruntime "On"
 
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
@@ -21,13 +21,8 @@ project "ECS"
 		"src"
 	}
 
-	libdirs
-	{
-	}
-
-	links 
-	{
-	}
+	filter "system:windows"
+	systemversion "latest"
 
 	filter "configurations:Debug"
 		defines "HD_DEBUG"

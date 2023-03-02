@@ -1,6 +1,6 @@
 #include "Hudi.h"
 
-void CreateGround(Hudi::Scene& scene)
+Hudi::GameObject& CreateGround(Hudi::Scene& scene)
 {
 	Hudi::GameObject* ground[5];
 
@@ -48,4 +48,5 @@ void CreateGround(Hudi::Scene& scene)
 	box.minPoint = { trans.position.x, trans.position.y };
 	box.maxPoint = { trans.position.x + 128 * scale, trans.position.y + 48 / 2 * scale };
 	box.isDrawn = true;
+	return g;
 }
