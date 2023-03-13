@@ -1,9 +1,8 @@
 #pragma once
 
-#include "Hudi/Core/Window.h"
-
 #include <SDL.h>
 
+#include "Hudi/Core/Window.h"
 
 namespace Hudi {
 

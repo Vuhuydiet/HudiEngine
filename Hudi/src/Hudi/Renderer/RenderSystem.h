@@ -2,8 +2,8 @@
 
 #include <ECS.h>
 #include "Hudi/Core/Window.h"
-#include "Hudi/Core/Renderer.h"
-#include "SpriteRendererComponent.h"
+#include "Hudi/Renderer/Renderer.h"
+#include "Hudi/Components/SpriteRendererComponent.h"
 
 #include "Hudi/Scene/CameraComponent.h"
 #include "Hudi/Scene/GameObject.h"

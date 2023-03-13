@@ -4,13 +4,13 @@
 
 namespace ECS {
 
-	using Entity = int;
+	using Entity = uint32_t;
 	const Entity MAX_ENTITIES = 5000;
 
-	using ComponentID = int;
+	using ComponentID = uint32_t;
 	const ComponentID MAX_COMPONENTS = 1000;
 
-	using SystemID = int;
+	using SystemID = uint8_t;
 	const SystemID MAX_SYSTEMS = 32;
 
 	using Signature = std::bitset<MAX_COMPONENTS>;

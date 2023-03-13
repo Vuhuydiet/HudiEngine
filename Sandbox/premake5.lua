@@ -3,7 +3,7 @@ project "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"
-	staticruntime "on"
+	staticruntime "off"
 
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
@@ -19,9 +19,11 @@ project "Sandbox"
 		"%{wks.location}/Hudi/vendor/spdlog/include",
 		"%{wks.location}/Hudi/vendor/SDL2/include",
 		"%{wks.location}/Hudi/vendor/SDL2_image/include",
+		"%{wks.location}/Hudi/vendor/Glad/include",
+		"%{wks.location}/Hudi/vendor/ImGui",
+		"%{wks.location}/Hudi/vendor/glm",
 
 		"src",
-		"src/Project",
 		"%{wks.location}/CodeGenerator/src",
 		"%{wks.location}/ECS/src",
 		"%{wks.location}/Hudi/src"
@@ -43,7 +45,7 @@ project "Sandbox"
 		
 		prebuildcommands
 		{
-			"{COPY} ../Dependencies/ ../bin/" .. outputdir .. "/%{prj.name}"
+			"{COPY} ../Dlls/ ../bin/" .. outputdir .. "/%{prj.name}"
 		}
 		
 	filter "system:not windows"

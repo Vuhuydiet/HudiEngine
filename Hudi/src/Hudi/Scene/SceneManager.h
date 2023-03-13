@@ -8,21 +8,30 @@ namespace Hudi {
 	class SceneManager
 	{
 	public:
+		SceneManager(const SceneManager&) = delete;
+		SceneManager& operator= (const SceneManager&) = delete;
 
-		static Scene& CreateNewScene(const char* _name);
+		Scene& CreateNewScene(const char* _name);
 
-		static Scene& GetActiveScene();
-		static Scene& GetScene(uint8_t index);
-		static Scene& GetScene(const char* _name);
+		Scene& GetActiveScene();
+		Scene& GetScene(uint8_t index);
+		Scene& GetScene(const char* _name);
 
-		static const GameObject& GetActiveCamera() { return s_Scenes.at(s_ActiveScene)->GetActiveCamera(); }
+		void LoadScene(uint8_t index);
+		void LoadScene(const char* _name);
 
-		static void LoadScene(uint8_t index);
-		static void LoadScene(const char* _name);
+		const GameObject& GetActiveCamera() { return m_Scenes.at(s_ActiveScene)->GetActiveCamera(); }
+
+		static SceneManager& Get() { static SceneManager s_SceneManager; return s_SceneManager; }
+	private:
+		uint8_t s_ActiveScene = 0;
+
+		std::unordered_map<const char*, uint8_t> m_StringsToIndexes;
+		std::unordered_map<uint8_t, const char*> m_SceneNames;
+		std::unordered_map<uint8_t, Ref<Scene>> m_Scenes;
 
 	private:
-		static const char* s_ActiveScene;
-		static std::unordered_map<const char*, Ref<Scene>> s_Scenes;
+		SceneManager() {}
 	};
 
 }

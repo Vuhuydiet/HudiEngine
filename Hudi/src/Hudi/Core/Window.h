@@ -12,14 +12,14 @@ namespace Hudi {
 	{
 		const char* title;
 		int xpos, ypos;
-		unsigned int width, height;
-		Uint32 flags;
+		int width, height;
+		int flags;
 
 		WindowProps()
 			: title("unknown"),
 			xpos(SDL_WINDOWPOS_CENTERED), ypos(SDL_WINDOWPOS_CENTERED),
 			width(800), height(600),
-			flags((SDL_WindowFlags)(SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI))
+			flags(0)
 		{}
 	};
 
@@ -39,7 +39,6 @@ namespace Hudi {
 		virtual SDL_Window* GetSDL_Window() { return nullptr; };
 
 		static Window* Create(const WindowProps& props = WindowProps());
-
 		
 	};
 

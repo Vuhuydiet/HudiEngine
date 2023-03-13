@@ -16,9 +16,17 @@ namespace Hudi {
 
 		void DestroyGameObject();
 
-		void SetParent(GameObject* parent);
-		void AddChild(GameObject* child);
+		void SetParent(Ref<GameObject> parent);
+		void AddChild(Ref<GameObject> child);
 
+		void RemoveChild(Ref<GameObject> child);
+
+		Ref<GameObject>& GetParent();
+		std::vector<Ref<GameObject>>& GetChildren();
+
+		operator ECS::Entity() const { return m_Entt; }
+
+		// ------- System -------/
 		bool Exist() { return ECS::Coordinator::Exist(m_Entt); }
 
 		template <typename T>
@@ -36,6 +44,8 @@ namespace Hudi {
 		template <typename T>
 		T& GetComponent() { return ECS::Coordinator::GetComponent<T>(m_Entt); }
 
+		std::vector<Ref<ECS::Component>> GetComponents() { return ECS::Coordinator::GetComponents(m_Entt); }
+
 		template <typename T> 
 		void AddSystem() { ECS::Coordinator::AddSystem<T>(m_Entt); }
 
@@ -45,9 +55,9 @@ namespace Hudi {
 	private:
 		ECS::Entity m_Entt;
 
-		GameObject* m_Parent = this;
+		Ref<GameObject> m_Parent;
 		
-		std::vector<GameObject*> m_Children;
+		std::vector<Ref<GameObject>> m_Children;
 	};
 
 

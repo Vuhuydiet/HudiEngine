@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Hudi/Core/Layer.h"
+#include "Hudi/Core/Window.h"
 
 namespace Hudi {
 
@@ -10,10 +11,12 @@ namespace Hudi {
 		ImGuiLayer();
 		~ImGuiLayer();
 
-		void OnAttach();
-		void OnDetach();
-		void OnEvent(Event& event);
-		void OnUpdate();
+		void OnAttach() override;
+		void OnDetach() override;
+		void OnEvent(Event& event) override;
+
+		void Begin();
+		void End();
 	};
 
 }

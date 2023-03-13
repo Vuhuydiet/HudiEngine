@@ -1,54 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Application">
-      <UniqueIdentifier>{D9DE78AF-4594-F1A4-CE88-EB7B3A3DE8A8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Project">
-      <UniqueIdentifier>{5C2CF323-C80B-72BF-D123-FD953D82D820}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Project\MainMenu">
-      <UniqueIdentifier>{C5C66724-B1BF-8676-DAF1-6BFBC6496682}</UniqueIdentifier>
+    <Filter Include="Editor">
+      <UniqueIdentifier>{8C1A20B0-78BC-4A86-6177-5EDA4DB8D1D6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Project\MainMenu\CameraMovement.h">
-      <Filter>Project\MainMenu</Filter>
+    <ClInclude Include="src\Editor\HierarchyPanel.h">
+      <Filter>Editor</Filter>
     </ClInclude>
-    <ClInclude Include="src\Project\MainMenu\Controller.h">
-      <Filter>Project\MainMenu</Filter>
+    <ClInclude Include="src\Editor\InspectorPanel.h">
+      <Filter>Editor</Filter>
     </ClInclude>
-    <ClInclude Include="src\Project\MainMenu\Movement.h">
-      <Filter>Project\MainMenu</Filter>
+    <ClInclude Include="src\Editor\MenuBar.h">
+      <Filter>Editor</Filter>
     </ClInclude>
-    <ClInclude Include="src\Project\MainMenu\Movement2.h">
-      <Filter>Project\MainMenu</Filter>
-    </ClInclude>
+    <ClInclude Include="src\EditorLayer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Application\App.cpp">
-      <Filter>Application</Filter>
+    <ClCompile Include="src\App.cpp" />
+    <ClCompile Include="src\Editor\HierarchyPanel.cpp">
+      <Filter>Editor</Filter>
     </ClCompile>
-    <ClCompile Include="src\Project\MainMenu\Background.cpp">
-      <Filter>Project\MainMenu</Filter>
+    <ClCompile Include="src\Editor\InspectorPanel.cpp">
+      <Filter>Editor</Filter>
     </ClCompile>
-    <ClCompile Include="src\Project\MainMenu\Controller.cpp">
-      <Filter>Project\MainMenu</Filter>
+    <ClCompile Include="src\Editor\MenuBar.cpp">
+      <Filter>Editor</Filter>
     </ClCompile>
-    <ClCompile Include="src\Project\MainMenu\Ground.cpp">
-      <Filter>Project\MainMenu</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Project\MainMenu\MainCamera.cpp">
-      <Filter>Project\MainMenu</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Project\MainMenu\MainMenuScene.cpp">
-      <Filter>Project\MainMenu</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Project\MainMenu\Player1.cpp">
-      <Filter>Project\MainMenu</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Project\MainMenu\Player2.cpp">
-      <Filter>Project\MainMenu</Filter>
-    </ClCompile>
+    <ClCompile Include="src\EditorLayer.cpp" />
   </ItemGroup>
 </Project>

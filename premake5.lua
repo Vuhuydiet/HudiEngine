@@ -11,10 +11,21 @@ workspace "HudiEngine"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-include "Hudi/vendor/Glad"
-include "Hudi/vendor/ImGui"
+group "Dependencies"
+	include "Hudi/vendor/Glad"
+	include "Hudi/vendor/ImGui"
+	include "ECS"
+group ""
 
-include "CodeGenerator"
-include "ECS"
-include "Hudi"
-include "Sandbox"
+group "Utilities"
+	include "CodeGenerator"
+group ""
+
+group "Core"
+	include "Hudi"
+group ""
+
+group "Test"
+	include "Sandbox"
+	include "ImGuiTest"
+group ""

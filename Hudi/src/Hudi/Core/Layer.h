@@ -16,6 +16,8 @@ namespace Hudi {
 		virtual void OnEvent(Event& event) {}
 		virtual void OnUpdate() {}
 
+		virtual void OnImGuiRender() {}
+
 	private:
 		std::string m_DebugName;
 	};

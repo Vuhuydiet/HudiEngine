@@ -2,7 +2,7 @@ project "CodeGenerator"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"
-	staticruntime "on"
+	staticruntime "off"
 
 	targetdir ("bin/")
     objdir ("bin-int/")

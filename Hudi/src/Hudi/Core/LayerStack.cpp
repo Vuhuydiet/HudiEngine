@@ -3,8 +3,6 @@
 
 namespace Hudi {
 
-
-
 	LayerStack::~LayerStack()
 	{
 		for (auto& layer : m_Layers)

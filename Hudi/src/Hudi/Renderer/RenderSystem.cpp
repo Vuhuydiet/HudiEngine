@@ -37,7 +37,7 @@ namespace Hudi {
 		}
 
 		// Possibly camera updates and stuffs
-		activeCamera = SceneManager::GetActiveCamera();
+		activeCamera = SceneManager::Get().GetActiveCamera();
 	}
 
 	void RenderSystem::OnRender()
@@ -45,13 +45,13 @@ namespace Hudi {
 		if (!activeCamera.Exist() || !activeCamera.HasComponent<Camera>())
 			return;
 
-		SDL_SetRenderDrawColor(Renderer::s_Renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-		SDL_RenderClear(Renderer::s_Renderer);
+		//SDL_SetRenderDrawColor(Renderer::Game().GetSDL_Renderer(), 255, 255, 255, SDL_ALPHA_OPAQUE);
+		//SDL_RenderClear(Renderer::Game().GetSDL_Renderer());
 
 		DrawTextures();
 		DrawBoxCollider2Ds();
 
-		SDL_RenderPresent(Renderer::s_Renderer);
+		//SDL_RenderPresent(Renderer::Game().GetSDL_Renderer());
 	}
 
 	void RenderSystem::DrawTextures()
@@ -86,7 +86,7 @@ namespace Hudi {
 					dstRect.x -= dstRect.w / 2;
 				}
 
-				SDL_RenderCopyEx(Renderer::s_Renderer, sprite.m_Texture, &sprite.m_SrcRect, &dstRect, NULL, NULL, flip);
+				//SDL_RenderCopyEx(Renderer::Game().GetSDL_Renderer(), sprite.m_Texture, &sprite.m_SrcRect, &dstRect, NULL, NULL, flip);
 			}
 		}
 	}
@@ -132,7 +132,7 @@ namespace Hudi {
 					break;
 				}
 				}
-				Renderer::DrawRect(r);
+				//Renderer::Game().DrawRect(r);
 			}
 		}
 	}

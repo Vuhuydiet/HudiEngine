@@ -2,14 +2,9 @@
 
 #include "Core.h"
 #include "Window.h"
-#include "Renderer.h"
 
 #include "LayerStack.h"
-
-#include "Hudi/Scene/SceneManager.h"
-
-#include "Hudi/Physics/PhysicsSystem.h"
-#include "Hudi/Renderer/RenderSystem.h"
+#include "Hudi/ImGui/ImGuiLayer.h"
 
 namespace Hudi {
 
@@ -20,17 +15,17 @@ namespace Hudi {
 		virtual ~Application();
 
 		void Init();
-		void ShutDown();
+		void Shutdown();
 
-		virtual void Preprocess() = 0;
-
-		void OnAwake();
 		void OnEvent();
-		void OnUpdate();
-		void OnRender();
+
+		void PushLayer(Layer* layer);
+		void PushOverlay(Layer* overlay);
+
+		static Application& Get() { return *s_Instance; }
+		Window& GetWindow() { return *m_Window; }
 
 		bool IsRunning() { return m_Running; }
-
 		void CloseApplication() { m_Running = false; }
 
 	protected:
@@ -39,12 +34,13 @@ namespace Hudi {
 	private:
 		void Run();
 		bool m_Running = false;
-
-		Ref<Window> m_Window = nullptr;
-		LayerStack m_LayerStack;
 	private:
-		PhysicsSystem* m_PhysicsSystem;
-		RenderSystem* m_RenderSystem;
+		Scope<Window> m_Window = nullptr;
+
+		LayerStack m_LayerStack;
+		ImGuiLayer* m_ImGuiLayer = nullptr;
+	private:
+		static Application* s_Instance;
 
 		friend int ::main(int argc, char** argv);
 	};

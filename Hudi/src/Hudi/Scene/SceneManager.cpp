@@ -3,34 +3,36 @@
 
 namespace Hudi {
 
-	const char* SceneManager::s_ActiveScene = nullptr;
-	std::unordered_map<const char*, Ref<Scene>> SceneManager::s_Scenes;
-
 	Scene& SceneManager::CreateNewScene(const char* _name)
 	{
-		s_Scenes[_name] = NewRef<Scene>();
+		Ref<Scene> newScene = NewRef<Scene>();
+
+		m_StringsToIndexes[_name] = newScene->GetBuildIndex();
+		m_SceneNames[newScene->GetBuildIndex()] = _name;
+		m_Scenes[newScene->GetBuildIndex()] = newScene;
+
 		if (!s_ActiveScene)
-			s_ActiveScene = _name;
-		return *s_Scenes[_name];
+			s_ActiveScene = newScene->GetBuildIndex();
+		return *m_Scenes[newScene->GetBuildIndex()];
 	}
 
 	Scene& SceneManager::GetActiveScene()
 	{
-		static Scene scene;
-		if (!s_ActiveScene || s_Scenes.find(s_ActiveScene) == s_Scenes.end())
+		if (!s_ActiveScene || m_Scenes.find(s_ActiveScene) == m_Scenes.end())
 		{
+			static Scene scene;
 			HD_CORE_ERROR("Current scene not found.");
 			return scene;
 		}
 
-		return *s_Scenes[s_ActiveScene];
+		return *m_Scenes[s_ActiveScene];
 	}
 
 	Scene& SceneManager::GetScene(uint8_t index)
 	{
-		for (auto& [name, scene] : s_Scenes)
+		for (auto& [name, scene] : m_Scenes)
 		{
-			if (scene->buildIndex == index)
+			if (scene->GetBuildIndex() == index)
 				return *scene;
 		}
 		static Scene scene;
@@ -41,20 +43,20 @@ namespace Hudi {
 	Scene& SceneManager::GetScene(const char* _name)
 	{
 		static Scene scene;
-		if (s_Scenes.find(_name) == s_Scenes.end())
+		if (m_StringsToIndexes.find(_name) == m_StringsToIndexes.end())
 		{
 			HD_CORE_ERROR("No scene with name {0} found.", _name);
 			return scene;
 		}
 
-		return *s_Scenes[_name];
+		return *m_Scenes[m_StringsToIndexes[_name]];
 	}
 
 	void SceneManager::LoadScene(uint8_t index)
 	{
-		for (auto& [name, scene] : s_Scenes)
+		for (auto& [name, scene] : m_Scenes)
 		{
-			if (scene->buildIndex == index)
+			if (scene->GetBuildIndex() == index)
 			{
 				LoadScene(name);
 				return;
@@ -64,11 +66,11 @@ namespace Hudi {
 
 	void SceneManager::LoadScene(const char* _name)
 	{
-		if (s_Scenes.find(_name) == s_Scenes.end())
+		if (m_StringsToIndexes.find(_name) == m_StringsToIndexes.end())
 			return;
 
-		s_Scenes[s_ActiveScene]->EndScene();
-		s_ActiveScene = _name;
-		s_Scenes[s_ActiveScene]->BeginScene();
+		m_Scenes[s_ActiveScene]->EndScene();
+		s_ActiveScene = m_StringsToIndexes[_name];
+		m_Scenes[s_ActiveScene]->BeginScene();
 	}
 }

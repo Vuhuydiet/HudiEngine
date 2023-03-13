@@ -2,7 +2,7 @@ project "Hudi"
 	kind "StaticLib"
 	language "C++"
 	cppdialect "C++17"
-	staticruntime "on"
+	staticruntime "off"
 
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
@@ -13,7 +13,9 @@ project "Hudi"
 	files
     {
         "src/**.h",
-        "src/**.cpp"
+        "src/**.cpp",
+		"vendor/glm/**.hpp",
+		"vendor/glm/**.inl"
     }
 
 	includedirs
@@ -23,9 +25,9 @@ project "Hudi"
 		"vendor/SDL2_image/include",
 		"vendor/Glad/include",
 		"vendor/ImGui",
+		"vendor/glm",
 
 		"src",
-		"src/Hudi/ImGui",
 		"%{wks.location}/ECS/src"
 	}
 
@@ -35,14 +37,15 @@ project "Hudi"
 		"vendor/SDL2_image/lib/x64"
 	}
 
-	links 
+	links
 	{
 		"SDL2.lib",
 		"SDL2main.lib",
 		"SDL2_image.lib",
+		"opengl32.lib",
+
 		"Glad",
 		"ImGui",
-		
 		"ECS"
 	}
 
@@ -51,13 +54,12 @@ project "Hudi"
 
 		defines
 		{
-			"HD_PLATFORM_WINDOWS",
-			"HD_BUILD_DLL"
+			"HD_PLATFORM_WINDOWS"
 		}
 
 		prebuildcommands
 		{
-			"{COPY} ../Dependencies/ ../bin/" .. outputdir .. "/%{prj.name}"
+			"{COPY} ../Dlls/ ../bin/" .. outputdir .. "/%{prj.name}"
 		}
 
 	filter "system:not windows"

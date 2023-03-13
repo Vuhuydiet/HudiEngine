@@ -28,10 +28,7 @@ namespace Hudi {
 		Event(SDL_Event e)
 			: m_Event(e) {}
 
-		operator SDL_Event() const
-		{
-			return m_Event;
-		}
+		operator SDL_Event() const { return m_Event; }
 
 		bool handled = false;
 	private:

@@ -71,54 +71,6 @@
     <ClInclude Include="imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="backends\imgui_impl_allegro5.cpp">
-      <Filter>backends</Filter>
-    </ClCompile>
-    <ClCompile Include="backends\imgui_impl_android.cpp">
-      <Filter>backends</Filter>
-    </ClCompile>
-    <ClCompile Include="backends\imgui_impl_dx10.cpp">
-      <Filter>backends</Filter>
-    </ClCompile>
-    <ClCompile Include="backends\imgui_impl_dx11.cpp">
-      <Filter>backends</Filter>
-    </ClCompile>
-    <ClCompile Include="backends\imgui_impl_dx12.cpp">
-      <Filter>backends</Filter>
-    </ClCompile>
-    <ClCompile Include="backends\imgui_impl_dx9.cpp">
-      <Filter>backends</Filter>
-    </ClCompile>
-    <ClCompile Include="backends\imgui_impl_glfw.cpp">
-      <Filter>backends</Filter>
-    </ClCompile>
-    <ClCompile Include="backends\imgui_impl_glut.cpp">
-      <Filter>backends</Filter>
-    </ClCompile>
-    <ClCompile Include="backends\imgui_impl_opengl2.cpp">
-      <Filter>backends</Filter>
-    </ClCompile>
-    <ClCompile Include="backends\imgui_impl_opengl3.cpp">
-      <Filter>backends</Filter>
-    </ClCompile>
-    <ClCompile Include="backends\imgui_impl_sdl2.cpp">
-      <Filter>backends</Filter>
-    </ClCompile>
-    <ClCompile Include="backends\imgui_impl_sdl3.cpp">
-      <Filter>backends</Filter>
-    </ClCompile>
-    <ClCompile Include="backends\imgui_impl_sdlrenderer.cpp">
-      <Filter>backends</Filter>
-    </ClCompile>
-    <ClCompile Include="backends\imgui_impl_vulkan.cpp">
-      <Filter>backends</Filter>
-    </ClCompile>
-    <ClCompile Include="backends\imgui_impl_wgpu.cpp">
-      <Filter>backends</Filter>
-    </ClCompile>
-    <ClCompile Include="backends\imgui_impl_win32.cpp">
-      <Filter>backends</Filter>
-    </ClCompile>
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="imgui_demo.cpp" />
     <ClCompile Include="imgui_draw.cpp" />
