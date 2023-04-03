@@ -1,5 +1,5 @@
 #pragma once
-#include <SDL.h>
+
 
 namespace Hudi {
 
@@ -11,53 +11,53 @@ namespace Hudi {
 	{
 		enum : KeyCode
 		{
-			SPACE = SDLK_SPACE,
+			SPACE = 32, //SDLK_SPACE,
 
-			D0 = SDLK_0,
-			D1 = SDLK_1,
-			D2 = SDLK_2,
-			D3 = SDLK_3,
-			D4 = SDLK_4,
-			D5 = SDLK_5,
-			D6 = SDLK_6,
-			D7 = SDLK_7,
-			D8 = SDLK_8,
-			D9 = SDLK_9,
+			D0 = 48, //SDLK_0
+			D1 = 49, //SDLK_1,
+			D2 = 50, //SDLK_2,
+			D3 = 51, //SDLK_3,
+			D4 = 52, //SDLK_4,
+			D5 = 53, //SDLK_5,
+			D6 = 54, //SDLK_6,
+			D7 = 55, //SDLK_7,
+			D8 = 56, //SDLK_8,
+			D9 = 57, //SDLK_9,
 
-			A = SDLK_a,
-			B = SDLK_b,
-			C = SDLK_c,
-			D = SDLK_d,
-			E = SDLK_e,
-			F = SDLK_f,
-			G = SDLK_g,
-			H = SDLK_h,
-			I = SDLK_i,
-			J = SDLK_j,
-			K = SDLK_k,
-			L = SDLK_l,
-			M = SDLK_m,
-			N = SDLK_n,
-			O = SDLK_o,
-			P = SDLK_p,
-			Q = SDLK_q,
-			R = SDLK_r,
-			S = SDLK_s,
-			T = SDLK_t,
-			U = SDLK_u,
-			V = SDLK_v,
-			W = SDLK_w,
-			X = SDLK_x,
-			Y = SDLK_y,
-			Z = SDLK_z,
+			A = (char)'a', //SDLK_a,
+			B = (char)'b', //SDLK_b,
+			C = (char)'c', //SDLK_c,
+			D = (char)'d', //SDLK_d,
+			E = (char)'e', //SDLK_e,
+			F = (char)'f', //SDLK_f,
+			G = (char)'g', //SDLK_g,
+			H = (char)'h', //SDLK_h,
+			I = (char)'i', //SDLK_i,
+			J = (char)'j', //SDLK_j,
+			K = (char)'k', //SDLK_k,
+			L = (char)'l', //SDLK_l,
+			M = (char)'m', //SDLK_m,
+			N = (char)'n', //SDLK_n,
+			O = (char)'o', //SDLK_o,
+			P = (char)'p', //SDLK_p,
+			Q = (char)'q', //SDLK_q,
+			R = (char)'r', //SDLK_r,
+			S = (char)'s', //SDLK_s,
+			T = (char)'t', //SDLK_t,
+			U = (char)'u', //SDLK_u,
+			V = (char)'v', //SDLK_v,
+			W = (char)'w', //SDLK_w,
+			X = (char)'x', //SDLK_x,
+			Y = (char)'y', //SDLK_y,
+			Z = (char)'z', //SDLK_z,
 
 			/* Function keys */
-			ENTER = SDLK_RETURN,
+			ENTER = 13, //SDLK_RETURN,
 
-			RIGHT = SDLK_RIGHT,
-			LEFT = SDLK_LEFT,
-			DOWN = SDLK_DOWN,
-			UP = SDLK_UP
+			RIGHT	= 79 | (1 << 30), //SDLK_RIGHT,
+			LEFT	= 80 | (1 << 30), //SDLK_LEFT,
+			DOWN	= 81 | (1 << 30), //SDLK_DOWN,
+			UP		= 82 | (1 << 30) //SDLK_UP
 		};
 		
 	};

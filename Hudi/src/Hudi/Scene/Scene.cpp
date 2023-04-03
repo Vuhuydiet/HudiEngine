@@ -95,7 +95,7 @@ namespace Hudi {
 	{
 		if (m_EntityToName.find(id) == m_EntityToName.end())
 		{
-			HD_CORE_ERROR("Game Object witd ID \"{0}\" does not exist!", id);
+			HD_CORE_ERROR("GameObject witd ID \"{0}\" does not exist!", id);
 			return nullptr;
 		}
 
@@ -106,7 +106,7 @@ namespace Hudi {
 	{
 		if (m_NameToEntity.find(_name) == m_NameToEntity.end())
 		{
-			HD_CORE_ERROR("Game Object named \"{0}\" does not exist in the scene!", _name);
+			HD_CORE_ERROR("GameObject named \"{0}\" does not exist in the scene!", _name);
 			return;
 		}
 
@@ -131,7 +131,7 @@ namespace Hudi {
 	{
 		if (m_EntityToName.find(id) == m_EntityToName.end())
 		{
-			HD_CORE_ERROR("Destroy a game object that does not exist!");
+			HD_CORE_ERROR("Destroyed a GameObject that does not exist!");
 			return;
 		}
 
@@ -156,11 +156,25 @@ namespace Hudi {
 	{
 		if (m_EntityToName.find(id) == m_EntityToName.end())
 		{
-			HD_CORE_ERROR("Get name of a game object that does not exist!");
+			HD_CORE_ERROR("Get the name of a GameObject that does not exist!");
 			return "unknown";
 		}
 
 		return m_EntityToName[id];
+	}
+
+	void Scene::RenameGameObject(const std::string& _name, uint32_t id)
+	{
+		if (m_EntityToName.find(id) == m_EntityToName.end())
+		{
+			HD_ERROR("Renamed GameObject with ID \"{0}\" that does not exist!", id);
+			return;
+		}
+
+		std::string old_name = m_EntityToName[id];
+		m_EntityToName[id] = _name;
+		m_NameToEntity.erase(old_name);
+		m_NameToEntity[_name] = id;
 	}
 
 	void Scene::SetActiveCamera(GameObject& cam)

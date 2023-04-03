@@ -16,6 +16,7 @@
       <Filter>Editor</Filter>
     </ClInclude>
     <ClInclude Include="src\EditorLayer.h" />
+    <ClInclude Include="src\Sandbox2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\App.cpp" />
@@ -29,5 +30,6 @@
       <Filter>Editor</Filter>
     </ClCompile>
     <ClCompile Include="src\EditorLayer.cpp" />
+    <ClCompile Include="src\Sandbox2D.cpp" />
   </ItemGroup>
 </Project>

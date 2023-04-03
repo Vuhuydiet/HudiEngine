@@ -12,11 +12,11 @@ namespace Hudi {
 
 		void OnImGuiRender();
 
+		void SetSelectedObject(Ref<GameObject> obj) { m_SelectedObject = obj; }
+		Ref<GameObject> GetSelectedObject() { return m_SelectedObject; }
 
 		static MenuBar& Get() { static MenuBar s_MenuBar; return s_MenuBar; }
 	
-		void SetSelectedObject(Ref<GameObject> obj) { m_SelectedObject = obj; }
-		Ref<GameObject> GetSelectedObject() { return m_SelectedObject; }
 	public:
 		bool opt_Hierarchy = true;
 		bool opt_Inspector = true;

@@ -22,7 +22,6 @@ namespace Hudi {
 		static std::unordered_set<const char*> s_AvailableTags;
 	};
 
-#include <SDL.h>
 	struct BoxCollider2D : public Collider
 	{
 		const char* ToString() const override { return "BoxCollider"; }
@@ -47,15 +46,6 @@ namespace Hudi {
 		Vec3 maxPoint;
 
 	public:
-		operator SDL_Rect() const
-		{
-			SDL_Rect rect;
-			rect.x = static_cast<int>(minPoint.x);
-			rect.y = static_cast<int>(minPoint.y);
-			rect.w = static_cast<int>(maxPoint.x - minPoint.x + 1);
-			rect.h = static_cast<int>(maxPoint.y - minPoint.y + 1);
-			return rect;
-		}
 	};
 
 	struct CircleCollider2D : public Collider

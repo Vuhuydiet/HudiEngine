@@ -15,7 +15,9 @@ project "Hudi"
         "src/**.h",
         "src/**.cpp",
 		"vendor/glm/**.hpp",
-		"vendor/glm/**.inl"
+		"vendor/glm/**.inl",
+		"vendor/stb_image/**.h",
+		"vendor/stb_image/**.cpp"
     }
 
 	includedirs
@@ -26,6 +28,7 @@ project "Hudi"
 		"vendor/Glad/include",
 		"vendor/ImGui",
 		"vendor/glm",
+		"vendor/stb_image",
 
 		"src",
 		"%{wks.location}/ECS/src"

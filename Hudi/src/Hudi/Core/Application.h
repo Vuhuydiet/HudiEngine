@@ -1,7 +1,9 @@
 #pragma once
 
 #include "Core.h"
+
 #include "Window.h"
+#include "Clock.h"
 
 #include "LayerStack.h"
 #include "Hudi/ImGui/ImGuiLayer.h"
@@ -17,31 +19,39 @@ namespace Hudi {
 		void Init();
 		void Shutdown();
 
-		void OnEvent();
+		void OnEvent(Event& e);
 
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* overlay);
 
-		static Application& Get() { return *s_Instance; }
 		Window& GetWindow() { return *m_Window; }
 
-		bool IsRunning() { return m_Running; }
+		bool IsRunning() const { return m_Running; }
 		void CloseApplication() { m_Running = false; }
+
+		static Application& Get() { return *s_Instance; }
 
 	protected:
 		virtual WindowProps WindowProperties();
 
 	private:
-		void Run();
-		bool m_Running = false;
+		void OnQuitEvent(Event& e);
+		void OnWindowEvent(Event& e);
+
 	private:
-		Scope<Window> m_Window = nullptr;
+		void Run();
+		bool m_Running;
+
+		Clock m_Clock;
+		float m_LastFrameTime;
+	private:
+		Scope<Window> m_Window;
 
 		LayerStack m_LayerStack;
-		ImGuiLayer* m_ImGuiLayer = nullptr;
+		ImGuiLayer* m_ImGuiLayer;
+
 	private:
 		static Application* s_Instance;
-
 		friend int ::main(int argc, char** argv);
 	};
 

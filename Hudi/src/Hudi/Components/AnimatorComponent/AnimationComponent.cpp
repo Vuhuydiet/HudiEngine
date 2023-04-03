@@ -1,6 +1,8 @@
 #include "hdpch.h"
 #include "AnimationComponent.h"
 
+#include <SDL.h>
+
 namespace Hudi {
 
 	void Animation::Play()

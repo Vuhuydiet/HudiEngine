@@ -83,8 +83,6 @@ namespace Hudi {
             IM_ASSERT(0);
         }
         if (ImGui::MenuItem("Checked", NULL, true)) {}
-        ImGui::Separator();
-        if (ImGui::MenuItem("Quit", "Alt+F4")) {}
     }
 
 	void MenuBar::OnImGuiRender()
@@ -94,10 +92,12 @@ namespace Hudi {
         ImGui::SetNextWindowSize(viewport->WorkSize);
         ImGui::SetNextWindowViewport(viewport->ID);
 
-        ImGuiDockNodeFlags_ dockspace_flags = ImGuiDockNodeFlags_None;// ImGuiDockNodeFlags_PassthruCentralNode;
+        ImGuiDockNodeFlags_ dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
         ImGuiWindowFlags host_window_flags = ImGuiWindowFlags_None;
+
         host_window_flags |= ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoDocking;
         host_window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+        
         if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
             host_window_flags |= ImGuiWindowFlags_NoBackground;
 
@@ -117,8 +117,8 @@ namespace Hudi {
         {
             if (ImGui::BeginMenu("File"))
             {
+                ShowExampleMenuFile();
                 ImGui::Separator();
-
                 if (ImGui::MenuItem("Close", NULL, false, true))
                 {
                     Application::Get().CloseApplication();
@@ -134,7 +134,6 @@ namespace Hudi {
 
                 ImGui::EndMenu();
             }
-
 
             ImGui::EndMenuBar();
         }

@@ -8,9 +8,6 @@ namespace Hudi {
 	class SceneManager
 	{
 	public:
-		SceneManager(const SceneManager&) = delete;
-		SceneManager& operator= (const SceneManager&) = delete;
-
 		Scene& CreateNewScene(const char* _name);
 
 		Scene& GetActiveScene();
@@ -23,11 +20,15 @@ namespace Hudi {
 		const GameObject& GetActiveCamera() { return m_Scenes.at(s_ActiveScene)->GetActiveCamera(); }
 
 		static SceneManager& Get() { static SceneManager s_SceneManager; return s_SceneManager; }
+		SceneManager(const SceneManager&) = delete;
+		SceneManager& operator= (const SceneManager&) = delete;
+
 	private:
 		uint8_t s_ActiveScene = 0;
 
 		std::unordered_map<const char*, uint8_t> m_StringsToIndexes;
 		std::unordered_map<uint8_t, const char*> m_SceneNames;
+
 		std::unordered_map<uint8_t, Ref<Scene>> m_Scenes;
 
 	private:

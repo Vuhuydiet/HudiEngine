@@ -31,13 +31,14 @@ namespace Hudi {
 		void DestroyGameObject(uint32_t id);
 
 		std::string GetGameObjectName(uint32_t id);
+		void RenameGameObject(const std::string& _name, uint32_t id);
 
 		void SetActiveCamera(GameObject& go);
 		const GameObject& GetActiveCamera();
 
 		// Looop through all GameObjects
-		template <typename F>
-		void each(F&& func);
+		template <typename Func>
+		void each(Func&& func);
 	private:
 		uint8_t m_BuildIndex = 0;
 		
@@ -54,12 +55,12 @@ namespace Hudi {
 
 
 	// --------- Impl ----------------------------------------------------------//
-	template <typename F>
-	inline void Scene::each(F&& func)
+	template <typename Func>
+	inline void Scene::each(Func&& func)
 	{
 		for (auto& [id, name] : m_EntityToName)
 		{
-			std::forward<F&&>(func)(id);
+			std::forward<Func&&>(func)(id);
 		}
 	}
 }

@@ -12,7 +12,7 @@ namespace Hudi {
 		void OnImGuiRender();
 
 	private:
-		void DrawGameObjectNode(const std::string& name, Ref<GameObject> gameObject);
+		void DrawGameObjectNode(std::string& name, Ref<GameObject> gameObject);
 	private:
 		std::vector<uint32_t> m_OnDelete;
 

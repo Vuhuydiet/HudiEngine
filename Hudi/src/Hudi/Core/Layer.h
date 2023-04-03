@@ -14,7 +14,8 @@ namespace Hudi {
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
 		virtual void OnEvent(Event& event) {}
-		virtual void OnUpdate() {}
+		// unit: seconds
+		virtual void OnUpdate(float dt) {}
 
 		virtual void OnImGuiRender() {}
 

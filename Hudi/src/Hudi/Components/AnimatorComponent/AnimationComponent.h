@@ -4,7 +4,6 @@
 #include "Hudi/Components/SpriteRendererComponent.h"
 #include "Hudi/Source/Time.h"
 
-#include <SDL.h>
 #include <ECS.h>
 
 namespace Hudi {

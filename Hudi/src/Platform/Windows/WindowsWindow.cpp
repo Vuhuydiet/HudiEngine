@@ -1,25 +1,21 @@
 #include "hdpch.h"
 #include "WindowsWindow.h"
 
-#include <glad/glad.h>
 #include <SDL.h>
-#include <SDL_opengl.h>
-#include "imgui.h"
-#include "Hudi/ImGui/imgui_resources/imgui_impl_sdl2.h"
-#include "Hudi/ImGui/imgui_resources/imgui_impl_opengl3.h"
 
 #include "Hudi/Core/Application.h"
 
+#include "Platform/OpenGL/OpenGLContext.h"
+
 namespace Hudi {
 	
-	Window* Window::Create(const WindowProps& props)
-	{
-		return new WindowsWindow(props);
-	}
-
 	WindowsWindow::WindowsWindow(const WindowProps& props)
 	{
+		SDL_Init(SDL_INIT_EVERYTHING);
+		OpenGLContext::SetAttributes();
 		Init(props);
+
+		EventManager::SetWindowFn(HD_BIND_EVENT_FN(WindowsWindow::OnEvent));
 	}
 
 	WindowsWindow::~WindowsWindow()
@@ -36,13 +32,12 @@ namespace Hudi {
 			props.width, props.height,
 			props.flags
 		);
+		HD_CORE_ASSERT(!m_Window, "Window creation failed!");
 
-		SDL_GLContext gl_context = SDL_GL_CreateContext(m_Window);
-		SDL_GL_MakeCurrent(m_Window, gl_context);
-		SDL_GL_SetSwapInterval(1);
+		m_GraphicsContext = NewRef<OpenGLContext>(m_Window);
+		m_GraphicsContext->Init();
 
-		// Glad setup
-		gladLoadGLLoader(SDL_GL_GetProcAddress);
+		SetVSync(m_Properties.VSync);
 
 		EventManager::Init();
 	}
@@ -55,25 +50,62 @@ namespace Hudi {
 		SDL_Quit();
 	}
 
-	bool WindowsWindow::PollEvent(Event& e)
+	void WindowsWindow::OnEvent(Event& e)
 	{
-		if (m_EventQueue.empty())
-			return false;
-
-		e = m_EventQueue.front();
-		m_EventQueue.pop();
-		return true;
+		SDL_Event event = e;
+		switch (event.type)
+		{
+		case WINDOW_EVENT:
+			switch (event.window.event)
+			{
+			case WINDOWEVENT_RESIZED:
+			case WINDOWEVENT_SIZE_CHANGED:
+				SDL_GetWindowSize(m_Window, &m_Properties.width, &m_Properties.height);
+				break;
+			}
+			break;
+		}
 	}
 
 	void WindowsWindow::OnUpdate()
 	{
 		EventManager::Clear();
-		// Clear the queue
-		m_EventQueue = {};
-		EventManager::OnUpdate(m_EventQueue);
+		EventManager::OnUpdate();
 
 		SDL_GetWindowPosition(m_Window, &m_Properties.xpos, &m_Properties.ypos);
+	}
+
+	void WindowsWindow::SwapWindow()
+	{
+		SDL_GL_SwapWindow(m_Window);
+	}
+
+	void WindowsWindow::Resize()
+	{
 		SDL_GetWindowSize(m_Window, &m_Properties.width, &m_Properties.height);
+	}
+
+	bool WindowsWindow::IsMinimized() const
+	{
+		uint32_t flags = SDL_GetWindowFlags(m_Window);
+		return flags & SDL_WINDOW_MINIMIZED;
+	}
+
+	bool WindowsWindow::IsMaximized() const
+	{
+		uint32_t flags = SDL_GetWindowFlags(m_Window);
+		return flags & SDL_WINDOW_MAXIMIZED;
+	}
+
+	void WindowsWindow::SetVSync(bool enabled)
+	{
+		SDL_GL_SetSwapInterval(enabled ? 1 : 0);
+		m_Properties.VSync = enabled;
+	}
+
+	bool WindowsWindow::IsVSync() const
+	{
+		return m_Properties.VSync;
 	}
 
 }

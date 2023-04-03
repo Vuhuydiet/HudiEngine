@@ -1,10 +1,6 @@
 #pragma once
 
-#include "Hudi/Renderer/Renderer.h"
-
 #include <ECS.h>
-#include <SDL.h>
-#include <SDL_image.h>
 
 namespace Hudi {
 
@@ -33,8 +29,8 @@ namespace Hudi {
 		uint32_t order;
 
 	private:
-		SDL_Texture* m_Texture = nullptr;
-		SDL_Rect m_SrcRect;
+		int* m_Texture = nullptr;
+		int m_SrcRect;
 		const char* m_FilePath = nullptr;
 
 	private:

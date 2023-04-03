@@ -1,49 +1,41 @@
 #include "hdpch.h"
 #include "Renderer.h"
 
-#include <glad/glad.h>
-#include <SDL.h>
-#include <SDL_opengl.h>
-
-#include <imgui.h>
-#include "Hudi/ImGui/imgui_resources/imgui_impl_sdl2.h"
-#include "Hudi/ImGui/imgui_resources/imgui_impl_opengl3.h"
-
-#include "Hudi/Core/Application.h"
+#include "RenderCommand.h"
+#include "Renderer2D.h"
 
 namespace Hudi {
 
-	Renderer::Renderer()
-	{
-	}
-
-	void Renderer::SetAttributes()
-	{
-		// GL 3.0 + GLSL 130
-		const char* glsl_version = "#version 130";
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
-
-		// From 2.0.18: Enable native IME.
-#ifdef SDL_HINT_IME_SHOW_UI
-		SDL_SetHint(SDL_HINT_IME_SHOW_UI, "1");
-#endif
-
-		// Create window with graphics context
-		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-	}
+	Renderer::SceneData Renderer::m_Data;
 
 	void Renderer::Init()
 	{
-		
+		RenderCommand::Init();
+		Renderer2D::Init();
 	}
 
-	void Renderer::ShutDown()
+	void Renderer::OnWindowResize(uint32_t width, uint32_t height)
 	{
+		RenderCommand::SetViewport(0, 0, width, height);
+	}
+
+	void Renderer::BeginScene(OrthographicCamera& camera)
+	{
+		m_Data.projectionViewMatrix = camera.GetProjectionViewMatrix();
+	}
+
+	void Renderer::EndScene()
+	{
+	}
+
+	void Renderer::Submit(Ref<Shader> shader, Ref<VertexArray> vertexArray, const glm::mat4& tranform)
+	{
+		shader->Bind();
+		shader->SetUniform("u_ProjectionViewMatrix", m_Data.projectionViewMatrix);
+		shader->SetUniform("u_Transform", tranform);
+
+		vertexArray->Bind();
+		RenderCommand::DrawIndexed(vertexArray);
 	}
 
 }

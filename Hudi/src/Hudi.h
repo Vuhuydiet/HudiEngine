@@ -13,6 +13,18 @@
 #include "Hudi/Source/Vec3.h"
 #include "Hudi/Source/Time.h"
 
+#include "Hudi/Renderer/RenderCommand.h"
+#include "Hudi/Renderer/Renderer.h"
+#include "Hudi/Renderer/Renderer2D.h"
+
+#include "Hudi/Renderer/VertexArray.h"
+#include "Hudi/Renderer/Buffer.h"
+#include "Hudi/Renderer/Shader.h"
+#include "Hudi/Renderer/Texture.h"
+
+#include "Hudi/Renderer/OrthographicCamera.h"
+#include "Hudi/Renderer/OrthographicCameraController.h"
+
 #include "Hudi/Components/TransformComponent.h"
 #include "Hudi/Components/BehaviourComponent.h"
 #include "Hudi/Components/SpriteRendererComponent.h"

@@ -1,6 +1,7 @@
 #include "hdpch.h"
 #include "ImGuiLayer.h"
 
+#include <glad/glad.h>
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include <imgui.h>
@@ -10,7 +11,6 @@
 #include <glm/glm.hpp>
 
 #include "Hudi/Core/Application.h"
-#include "Hudi/Renderer/Renderer.h"
 
 namespace Hudi {
 
@@ -53,7 +53,7 @@ namespace Hudi {
 		}
 		style.WindowMenuButtonPosition = ImGuiDir_None;
 
-		auto window = Application::Get().GetWindow().GetSDL_Window();
+		auto window = (SDL_Window*)Application::Get().GetWindow().GetNativeWindow();
 		auto gl_context = SDL_GL_GetCurrentContext();
 		ImGui_ImplSDL2_InitForOpenGL(window, gl_context);
 		ImGui_ImplOpenGL3_Init("#version 130");
@@ -81,17 +81,19 @@ namespace Hudi {
 	void ImGuiLayer::End()
 	{
 		ImGuiIO& io = ImGui::GetIO();
+		Application& app = Application::Get();
+		io.DisplaySize = ImVec2((float)app.GetWindow().GetWidth(), (float)app.GetWindow().GetHeight());
 
 		// Rendering
 		ImGui::Render();
-		glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
-		glClear(GL_COLOR_BUFFER_BIT);
+		//glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
+		//glClear(GL_COLOR_BUFFER_BIT);
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		// Update and Render additional Platform Windows
 		// (Platform functions may change the current OpenGL context, so we save/restore it to make it easier to paste this code elsewhere.
 		//  For this specific demo app we could also call SDL_GL_MakeCurrent(window, gl_context) directly)
-		//if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
 			SDL_Window* backup_current_window = SDL_GL_GetCurrentWindow();
 			SDL_GLContext backup_current_context = SDL_GL_GetCurrentContext();
@@ -100,8 +102,8 @@ namespace Hudi {
 			SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
 		}
 
-		auto window = Application::Get().GetWindow().GetSDL_Window();
-		SDL_GL_SwapWindow(window);
+		app.GetWindow().SwapWindow();
+
 	}
 
 }

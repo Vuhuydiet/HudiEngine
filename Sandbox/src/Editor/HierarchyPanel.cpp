@@ -52,7 +52,7 @@ namespace Hudi {
 
 	}
 
-	void HierarchyPanel::DrawGameObjectNode(const std::string& name, Ref<GameObject> gameObject)
+	void HierarchyPanel::DrawGameObjectNode(std::string& name, Ref<GameObject> gameObject)
 	{
 		bool opened = false;
 		ImGuiTreeNodeFlags flags =	(MenuBar::Get().GetSelectedObject() == gameObject ? ImGuiTreeNodeFlags_Selected : 0) |
@@ -92,7 +92,7 @@ namespace Hudi {
 			{
 				for (auto& child : gameObject->GetChildren())
 				{
-					const std::string child_name = scene.GetGameObjectName((ECS::Entity)*child);
+					std::string& child_name = scene.GetGameObjectName((ECS::Entity)*child);
 					DrawGameObjectNode(child_name, child);
 				}
 			}

@@ -3,6 +3,28 @@
 
 namespace Hudi {
 
+	EventDispatcher::EventDispatcher(Event& event)
+		: m_Event(event) 
+	{}
+
+	bool EventDispatcher::Dispatch(EventType type, const std::function<void(Event&)>& fn)
+	{
+		if (m_Event.handled || m_Event.type() != type)
+		{
+			return false;
+		}
+
+		fn(m_Event);
+		return true;
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////
+	///// Event Manager /////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////
+
+	std::function<void(Event&)> EventManager::m_CallBackFn = nullptr;
+	std::function<void(Event&)> EventManager::m_WindowEventFn = nullptr;
+
 	bool EventManager::m_QuitEvent = false;
 
 	std::unordered_set<KeyCode> EventManager::m_KeyJustDown;
@@ -29,13 +51,12 @@ namespace Hudi {
 		m_ButtonJustUp.clear();
 	}
 
-	void EventManager::OnUpdate(std::queue<Event>& event_queue)
+	void EventManager::OnUpdate()
 	{
 		SDL_Event e;
 		while (SDL_PollEvent(&e))
 		{
-			event_queue.push(Event(e));
-
+			Event event(e);
 			switch (e.type)
 			{
 				case QUIT:
@@ -43,43 +64,52 @@ namespace Hudi {
 					m_QuitEvent = true;
 					break;
 				}
-				case KEYDOWN:
+				case WINDOW_EVENT:
+				{
+					
+				}
+				case KEY_DOWN:
 				{
 					if (KeyUp((KeyCode)e.key.keysym.sym))
 						m_KeyJustDown.insert((KeyCode)e.key.keysym.sym);
 					m_KeyDownEvent.insert((KeyCode)e.key.keysym.sym);
 					break;
 				}
-				case KEYUP:
+				case KEY_UP:
 				{
 					if (KeyDown((KeyCode)e.key.keysym.sym))
 						m_KeyJustUp.insert((KeyCode)e.key.keysym.sym);
 					m_KeyDownEvent.erase((KeyCode)e.key.keysym.sym);
 					break;
 				}
-				case MOUSEBUTTONDOWN:
+				case MOUSE_BUTTON_DOWN:
 				{
 					if (MouseUp((MouseCode)e.button.button))
 						m_ButtonJustDown.insert((MouseCode)e.button.button);
 					m_MouseButtonDownEvent.insert((MouseCode)e.button.button);
 					break;
 				}
-				case MOUSEBUTTONUP:
+				case MOUSE_BUTTON_UP:
 				{
 					if (MouseDown((MouseCode)e.button.button))
 						m_ButtonJustUp.insert((MouseCode)e.button.button);
 					m_MouseButtonDownEvent.erase((MouseCode)e.button.button);
 					break;
 				}
-				case MOUSEMOTION:
+				case MOUSE_MOTION:
 				{
 					break;
 				}
-				case MOUSEWHEEL:
+				case MOUSE_WHEEL:
 				{
 					break;
 				}
 			}
+			HD_CORE_ASSERT(!m_WindowEventFn, "No window event function has been set!");
+			m_WindowEventFn(event);
+			
+			HD_CORE_ASSERT(!m_CallBackFn, "No call back function has been set!");
+			m_CallBackFn(event);
 		}
 	}
 

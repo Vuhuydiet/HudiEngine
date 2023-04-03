@@ -11,30 +11,56 @@
 
 namespace Hudi {
 
-	enum EventType {
+	using EventType = int;
+	enum : EventType 
+	{
 		QUIT				= SDL_QUIT,
-		KEYDOWN				= SDL_KEYDOWN,
-		KEYUP				= SDL_KEYUP,
-		MOUSEBUTTONDOWN		= SDL_MOUSEBUTTONDOWN,
-		MOUSEBUTTONUP		= SDL_MOUSEBUTTONUP,
-		MOUSEMOTION			= SDL_MOUSEMOTION,
-		MOUSEWHEEL			= SDL_MOUSEWHEEL
+		WINDOW_EVENT		= SDL_WINDOWEVENT,
+		KEY_DOWN			= SDL_KEYDOWN,
+		KEY_UP				= SDL_KEYUP,
+		MOUSE_BUTTON_DOWN	= SDL_MOUSEBUTTONDOWN,
+		MOUSE_BUTTON_UP		= SDL_MOUSEBUTTONUP,
+		MOUSE_MOTION		= SDL_MOUSEMOTION,
+		MOUSE_WHEEL			= SDL_MOUSEWHEEL
+	};
+
+	using WindowEvent = int;
+	enum : WindowEvent
+	{
+		WINDOWEVENT_RESIZED = SDL_WINDOWEVENT_RESIZED,
+		WINDOWEVENT_SIZE_CHANGED = SDL_WINDOWEVENT_SIZE_CHANGED
 	};
 
 	class Event
 	{
 	public:
-		Event() {}
+		Event() : m_Event(SDL_Event()) {}
 		Event(SDL_Event e)
-			: m_Event(e) {}
+			: m_Event(e)
+		{}
+
+		EventType type() const { return m_Event.type; }
 
 		operator SDL_Event() const { return m_Event; }
 
+	public:
 		bool handled = false;
 	private:
 		SDL_Event m_Event;
 		friend class EventManager;
 	};
+
+	class EventDispatcher
+	{
+	public:
+		EventDispatcher(Event& event);
+
+		bool Dispatch(EventType type, const std::function<void(Event&)>& fn);
+
+	private:
+		Event& m_Event;
+	};
+
 
 	class EventManager
 	{
@@ -42,7 +68,10 @@ namespace Hudi {
 		static void Init();
 		static void Clear();
 
-		static void OnUpdate(std::queue<Event>& event_queue);
+		static void SetCallBackFn(std::function<void(Event&)> fn) { m_CallBackFn = fn; }
+		static void SetWindowFn(std::function<void(Event&)> fn) { m_WindowEventFn = fn; }
+
+		static void OnUpdate();
 		
 		static bool Quit();
 		
@@ -59,6 +88,9 @@ namespace Hudi {
 		static Vec2<int> MousePosition();
 	
 	private:
+		static std::function<void(Event&)> m_CallBackFn;
+		static std::function<void(Event& e)> m_WindowEventFn;
+
 		static bool m_QuitEvent;
 		
 		static std::unordered_set<KeyCode> m_KeyJustDown;

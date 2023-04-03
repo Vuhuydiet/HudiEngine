@@ -4,7 +4,7 @@
 
 #include "Hudi/Events/Event.h"
 
-#include <SDL.h>
+struct SDL_Window;
 
 namespace Hudi {
 
@@ -14,13 +14,9 @@ namespace Hudi {
 		int xpos, ypos;
 		int width, height;
 		int flags;
+		bool VSync;
 
-		WindowProps()
-			: title("unknown"),
-			xpos(SDL_WINDOWPOS_CENTERED), ypos(SDL_WINDOWPOS_CENTERED),
-			width(800), height(600),
-			flags(0)
-		{}
+		WindowProps();
 	};
 
 	class HUDI_API Window
@@ -28,15 +24,22 @@ namespace Hudi {
 	public:
 		virtual ~Window() = default;
 
-		virtual bool PollEvent(Event& e) = 0;
+		virtual void OnEvent(Event& e) = 0;
 		virtual void OnUpdate() = 0;
+		virtual void SwapWindow() = 0;
+		virtual void Resize() = 0;
+		virtual bool IsMinimized() const = 0;
+		virtual bool IsMaximized() const = 0;
 
-		virtual WindowProps GetWindowProps() const = 0;
+		virtual void SetVSync(bool enabled) = 0;
+		virtual bool IsVSync() const = 0;
+
+		virtual const WindowProps& GetWindowProps() const = 0;
 
 		virtual unsigned int GetWidth() const = 0;
 		virtual unsigned int GetHeight() const = 0;
 
-		virtual SDL_Window* GetSDL_Window() { return nullptr; };
+		virtual void* GetNativeWindow() = 0;
 
 		static Window* Create(const WindowProps& props = WindowProps());
 		

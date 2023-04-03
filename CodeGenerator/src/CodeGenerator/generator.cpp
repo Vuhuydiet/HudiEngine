@@ -1,16 +1,14 @@
 #include "cgpch.h"
 #include "CodeGenerator.h"
 
-int main()
+int main(int argc, char** argv)
 {
-	std::string file_path;
-	std::getline(std::cin, file_path);
 	std::fstream inp;
-	inp.open(file_path, std::ios::in);
+	inp.open(argv[0], std::ios::in);
 
 	if (inp.fail())
 	{
-		std::cout << "Fail to open file \"" << file_path << "\".";
+		std::cout << "Fail to open file \"" << argv[0] << "\".";
 		inp.close();
 		return -1;
 	}

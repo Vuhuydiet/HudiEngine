@@ -45,18 +45,23 @@ namespace Hudi {
         if (ImGui::CollapsingHeader("Transform", flags))
         {
             auto& [px, py, pz] = transform->position;
-            int pos[3] = { px, py, pz };
-            ImGuiInputTextFlags text_flag2 = ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue;
-            ImGui::InputInt3("Position", pos, text_flag2);
+            float pos[3] = { px, py, pz };
+            ImGuiInputTextFlags pos_flags = ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue;// | ImGuiInputTextFlags_AlwaysOverwrite;
+            ImGui::InputScalarN("Position", ImGuiDataType_Float, pos, 3, NULL, NULL, "%.0f", pos_flags);
             { px = pos[0], py = pos[1], pz = pos[2]; }
 
             
-            auto& [rx, ry, rz] = transform->position;
-            int rot[3] = { rx, ry, rz };
-            ImGuiInputTextFlags text_flag = ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue;
-            ImGui::InputInt3("Rotation", rot, text_flag);
+            auto& [rx, ry, rz] = transform->rotation;
+            float rot[3] = { rx, ry, rz };
+            ImGuiInputTextFlags rot_flags = ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue;
+            ImGui::InputScalarN("Rotation", ImGuiDataType_Float, rot, 3, NULL, NULL, "%.0f", rot_flags);
             { rx = rot[0], ry = rot[1], rz = rot[2]; }
 
+            auto& [sx, sy, sz] = transform->scale;
+            float scl[3] = { sx, sy, sz };
+            ImGuiInputTextFlags scl_flags = ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue;
+            ImGui::InputScalarN("Scale", ImGuiDataType_Float, scl, 3, NULL, NULL, "%.2f", scl_flags);
+            { sx = scl[0], sy = scl[1], sz = scl[2]; }
         }
 	}
 
@@ -65,10 +70,9 @@ namespace Hudi {
         ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen;
         if (ImGui::CollapsingHeader("Sprite Renderer", flags))
         {
-            ImGuiIO& io = ImGui::GetIO();
+            ImGuiInputTextFlags order_flags = ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue;
+            ImGui::InputScalar("Order", ImGuiDataType_U16, &sprite->order, NULL, NULL, "%d", order_flags);
 
-            ImGui::Text("File Path: %s", sprite->GetFilePath());
-            ImGui::Text("Order: %d", sprite->order);
         }
 
         //if (ImGui::CollapsingHeader("Configuration"))

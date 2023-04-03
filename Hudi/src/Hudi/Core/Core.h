@@ -18,6 +18,24 @@
 	#endif
 #endif
 
+#ifdef HD_DEBUG
+	#define HD_ENABLE_ASSERTS
+#endif
+
+#ifdef HD_ENABLE_ASSERTS
+	#include "Log.h"
+	#define HD_CORE_ASSERT(x, ...) { if(x) { HD_CORE_ERROR("Assertion Failed:"); HD_CORE_ERROR(__VA_ARGS__); __debugbreak(); } }
+	#define HD_ASSERT(x, ...) { if(x) { HD_ERROR("Assertion Failed:"); HD_ERROR(__VA_ARGS__); __debugbreak(); } }
+#else
+	#define HD_CORE_ASSERT(x, ...)
+	#define HD_ASSERT(x, ...)
+#endif
+
+
+#define HD_BIND_EVENT_FN(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
+#define GET_COUNT(x) *(&x+1) - x
+
+
 #include <memory>
 namespace Hudi {
 	
@@ -38,5 +56,6 @@ namespace Hudi {
 	{
 		return std::make_shared<T>(std::forward<Args>(args)...);
 	}
+
 }
 
