@@ -1,7 +1,9 @@
 #pragma once
-#include "Core.h"
 
+#include "Core.h"
 #include "Log.h"
+#include "Application.h"
+#include "Hudi/Debug/Instrumentor.h"
 
 #ifdef HD_PLATFORM_WINDOWS
 
@@ -10,16 +12,19 @@ extern Hudi::Application* Hudi::CreateApplication();
 int main(int argc, char** argv)
 {
 	Hudi::Log::Init();
-	HD_CORE_INFO("Initialised Log in EntryPoint.h!");
-		
+
+	HD_PROFILE_BEGIN_SESSION("Startup", "HudiProfile-Startup.json");
 	Hudi::Application* app = Hudi::CreateApplication();
 	app->Init();
-	HD_CORE_INFO("Initialised App in EntryPoint.h!");
+	HD_PROFILE_END_SESSION();
 
+	HD_PROFILE_BEGIN_SESSION("Runtime", "HudiProfile-Runtime.json");
 	app->Run();
+	HD_PROFILE_END_SESSION();
 
+	HD_PROFILE_BEGIN_SESSION("Shutdown", "HudiProfile-Shutdown.json");
 	delete app;
-	HD_CORE_INFO("Program Closed in EntryPoint.h!");
+	HD_PROFILE_END_SESSION();
 
 	return 0;
 }

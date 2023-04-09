@@ -16,14 +16,12 @@ namespace Hudi {
 		virtual void OnUpdate(float dt) override;
 		virtual void OnImGuiRender() override;
 	private:
-		ShaderLibrary m_ShaderLibrary;
-
-		Ref<VertexArray> m_VertexArray;
 		Ref<Texture2D> m_Texture;
 		glm::vec4 m_Color;
 
 		OrthographicCameraController m_CameraController;
 		
+		float frametime = 0.0f;
 	};
 
 }

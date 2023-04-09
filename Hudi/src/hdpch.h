@@ -32,3 +32,5 @@
 #include "Hudi/Source/Time.h"
 
 #include "Hudi/Core/Core.h"
+
+#include "Hudi/Debug/Instrumentor.h"

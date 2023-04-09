@@ -90,7 +90,6 @@ namespace Hudi {
 
 			Renderer::BeginScene(m_CameraController.GetCamera());
 			{
-				m_Shaders.Get("TextureShader")->Bind();
 				m_Texture->Bind(0);
 				m_Texture1->Bind(1);
 				Renderer::Submit(m_Shaders.Get("Texture"), m_VertexArray);
@@ -138,7 +137,7 @@ public:
 		HD_WARN("Currently disable timer!");
 		//Hudi::Time::SetFPS(30);
 
-		//PushLayer(new Hudi::EditorLayer());
+		PushLayer(new Hudi::EditorLayer());
 		//PushLayer(new Hudi::ExampleLayer());
 		PushLayer(new Hudi::Sandbox2D());
 
@@ -146,14 +145,14 @@ public:
 		////////////////////////////////////////////////////////////////
 		////////////////////////////////////////////////////////////////
 		Hudi::SceneManager::Get().CreateNewScene("Default");
-		auto& scene = Hudi::SceneManager::Get().GetActiveScene();
+		/*auto& scene = Hudi::SceneManager::Get().GetActiveScene();
 		scene.CreateGameObject("vu dep trai");
 		scene.CreateGameObject("trai");
 
 		auto p_vu = scene.GetGameObjectByRef("vu dep trai");
 		auto p_v = scene.GetGameObjectByRef("trai");
 		p_vu->AddChild(p_v);
-		p_v->SetParent(p_vu);
+		p_v->SetParent(p_vu);*/
 	}
 
 	~Sandbox()

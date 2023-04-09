@@ -6,7 +6,7 @@
 
 namespace Hudi {
 
-	class PhysicsSystem : public ECS::System
+	/*class PhysicsSystem : public ECS::System
 	{
 	public:
 		PhysicsSystem();
@@ -15,7 +15,7 @@ namespace Hudi {
 
 	private:
 		CollisionDetector m_CollisionDetector;
-	};
+	};*/
 
 
 }

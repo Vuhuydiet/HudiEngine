@@ -1,6 +1,5 @@
 #pragma once
 #include "hdpch.h"
-// For use by Hudi applications
 
 #include "Hudi/Core/Core.h"
 

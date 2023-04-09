@@ -38,7 +38,7 @@ namespace Hudi {
 		}
 		m_SpriteRenderer->SetSourceRect(m_FrameSize.x * m_CurrentFrame, 0, m_FrameSize.x, m_FrameSize.y);
 
-		m_TimePassed += Time::deltaTime() * speed;
+		m_TimePassed += 0; // Time::deltaTime()* speed;
 	}
 
 	void Animation::GetSpriteRenderer()

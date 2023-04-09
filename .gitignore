@@ -11,6 +11,7 @@ bin-int/
 **.vcxproj.user
 
 **.ini
+**.json
 
 # assets
 Sandbox/assets/

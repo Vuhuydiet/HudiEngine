@@ -5,37 +5,37 @@
 namespace Hudi {
 
 
-	class HUDI_API Time
-	{
-	public:
+	//class HUDI_API Time
+	//{
+	//public:
 
-		static void Delay(float duration);
+	//	static void Delay(float duration);
 
-		static uint32_t FPS();
-		static float deltaTime();
+	//	static uint32_t FPS();
+	//	static float deltaTime();
 
-		static void SetFPS(uint32_t fps);
+	//	static void SetFPS(uint32_t fps);
 
-	private:
-		static uint32_t s_FPS;
-		static float s_dt; // unit: s
-	};
+	//private:
+	//	static uint32_t s_FPS;
+	//	static float s_dt; // unit: s
+	//};
 
 
-	class HUDI_API Timer
-	{
-	public:
-		Timer();
-		Timer(float duration);
+	//class HUDI_API Timer
+	//{
+	//public:
+	//	Timer();
+	//	Timer(float duration);
 
-		~Timer();
+	//	~Timer();
 
-		void Reset();
-		uint32_t Elapsed();
+	//	void Reset();
+	//	uint32_t Elapsed();
 
-	private:
-		uint32_t m_Start; // unit: ms
-		uint32_t m_Duration;
-	};
+	//private:
+	//	uint32_t m_Start; // unit: ms
+	//	uint32_t m_Duration;
+	//};
 
 }

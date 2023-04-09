@@ -32,4 +32,7 @@
     <ClCompile Include="src\EditorLayer.cpp" />
     <ClCompile Include="src\Sandbox2D.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\shaders\Texture2D.glsl" />
+  </ItemGroup>
 </Project>

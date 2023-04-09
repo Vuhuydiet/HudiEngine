@@ -15,14 +15,12 @@ namespace Hudi {
 	void LayerStack::PushLayer(Layer* layer)
 	{
 		m_Layers.emplace(m_Layers.begin() + m_InsertedIndex, layer);
-		layer->OnAttach();
 		m_InsertedIndex++;
 	}
 
 	void LayerStack::PushOverlay(Layer* overlay)
 	{
 		m_Layers.emplace_back(overlay);
-		overlay->OnAttach();
 	}
 
 	void LayerStack::PopLayer(Layer* layer)

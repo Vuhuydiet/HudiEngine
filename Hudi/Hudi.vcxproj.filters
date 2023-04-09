@@ -16,6 +16,9 @@
     <Filter Include="src\Hudi\Core">
       <UniqueIdentifier>{5E8913F9-CA49-8F2F-9384-D8ACFF03D40B}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Hudi\Debug">
+      <UniqueIdentifier>{3C10911B-28DE-8421-1172-F547FDDE6086}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Hudi\Events">
       <UniqueIdentifier>{6A6A3D91-D6F5-AA55-DF06-2E4A4B110756}</UniqueIdentifier>
     </Filter>
@@ -129,6 +132,9 @@
     <ClInclude Include="src\Hudi\Core\Window.h">
       <Filter>src\Hudi\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Hudi\Debug\Instrumentor.h">
+      <Filter>src\Hudi\Debug</Filter>
+    </ClInclude>
     <ClInclude Include="src\Hudi\Events\Event.h">
       <Filter>src\Hudi\Events</Filter>
     </ClInclude>
@@ -165,6 +171,9 @@
     <ClInclude Include="src\Hudi\Renderer\OrthographicCamera.h">
       <Filter>src\Hudi\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Hudi\Renderer\OrthographicCameraController.h">
+      <Filter>src\Hudi\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Hudi\Renderer\RenderCommand.h">
       <Filter>src\Hudi\Renderer</Filter>
     </ClInclude>
@@ -172,6 +181,9 @@
       <Filter>src\Hudi\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Hudi\Renderer\Renderer.h">
+      <Filter>src\Hudi\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Renderer\Renderer2D.h">
       <Filter>src\Hudi\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Hudi\Renderer\RendererAPI.h">
@@ -1467,8 +1479,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hudi\Renderer\OrthographicCameraController.h" />
-    <ClInclude Include="src\Hudi\Renderer\Renderer2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Hudi\Components\AnimatorComponent\AnimationComponent.cpp">
@@ -1519,6 +1529,9 @@
     <ClCompile Include="src\Hudi\Renderer\OrthographicCamera.cpp">
       <Filter>src\Hudi\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Hudi\Renderer\OrthographicCameraController.cpp">
+      <Filter>src\Hudi\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Hudi\Renderer\RenderCommand.cpp">
       <Filter>src\Hudi\Renderer</Filter>
     </ClCompile>
@@ -1526,6 +1539,9 @@
       <Filter>src\Hudi\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Hudi\Renderer\Renderer.cpp">
+      <Filter>src\Hudi\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Renderer\Renderer2D.cpp">
       <Filter>src\Hudi\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Hudi\Renderer\RendererAPI.cpp">
@@ -1582,7 +1598,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Hudi\Renderer\OrthographicCameraController.cpp" />
-    <ClCompile Include="src\Hudi\Renderer\Renderer2D.cpp" />
   </ItemGroup>
 </Project>

@@ -170,6 +170,10 @@ namespace Hudi {
 		UploadUniform(name, value);
 	}
 
+	void OpenGLShader::SetUniform(const std::string& name, int* values, size_t size)
+	{
+		UploadUniform(name, values, size);
+	}
 
 	void OpenGLShader::SetUniform(const std::string& name, const glm::vec3& value)
 	{
@@ -186,14 +190,13 @@ namespace Hudi {
 		UploadUniform(name, value);
 	}
 
-	uint32_t OpenGLShader::GetLocation(const std::string& type, const std::string& name)
+	inline uint32_t OpenGLShader::GetLocation(const std::string& type, const std::string& name)
 	{
-		glUseProgram(m_RendererID);
 		int location = glGetUniformLocation(m_RendererID, name.c_str());
 
 		if (location < 0)
 		{
-			HD_CORE_ERROR("No such '{0}' uniform named '{1}', misspelled or was not be used?", type, name);
+			HD_CORE_ERROR("No such '{0}' uniform named '{1}' in shader '{2}', misspelled or was not be used?", type, name, m_Name);
 		}
 		return location;
 	}
@@ -201,56 +204,48 @@ namespace Hudi {
 	void OpenGLShader::UploadUniform(const std::string& name, int value)
 	{
 		int location = GetLocation("int", name);
-
-		glUseProgram(m_RendererID);
 		glUniform1i(location, value);
+	}
+
+	void OpenGLShader::UploadUniform(const std::string& name, int* values, size_t count)
+	{
+		int location = GetLocation("int array", name);
+		glUniform1iv(location, (uint32_t)count, values);
 	}
 
 	void OpenGLShader::UploadUniform(const std::string& name, float value)
 	{
 		int location = GetLocation("float", name);
-
-		glUseProgram(m_RendererID);
 		glUniform1f(location, value);
 	}
 
 	void OpenGLShader::UploadUniform(const std::string& name, const glm::vec2& value)
 	{
 		int location = GetLocation("vec2", name);
-
-		glUseProgram(m_RendererID);
 		glUniform2f(location, value.x, value.y);
 	}
 
 	void OpenGLShader::UploadUniform(const std::string& name, const glm::vec3& value)
 	{
 		int location = GetLocation("vec3", name);
-
-		glUseProgram(m_RendererID);
 		glUniform3f(location, value.x, value.y, value.z);
 	}
 
 	void OpenGLShader::UploadUniform(const std::string& name, const glm::vec4& value)
 	{
 		int location = GetLocation("vec4", name);
-
-		glUseProgram(m_RendererID);
 		glUniform4f(location, value.x, value.y, value.z, value.w);
 	}
 
 	void OpenGLShader::UploadUniform(const std::string& name, const glm::mat3& value)
 	{
 		int location = GetLocation("mat3", name);
-
-		glUseProgram(m_RendererID);
 		glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(value));
 	}
 
 	void OpenGLShader::UploadUniform(const std::string& name, const glm::mat4& value)
 	{
 		int location = GetLocation("mat4", name);
-
-		glUseProgram(m_RendererID);
 		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
 	}
 

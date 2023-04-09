@@ -33,9 +33,8 @@ namespace Hudi {
 		///--------------------------------------------------------------///
 		////////////////////////////////////////////////////////////////////
 
-		m_ImGuiLayer = new ImGuiLayer;
-		m_LayerStack.PushOverlay(m_ImGuiLayer);
-
+		m_ImGuiLayer = new ImGuiLayer();
+		PushOverlay(m_ImGuiLayer);
 	}
 
 	void Application::Init()
@@ -49,9 +48,8 @@ namespace Hudi {
 
 	void Application::Shutdown()
 	{
-		// Destroy ECS
 		ECS::Destroy_Everything();
-		HD_CORE_INFO("Destroyed ECS in Application.cpp!");
+		Renderer::Shutdown();
 	}
 
 	void Application::OnEvent(Event& e)
@@ -102,11 +100,13 @@ namespace Hudi {
 	void Application::PushLayer(Layer* layer)
 	{
 		m_LayerStack.PushLayer(layer);
+		layer->OnAttach();
 	}
 
 	void Application::PushOverlay(Layer* overlay)
 	{
 		m_LayerStack.PushOverlay(overlay);
+		overlay->OnAttach();
 	}
 
 	void Application::OnQuitEvent(Event& e)

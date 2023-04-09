@@ -1,4 +1,3 @@
-#include "hdpch.h"
 #include "Sandbox2D.h"
 
 #include <glm/glm.hpp>
@@ -19,6 +18,7 @@ namespace Hudi {
 
 	void Sandbox2D::OnAttach()
 	{
+		m_Texture = Texture2D::Create("assets/textures/hz.png");
 	}
 
 	void Sandbox2D::OnDetach()
@@ -32,24 +32,54 @@ namespace Hudi {
 
 	void Sandbox2D::OnUpdate(float dt)
 	{
+		HD_PROFILE_FUNCTION();
+		frametime = dt;
+
 		m_CameraController.OnUpdate(dt);
 
-		RenderCommand::SetClearColor({ 0.8f, 0.2f, 0.3f, 1.0f });
+		Quad checkerboard;
+		checkerboard.position = { 0.0f, 0.0f, -0.2f };
+		checkerboard.size = { 10.0f, 10.0f };
+		checkerboard.texture = m_Texture;
+		checkerboard.tilingFactor = 10.0f;
+
+		RenderCommand::SetClearColor({ 0.5f, 0.2f, 0.3f, 1.0f });
 		RenderCommand::Clear();
 
 		Renderer2D::BeginScene(m_CameraController.GetCamera());
 		{
-			Renderer2D::DrawQuad({ 0.1f, 0.2f, 0.0f }, { 0.3f, 0.9f }, m_Color);
-			Renderer2D::DrawQuad({ 0.8f, 0.8f, 0.0f }, { 0.7f, 0.4f }, m_Color);
+			Renderer2D::DrawQuad({ 0.1f, 0.2f, 0.0f }, { 0.3f, 0.9f }, { 0.0f, 0.0f, 0.0f, 1.0f });
+			Renderer2D::DrawQuad({ m_Color.x, m_Color.y, 0.0f }, { 0.7f, 0.4f }, m_Color);
+
+			Renderer2D::DrawQuad(checkerboard);
+
+			for (float x = -5.0f; x <= 5.0f; x += 0.1f)
+			{
+				for (float y = -5.0f; y <= 5.0f; y += 0.1f)
+				{
+					Quad quad;
+					quad.position = { x, y, 0.2f };
+					quad.color = { (x + 5.0f) / 10.0f, (y + 5.0f) / 10.0f, 0.4f, 1.0f };
+					quad.size = { 0.09f, 0.09f };
+					Renderer2D::DrawQuad(quad);
+				}
+			}
 
 			Renderer2D::EndScene();
 		}
+
 	}
 
 	void Sandbox2D::OnImGuiRender()
 	{
+		HD_PROFILE_FUNCTION();
+
 		ImGui::Begin("Color settings");
+		
 		ImGui::ColorEdit4("Color", glm::value_ptr(m_Color));
+
+		ImGui::Text("Frame time: %fms, FPS: %f", frametime * 1000.0f, 1.0f / frametime);
+
 		ImGui::End();
 	}
 

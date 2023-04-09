@@ -19,11 +19,13 @@ namespace Hudi {
 		virtual void Unbind() const override;
 
 		virtual void SetUniform(const std::string& name, int value) override;
+		virtual void SetUniform(const std::string& name, int* values, size_t count) override;
 		virtual void SetUniform(const std::string& name, const glm::vec3& value) override;
 		virtual void SetUniform(const std::string& name, const glm::vec4& value) override;
 		virtual void SetUniform(const std::string& name, const glm::mat4& value) override;
 
 		void UploadUniform(const std::string& name, int value);
+		void UploadUniform(const std::string& name, int* values, size_t count);
 		void UploadUniform(const std::string& name, float value);
 		void UploadUniform(const std::string& name, const glm::vec2& value);
 		void UploadUniform(const std::string& name, const glm::vec3& value);

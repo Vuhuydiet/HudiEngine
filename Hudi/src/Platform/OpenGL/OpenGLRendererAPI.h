@@ -14,6 +14,7 @@ namespace Hudi {
 		virtual void Clear() override;
 
 		virtual void DrawIndexed(Ref<VertexArray> vertexArray) override;
+		virtual void DrawIndexed(Ref<VertexArray> vertexArray, size_t count) override;
 
 	};
 

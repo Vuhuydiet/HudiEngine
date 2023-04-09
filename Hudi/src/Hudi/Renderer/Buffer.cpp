@@ -8,6 +8,21 @@
 
 namespace Hudi {
 
+	Ref<VertexBuffer> VertexBuffer::Create(size_t size)
+	{
+		switch (Renderer::GetAPI())
+		{
+		case RendererAPI::API::None:
+			HD_CORE_ASSERT(true, "RendererAPI \"None\" is not supported!");
+			return nullptr;
+		case RendererAPI::API::OpenGL:
+			return NewRef<OpenGLVertexBuffer>(size);
+		}
+
+		HD_CORE_ASSERT(true, "Unknown renderer API!");
+		return nullptr;
+	}
+
 	Ref<VertexBuffer> VertexBuffer::Create(float* vertices, size_t size)
 	{
 		switch (Renderer::GetAPI())

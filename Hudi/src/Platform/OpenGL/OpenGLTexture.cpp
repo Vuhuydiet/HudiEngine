@@ -2,17 +2,28 @@
 #include "OpenGLTexture.h"
 
 #include <stb_image.h>
-
 #include <glad/glad.h>
-
-#define MODERN_OPENGL
 
 namespace Hudi {
 
-#ifdef MODERN_OPENGL
+	OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height)
+		: m_Width(width), m_Height(height)
+	{
+		m_InternalFormat = GL_RGBA8;
+		m_DataFormat = GL_RGBA;
+
+		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
+		glTextureStorage2D(m_RendererID, 1, m_InternalFormat, m_Width, m_Height);
+
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	}
 
 	OpenGLTexture2D::OpenGLTexture2D(const std::string& filePath)
-		:m_FilePath(filePath)
+		: m_FilePath(filePath)
 	{
 		stbi_set_flip_vertically_on_load(1);
 		int width, height, channels;
@@ -22,28 +33,31 @@ namespace Hudi {
 		m_Width = width;
 		m_Height = height;
 
-		GLenum internalFormat = 0;
-		GLenum dataFormat = 0;
+		m_InternalFormat = 0;
+		m_DataFormat = 0;
 		switch (channels)
 		{
 		case 3:
-			internalFormat = GL_RGB8;
-			dataFormat = GL_RGB;
+			m_InternalFormat = GL_RGB8;
+			m_DataFormat = GL_RGB;
 			break;
 		case 4:
-			internalFormat = GL_RGBA8;
-			dataFormat = GL_RGBA;
+			m_InternalFormat = GL_RGBA8;
+			m_DataFormat = GL_RGBA;
 			break;
 		}
-		HD_CORE_ASSERT(!internalFormat || !dataFormat, "Format not supported!");
+		HD_CORE_ASSERT(!m_InternalFormat || !m_DataFormat, "Format not supported!");
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
-		glTextureStorage2D(m_RendererID, 1, internalFormat , m_Width, m_Height);
+		glTextureStorage2D(m_RendererID, 1, m_InternalFormat, m_Width, m_Height);
 
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, data);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
 
 		stbi_image_free(data);
 	}
@@ -58,43 +72,15 @@ namespace Hudi {
 		glBindTextureUnit(slot, m_RendererID);
 	}
 
-#else
-
-	OpenGLTexture2D::OpenGLTexture2D(const std::string& filePath)
-		:m_FilePath(filePath)
+	void OpenGLTexture2D::SetData(void* data, size_t size)
 	{
-		int width, height, nrChannels;
-		stbi_set_flip_vertically_on_load(1);
-		unsigned char* data = stbi_load(filePath.c_str(), &width, &height, &nrChannels, 0);
-		HD_CORE_ASSERT(!data, "Failed to load image!");
-
-		m_Width = width;
-		m_Height = height;
-
-		glGenTextures(1, &m_RendererID);
-		glBindTexture(GL_TEXTURE_2D, m_RendererID);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-
-		stbi_image_free(data);
+		uint32_t bpp = m_DataFormat == GL_RGBA ? 4 : 3;
+		HD_CORE_ASSERT(size != m_Width * m_Height * bpp, "The data set to the texture must be the same size!");
+		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
 	}
 
-	OpenGLTexture2D::~OpenGLTexture2D()
+	bool OpenGLTexture2D::operator== (const Texture& other) const
 	{
-		glDeleteTextures(1, &m_RendererID);
+		return m_RendererID == ((OpenGLTexture2D&)other).m_RendererID;
 	}
-
-	void OpenGLTexture2D::Bind(uint32_t slot) const
-	{
-		glBindTexture(GL_TEXTURE_2D, m_RendererID);
-	}
-
-#endif
-
 }
