@@ -25,7 +25,7 @@ namespace Hudi {
 		virtual ~Window() = default;
 
 		virtual void OnEvent(Event& e) = 0;
-		virtual void OnUpdate() = 0;
+		virtual void OnUpdate(float dt) = 0;
 		virtual void SwapWindow() = 0;
 		virtual void Resize() = 0;
 		virtual bool IsMinimized() const = 0;

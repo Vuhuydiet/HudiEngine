@@ -13,7 +13,7 @@
     <ClInclude Include="src\ECS\ComponentManager.h">
       <Filter>ECS</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\Coordinator.h">
+    <ClInclude Include="src\ECS\World.h">
       <Filter>ECS</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\EntityManager.h">

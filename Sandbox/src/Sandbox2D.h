@@ -18,6 +18,7 @@ namespace Hudi {
 	private:
 		Ref<Texture2D> m_Texture;
 		glm::vec4 m_Color;
+		Ref<Framebuffer> m_Framebuffer;
 
 		OrthographicCameraController m_CameraController;
 		

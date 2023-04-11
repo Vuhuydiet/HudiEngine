@@ -28,7 +28,7 @@ namespace Hudi {
 		const char* m_NextAnimation = nullptr;
 		std::unordered_map<const char*, Ref<Condition>>& m_Parameters;
 	private:
-		friend struct Animator;
+		friend class Animator;
 	};
 
 

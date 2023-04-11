@@ -19,18 +19,22 @@ namespace Hudi {
 	{
 		if (Input::IsKeyDown(Key::A))
 		{
+			HD_CORE_INFO("A");
 			m_CameraPosition.x -= m_CameraTranslationSpeed * dt;
 		}
 		if (Input::IsKeyDown(Key::D))
 		{
+			HD_CORE_INFO("D");
 			m_CameraPosition.x += m_CameraTranslationSpeed * dt;;
 		}
 		if (Input::IsKeyDown(Key::W))
 		{
+			HD_CORE_INFO("W");
 			m_CameraPosition.y += m_CameraTranslationSpeed * dt;
 		}
 		if (Input::IsKeyDown(Key::S))
 		{
+			HD_CORE_INFO("S");
 			m_CameraPosition.y -= m_CameraTranslationSpeed * dt;;
 		}
 		m_Camera.SetPosition(m_CameraPosition);
@@ -39,10 +43,12 @@ namespace Hudi {
 		{
 			if (Input::IsKeyDown(Key::F))
 			{
+				HD_CORE_INFO("F");
 				m_CameraRotation += m_CameraRotationSpeed * dt;
 			}
 			if (Input::IsKeyDown(Key::G))
 			{
+				HD_CORE_INFO("G");
 				m_CameraRotation -= m_CameraRotationSpeed * dt;
 			}
 			m_Camera.SetRotation(m_CameraRotation);

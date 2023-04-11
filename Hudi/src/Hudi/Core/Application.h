@@ -27,7 +27,7 @@ namespace Hudi {
 		Window& GetWindow() { return *m_Window; }
 
 		bool IsRunning() const { return m_Running; }
-		void CloseApplication() { m_Running = false; }
+		void Close() { m_Running = false; }
 
 		static Application& Get() { return *s_Instance; }
 

@@ -43,7 +43,7 @@ namespace Hudi {
 
 	void Animation::GetSpriteRenderer()
 	{
-		m_SpriteRenderer = &GetComponent<SpriteRenderer>();
+		m_SpriteRenderer = GetComponentByRef<SpriteRenderer>();
 		m_SpriteRenderer->SetFile(filePath);
 	}
 

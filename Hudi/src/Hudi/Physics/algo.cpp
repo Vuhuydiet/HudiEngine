@@ -5,6 +5,7 @@
 
 namespace Hudi {
 
+#ifdef PHYSICS_ENGINE
 	namespace algo {
 
 		bool CheckBoxBox(Hudi::BoxCollider2D* ca, BoxCollider2D* cb)
@@ -75,6 +76,6 @@ namespace Hudi {
 
 		return false;
 	}
-	
+#endif
 
 }

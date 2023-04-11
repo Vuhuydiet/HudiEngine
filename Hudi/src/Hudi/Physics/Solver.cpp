@@ -3,6 +3,7 @@
 
 namespace Hudi {
 
+#ifdef PHYSICS_ENGINE
 	void Solver::Solve(
 		ECS::Entity entt_1, Vec3& ds_1,
 		ECS::Entity entt_2, Vec3& ds_2)
@@ -287,4 +288,6 @@ namespace Hudi {
 			}
 		}
 	}
+#endif
+
 }

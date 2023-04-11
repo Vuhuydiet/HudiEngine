@@ -1,11 +1,12 @@
 #pragma once
 
-#include <ECS.h>
+#include "Component.h"
 
 namespace Hudi {
 
-	struct SpriteRenderer : public ECS::Component
+	class SpriteRenderer : public Component
 	{
+	public:
 		SpriteRenderer()
 			: order(0)
 		{
@@ -33,8 +34,6 @@ namespace Hudi {
 		int m_SrcRect;
 		const char* m_FilePath = nullptr;
 
-	private:
-		friend class RenderSystem;
 	};
 
 }

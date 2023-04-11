@@ -6,7 +6,7 @@
 #include "Hudi/Components/BehaviourComponent.h"
 
 namespace Hudi {
-
+#ifdef PHYSICS_ENGINE
 	void CollisionDetector::Update(std::unordered_map<ECS::Entity, Vec3>& Entities_ds)
 	{
 		Solve(Entities_ds);
@@ -61,5 +61,6 @@ namespace Hudi {
 				std::static_pointer_cast<MonoBehaviour>(component)->OnCollisionEnter2D(Collision2D(entt_1, entt_2));
 		}
 	}
+#endif 
 
 }

@@ -7,7 +7,8 @@
 
 namespace Hudi {
 
-	GameObject::GameObject()
+	GameObject::GameObject(Ref<ECS::World> _world)
+		: world(_world)
 	{
 		CreateGameObject();
 		m_Parent = nullptr;
@@ -20,7 +21,7 @@ namespace Hudi {
 
 	void GameObject::CreateGameObject()
 	{
-		m_Entt = ECS::Coordinator::CreateEntity();
+		m_Entt = world->CreateEntity();
 		
 		AddComponent<Transform>();
 		AddComponent<SpriteRenderer>();
@@ -28,7 +29,7 @@ namespace Hudi {
 
 	void GameObject::DestroyGameObject()
 	{
-		ECS::Coordinator::DestroyEntity(m_Entt);
+		world->DestroyEntity(m_Entt);
 		m_Entt = 0;
 	}
 
@@ -40,6 +41,11 @@ namespace Hudi {
 	void GameObject::AddChild(Ref<GameObject> child)
 	{
 		m_Children.push_back(child);
+	}
+
+	void GameObject::RemoveParent()
+	{
+		m_Parent = nullptr;
 	}
 
 	void GameObject::RemoveChild(Ref<GameObject> child)
@@ -68,6 +74,17 @@ namespace Hudi {
 	std::vector<Ref<GameObject>>& GameObject::GetChildren()
 	{
 		return m_Children;
+	}
+
+	std::vector<Ref<Component>> GameObject::GetComponents()
+	{
+		std::vector<Ref<Component>> comps;
+		std::vector<Ref<ECS::Component>> ecsComps = world->GetComponents(m_Entt);
+		for (auto& comp : ecsComps)
+		{
+			comps.push_back(std::static_pointer_cast<Component>(comp));
+		}
+		return comps;
 	}
 
 }

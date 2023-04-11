@@ -18,6 +18,7 @@
 
 #include "Hudi/Renderer/VertexArray.h"
 #include "Hudi/Renderer/Buffer.h"
+#include "Hudi/Renderer/Framebuffer.h"
 #include "Hudi/Renderer/Shader.h"
 #include "Hudi/Renderer/Texture.h"
 

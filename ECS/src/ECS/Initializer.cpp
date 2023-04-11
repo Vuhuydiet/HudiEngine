@@ -1,11 +1,19 @@
 #include "ecspch.h"
 #include "Initializer.h"
 
+#include "EntityManager.h"
+#include "Component.h"
+#include "ComponentManager.h"
+#include "SystemManager.h"
+#include "World.h"
+
 namespace ECS {
 
-	std::unique_ptr<EntityManager> Coordinator::s_EntityManager = nullptr;
-	std::unique_ptr<ComponentManager> Coordinator::s_ComponentManager = nullptr;
-	std::unique_ptr<SystemManager> Coordinator::s_SystemManager = nullptr;
-	std::queue<Entity> Coordinator::s_DestroyedEntities;
+	void Init_Everything()
+	{
+	}
 
+	void Destroy_Everything()
+	{
+	}
 }

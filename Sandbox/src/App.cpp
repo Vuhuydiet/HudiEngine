@@ -137,7 +137,7 @@ public:
 		HD_WARN("Currently disable timer!");
 		//Hudi::Time::SetFPS(30);
 
-		PushLayer(new Hudi::EditorLayer());
+		//PushLayer(new Hudi::EditorLayer());
 		//PushLayer(new Hudi::ExampleLayer());
 		PushLayer(new Hudi::Sandbox2D());
 

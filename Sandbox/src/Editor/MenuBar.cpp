@@ -92,7 +92,7 @@ namespace Hudi {
         ImGui::SetNextWindowSize(viewport->WorkSize);
         ImGui::SetNextWindowViewport(viewport->ID);
 
-        ImGuiDockNodeFlags_ dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
+        ImGuiDockNodeFlags_ dockspace_flags = ImGuiDockNodeFlags_None; // ImGuiDockNodeFlags_PassthruCentralNode;
         ImGuiWindowFlags host_window_flags = ImGuiWindowFlags_None;
 
         host_window_flags |= ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoDocking;
@@ -121,7 +121,7 @@ namespace Hudi {
                 ImGui::Separator();
                 if (ImGui::MenuItem("Close", NULL, false, true))
                 {
-                    Application::Get().CloseApplication();
+                    Application::Get().Close();
                 }
 
                 ImGui::EndMenu();

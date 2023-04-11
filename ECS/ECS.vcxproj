@@ -137,7 +137,7 @@
     <ClInclude Include="src\ECS.h" />
     <ClInclude Include="src\ECS\Component.h" />
     <ClInclude Include="src\ECS\ComponentManager.h" />
-    <ClInclude Include="src\ECS\Coordinator.h" />
+    <ClInclude Include="src\ECS\World.h" />
     <ClInclude Include="src\ECS\EntityManager.h" />
     <ClInclude Include="src\ECS\Initializer.h" />
     <ClInclude Include="src\ECS\SystemManager.h" />

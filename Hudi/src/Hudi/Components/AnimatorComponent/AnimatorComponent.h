@@ -8,19 +8,15 @@
 
 namespace Hudi {
 
-	struct Animator : public ECS::Component
+	class Animator : public Component
 	{
 	public:
 		Animator();
 		void Init() override;
 		const char* ToString() const override { return "Animator"; }
 
-		const char* OrderOfUpdate() const override { return "last"; }
-		bool IsAwakable() const override { return true; }
-		bool IsUpdatable() const override { return true; }
-
-		void Awake() override;
-		void Update() override;
+		virtual void Awake() override;
+		virtual void Update() override;
 
 		void AddAnimation(const Animation& anim);
 

@@ -67,6 +67,7 @@ namespace Hudi {
 	public:
 		static void Init();
 		static void Clear();
+		static void Reset();
 
 		static void SetCallBackFn(std::function<void(Event&)> fn) { m_CallBackFn = fn; }
 		static void SetWindowFn(std::function<void(Event&)> fn) { m_WindowEventFn = fn; }

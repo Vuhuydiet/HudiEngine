@@ -1,37 +1,27 @@
 #pragma once
 #include "hdpch.h"
 
-#include <ECS.h>
+#include "Component.h"
 
-#include "Hudi/Source/Vec2.h"
 #include "Hudi/Source/Vec3.h"
-#include "Collider2DComponent.h"
 
 namespace Hudi {
 
-	struct Transform : public ECS::Component
+	class Transform : public Component
 	{
-		Transform() :
-			scale(1.0f, 1.0f, 1.0f),
-			localScale(1.0f, 1.0f, 1.0f)
-		{}
+	public:
+		Transform() 
+			: scale(1.0f, 1.0f, 1.0f),
+			localScale(1.0f, 1.0f, 1.0f) {}
 		const char* ToString() const override { return "Transform"; }
 
 		void Translate(float x, float y, float z) 
 		{
 			position += Vec3(x, y, z);
-			if (HasComponent<BoxCollider2D>())
-			{
-				GetComponent<BoxCollider2D>().Translate(x, y);
-			}
 		}
 		void Translate(Vec3 v) 
 		{
 			position += v;
-			if (HasComponent<BoxCollider2D>())
-			{
-				GetComponent<BoxCollider2D>().Translate(v);
-			}
 		}
 
 	public:
@@ -43,10 +33,6 @@ namespace Hudi {
 		Vec3 localRotation;
 		Vec3 localScale;
 
-	private:
-		Transform* m_Parent = this;
-		std::vector<Transform*> m_Childen;
-		friend class GameObject;
 	};
 
 }

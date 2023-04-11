@@ -5,6 +5,7 @@
 
 namespace Hudi {
 
+#ifdef PHYSICS_ENGINE
 	struct Collision2D
 	{
 		Collision2D(ECS::Entity _entt, ECS::Entity _otherEntt)
@@ -19,5 +20,6 @@ namespace Hudi {
 	private:
 		ECS::Entity entity, otherEntity;
 	};
+#endif
 
 }

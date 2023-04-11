@@ -14,7 +14,7 @@ namespace Hudi {
 		virtual ~WindowsWindow();
 
 		virtual void OnEvent(Event& e) override;
-		virtual void OnUpdate() override;
+		virtual void OnUpdate(float dt) override;
 		virtual void SwapWindow() override;
 		virtual void Resize() override;
 		virtual bool IsMinimized() const override;

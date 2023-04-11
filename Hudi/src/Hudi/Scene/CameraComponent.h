@@ -4,7 +4,7 @@
 
 namespace Hudi {
 
-	struct Camera : public ECS::Component
+	struct Camera : public Component
 	{
 		const char* ToString() const override { return "Camera"; }
 
@@ -13,7 +13,7 @@ namespace Hudi {
 		void Translate(Vec3 ds) {}
 		void Translate(int x, int y, int z) {}
 
-
+	public:
 		enum Type { Perspective, Orthographic };
 	public:
 		Type type = Orthographic;

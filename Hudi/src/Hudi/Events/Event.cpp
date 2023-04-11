@@ -19,7 +19,7 @@ namespace Hudi {
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////
-	///// Event Manager /////////////////////////////////////////////////////////////////
+	///// Event Manager /////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////
 
 	std::function<void(Event&)> EventManager::m_CallBackFn = nullptr;
@@ -51,8 +51,21 @@ namespace Hudi {
 		m_ButtonJustUp.clear();
 	}
 
+	void EventManager::Reset()
+	{
+		m_QuitEvent = false;
+		m_KeyJustDown.clear();
+		m_KeyJustUp.clear();
+		m_KeyDownEvent.clear();
+		m_ButtonJustDown.clear();
+		m_ButtonJustUp.clear();
+		m_MouseButtonDownEvent.clear();
+	}
+
 	void EventManager::OnUpdate()
 	{
+		//SDL_PumpEvents();
+
 		SDL_Event e;
 		while (SDL_PollEvent(&e))
 		{
@@ -70,30 +83,34 @@ namespace Hudi {
 				}
 				case KEY_DOWN:
 				{
-					if (KeyUp((KeyCode)e.key.keysym.sym))
-						m_KeyJustDown.insert((KeyCode)e.key.keysym.sym);
-					m_KeyDownEvent.insert((KeyCode)e.key.keysym.sym);
+					KeyCode code = e.key.keysym.sym;
+					if (KeyUp(code))
+						m_KeyJustDown.insert(code);
+					m_KeyDownEvent.insert(code);
 					break;
 				}
 				case KEY_UP:
 				{
-					if (KeyDown((KeyCode)e.key.keysym.sym))
-						m_KeyJustUp.insert((KeyCode)e.key.keysym.sym);
-					m_KeyDownEvent.erase((KeyCode)e.key.keysym.sym);
+					KeyCode code = e.key.keysym.sym;
+					if (KeyDown(code))
+						m_KeyJustUp.insert(code);
+					m_KeyDownEvent.erase(code);
 					break;
 				}
 				case MOUSE_BUTTON_DOWN:
 				{
-					if (MouseUp((MouseCode)e.button.button))
-						m_ButtonJustDown.insert((MouseCode)e.button.button);
-					m_MouseButtonDownEvent.insert((MouseCode)e.button.button);
+					MouseCode code = e.button.button;
+					if (MouseUp(code))
+						m_ButtonJustDown.insert(code);
+					m_MouseButtonDownEvent.insert(code);
 					break;
 				}
 				case MOUSE_BUTTON_UP:
 				{
-					if (MouseDown((MouseCode)e.button.button))
-						m_ButtonJustUp.insert((MouseCode)e.button.button);
-					m_MouseButtonDownEvent.erase((MouseCode)e.button.button);
+					MouseCode code = e.button.button;
+					if (MouseDown(code))
+						m_ButtonJustUp.insert(code);
+					m_MouseButtonDownEvent.erase(code);
 					break;
 				}
 				case MOUSE_MOTION:

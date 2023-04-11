@@ -5,10 +5,10 @@
 
 namespace Hudi {
 
-	Scene::Scene()
+	Scene::Scene(uint8_t index)
+		: m_BuildIndex(index)
 	{
-		static int index = 1;
-		m_BuildIndex = index++;
+		m_World = NewRef<ECS::World>();
 	}
 
 	void Scene::BeginScene()
@@ -29,7 +29,13 @@ namespace Hudi {
 		m_NameToEntity.clear();
 	}
 
-	GameObject& Scene::CreateGameObject(const std::string& _name)
+	void Scene::OnUpdate(float dt)
+	{
+		m_World->Each<Component>(&Component::Awake);
+		m_World->Each<Component>(&Component::Update);
+	}
+
+	Ref<GameObject> Scene::CreateGameObject(const std::string& _name)
 	{
 		std::string name = _name;
 
@@ -37,12 +43,12 @@ namespace Hudi {
 		if (m_NameToEntity.find(name) != m_NameToEntity.end())
 			name += std::to_string(ind++);
 		
-		Ref<GameObject> obj = NewRef<GameObject>();
-		uint32_t id = (ECS::Entity)*obj;
+		Ref<GameObject> obj = NewRef<GameObject>(m_World);
+		uint32_t id = obj->GetEntityID();
 		m_GameObjects[id] = obj;
 		m_EntityToName[id] = name;
 		m_NameToEntity[name] = id;
-		return *obj;
+		return obj;
 	}
 
 	bool Scene::HasGameObject(const std::string& _name)
@@ -55,31 +61,7 @@ namespace Hudi {
 		return m_EntityToName.find(id) != m_EntityToName.end();
 	}
 
-	GameObject& Scene::GetGameObject(const std::string& _name)
-	{
-		if (m_NameToEntity.find(_name) == m_NameToEntity.end())
-		{
-			HD_CORE_ERROR("Game Object named \"{0}\" does not exist!", _name);
-			static GameObject error;
-			return error;
-		}
-
-		return *m_GameObjects[m_NameToEntity[_name]];
-	}
-
-	GameObject& Scene::GetGameObject(uint32_t id)
-	{
-		if (m_EntityToName.find(id) == m_EntityToName.end())
-		{
-			HD_CORE_ERROR("Game Object with ID \"{0}\" does not exist!", id);
-			static GameObject error;
-			return error;
-		}
-
-		return *m_GameObjects[id];
-	}
-
-	Ref<GameObject> Scene::GetGameObjectByRef(const std::string& _name)
+	Ref<GameObject> Scene::GetGameObject(const std::string& _name)
 	{
 		if (m_NameToEntity.find(_name) == m_NameToEntity.end())
 		{
@@ -87,15 +69,14 @@ namespace Hudi {
 			return nullptr;
 		}
 
-		uint32_t id = m_NameToEntity[_name];
-		return m_GameObjects[id];
+		return m_GameObjects[m_NameToEntity[_name]];
 	}
 
-	Ref<GameObject> Scene::GetGameObjectByRef(uint32_t id)
+	Ref<GameObject> Scene::GetGameObject(uint32_t id)
 	{
 		if (m_EntityToName.find(id) == m_EntityToName.end())
 		{
-			HD_CORE_ERROR("GameObject witd ID \"{0}\" does not exist!", id);
+			HD_CORE_ERROR("Game Object with ID \"{0}\" does not exist!", id);
 			return nullptr;
 		}
 
@@ -177,25 +158,24 @@ namespace Hudi {
 		m_NameToEntity[_name] = id;
 	}
 
-	void Scene::SetActiveCamera(GameObject& cam)
+	void Scene::SetActiveCamera(Ref<GameObject> cam)
 	{
-		if (!cam.HasComponent<Camera>())
+		if (!cam->HasComponent<Camera>())
 		{
 			HD_CORE_ERROR("Set the object that is not a camera gameobject to be the camera object.");
 			return;
 		}
-		m_ActiveCamera = &cam;
+		m_ActiveCamera = cam;
 	}
 
-	const GameObject& Scene::GetActiveCamera()
+	const Ref<GameObject> Scene::GetActiveCamera()
 	{
 		if (!m_ActiveCamera)
 		{
 			HD_CORE_ERROR("No active camera!");
-			static GameObject cam;
-			return cam;
+			return nullptr;
 		}
-		return *m_ActiveCamera;
+		return m_ActiveCamera;
 	}
 
 }

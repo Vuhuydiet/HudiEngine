@@ -67,10 +67,17 @@ namespace Hudi {
 		}
 	}
 
-	void WindowsWindow::OnUpdate()
+	void WindowsWindow::OnUpdate(float dt)
 	{
 		EventManager::Clear();
 		EventManager::OnUpdate();
+
+		// TODO: currently defining the window is freezing when dt > 0.5f seconds
+		// Find another way in the future
+		if (dt > 0.5f)
+		{
+			EventManager::Reset();
+		}
 
 		SDL_GetWindowPosition(m_Window, &m_Properties.xpos, &m_Properties.ypos);
 	}

@@ -11,6 +11,7 @@
 
 namespace Hudi {
 
+#ifdef PHYSICS_ENGINE
 	class CollisionDetector
 	{
 	public:
@@ -20,5 +21,6 @@ namespace Hudi {
 		
 		void CallOnCollisionEnter2D(ECS::Entity entt_1, ECS::Entity entt_2);
 	};
+#endif
 
 }

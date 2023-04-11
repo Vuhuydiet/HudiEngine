@@ -11,6 +11,7 @@
 
 namespace Hudi {
 
+#ifdef PHYSICS_ENGINE
 	class Solver 
 	{
 	public:
@@ -32,4 +33,6 @@ namespace Hudi {
 			ECS::Entity entt_2, Vec3& ds_2
 		);
 	};
+#endif
+
 }

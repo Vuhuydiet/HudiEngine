@@ -9,23 +9,23 @@ namespace Hudi {
 	class Scene
 	{
 	public:
-		Scene();
+		Scene(uint8_t index);
 
 		void BeginScene();
 		void EndScene();
 
 		uint8_t GetBuildIndex() { return m_BuildIndex; }
 
+		void OnUpdate(float dt);
+
 		// GameObject relevant
-		GameObject& CreateGameObject(const std::string& _name);
+		Ref<GameObject> CreateGameObject(const std::string& _name);
 
 		bool HasGameObject(const std::string& _name);
 		bool HasGameObject(uint32_t id);
 
-		GameObject& GetGameObject(const std::string& _name);
-		GameObject& GetGameObject(uint32_t id);
-		Ref<GameObject> GetGameObjectByRef(const std::string& _name);
-		Ref<GameObject> GetGameObjectByRef(uint32_t id);
+		Ref<GameObject> GetGameObject(const std::string& _name);
+		Ref<GameObject> GetGameObject(uint32_t id);
 
 		void DestroyGameObject(const std::string& _name);
 		void DestroyGameObject(uint32_t id);
@@ -33,8 +33,8 @@ namespace Hudi {
 		std::string GetGameObjectName(uint32_t id);
 		void RenameGameObject(const std::string& _name, uint32_t id);
 
-		void SetActiveCamera(GameObject& go);
-		const GameObject& GetActiveCamera();
+		void SetActiveCamera(Ref<GameObject> cam);
+		const Ref<GameObject> GetActiveCamera();
 
 		// Looop through all GameObjects
 		template <typename Func>
@@ -50,7 +50,10 @@ namespace Hudi {
 		std::map<uint32_t, std::string> m_EntityToName;
 		std::unordered_map<std::string, uint32_t> m_NameToEntity;
 
-		GameObject* m_ActiveCamera = nullptr;
+		Ref<GameObject> m_ActiveCamera = nullptr;
+
+	private:
+		Ref<ECS::World> m_World;
 	};
 
 

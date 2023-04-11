@@ -17,7 +17,7 @@ namespace Hudi {
 			Ref<GameObject> obj = MenuBar::Get().GetSelectedObject();
 			if (obj)
 			{
-				std::vector<Ref<ECS::Component>> components = obj->GetComponents();
+				std::vector<Ref<Component>> components = obj->GetComponents();
 				for (auto& comp : components)
 				{
 					if (comp->Is<Transform>())

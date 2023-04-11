@@ -7,8 +7,6 @@
 
 #include "Hudi/ImGui/ImGuiLayer.h"
 
-#include <ECS.h>
-
 namespace Hudi {
 
 	Application* Application::s_Instance = nullptr;
@@ -20,9 +18,6 @@ namespace Hudi {
 	{
 		HD_CORE_ASSERT(s_Instance, "Already has an application!");
 		s_Instance = this;
-
-		// Init ECS
-		ECS::Init_Everything();
 
 		m_Window = Scope<Window>(Window::Create(WindowProperties()));
 		EventManager::SetCallBackFn(HD_BIND_EVENT_FN(Application::OnEvent));
@@ -48,7 +43,6 @@ namespace Hudi {
 
 	void Application::Shutdown()
 	{
-		ECS::Destroy_Everything();
 		Renderer::Shutdown();
 	}
 
@@ -70,11 +64,11 @@ namespace Hudi {
 	{
 		while (IsRunning())
 		{
-			m_Window->OnUpdate();
-
 			float currentTime = m_Clock.GetSeconds();
 			float dt = currentTime - m_LastFrameTime;
 			m_LastFrameTime = currentTime;
+
+			m_Window->OnUpdate(dt);
 
 			if (!m_Window->IsMinimized()) {
 				for (auto it = m_LayerStack.begin(); it != m_LayerStack.end(); it++)
@@ -111,7 +105,7 @@ namespace Hudi {
 
 	void Application::OnQuitEvent(Event& e)
 	{
-		CloseApplication();
+		Close();
 	}
 
 	void Application::OnWindowEvent(Event& e)

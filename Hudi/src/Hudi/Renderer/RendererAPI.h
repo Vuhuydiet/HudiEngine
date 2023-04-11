@@ -13,6 +13,7 @@ namespace Hudi {
 	public:
 		enum class API { None, OpenGL };
 	public:
+		virtual ~RendererAPI() = default;
 		virtual void Init() = 0;
 		virtual void SetViewport(int x, int y, uint32_t width, uint32_t height) = 0;
 

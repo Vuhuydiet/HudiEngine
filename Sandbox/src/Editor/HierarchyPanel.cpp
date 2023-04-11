@@ -17,9 +17,9 @@ namespace Hudi {
 			ImGui::Begin("Hierarchy", &hierarchy);
 
 			auto& scene = SceneManager::Get().GetActiveScene();
-			scene.each([&](uint32_t id) {
-				std::string& name = scene.GetGameObjectName(id);
-				Ref<GameObject> gameObject = scene.GetGameObjectByRef(id);
+			scene->each([&](uint32_t id) {
+				std::string& name = scene->GetGameObjectName(id);
+				Ref<GameObject> gameObject = scene->GetGameObject(id);
 				if (!gameObject->GetParent())
 				{
 					DrawGameObjectNode(name, gameObject);
@@ -28,7 +28,7 @@ namespace Hudi {
 
 			for (auto id : m_OnDelete)
 			{
-				scene.DestroyGameObject(id);
+				scene->DestroyGameObject(id);
 			}
 
 			if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
@@ -39,11 +39,10 @@ namespace Hudi {
 			if (!m_OnGameObjectClick && ImGui::BeginPopupContextWindow(0, 1))
 			{
 				if (ImGui::MenuItem("Create new GameObject"))
-					scene.CreateGameObject("New GameObject");
+					scene->CreateGameObject("New GameObject");
 
 				ImGui::EndPopup();
 			}
-
 			// End hierarchy
 			ImGui::End();
 
@@ -83,7 +82,7 @@ namespace Hudi {
 			{
 				MenuBar::Get().SetSelectedObject(nullptr);
 			}
-			m_OnDelete.push_back((ECS::Entity)*gameObject);
+			m_OnDelete.push_back(gameObject->GetEntityID());
 		}
 
 		if (opened)
@@ -92,7 +91,7 @@ namespace Hudi {
 			{
 				for (auto& child : gameObject->GetChildren())
 				{
-					std::string& child_name = scene.GetGameObjectName((ECS::Entity)*child);
+					std::string& child_name = scene->GetGameObjectName(child->GetEntityID());
 					DrawGameObjectNode(child_name, child);
 				}
 			}

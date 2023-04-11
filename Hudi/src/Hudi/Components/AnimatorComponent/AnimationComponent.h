@@ -1,14 +1,14 @@
 #pragma once
 #include "hdpch.h"
 
+#include "../Component.h"
+
 #include "Hudi/Components/SpriteRendererComponent.h"
 #include "Hudi/Source/Time.h"
 
-#include <ECS.h>
-
 namespace Hudi {
 
-	struct Animation : public ECS::Component
+	class Animation : public Component
 	{
 	public:
 		Animation() {}
@@ -43,8 +43,8 @@ namespace Hudi {
 		std::vector<std::function<void(void)>> m_AnimationEvents;
 
 	private:
-		SpriteRenderer* m_SpriteRenderer = nullptr;
-		friend struct Animator;
+		Ref<SpriteRenderer> m_SpriteRenderer = nullptr;
+		friend class Animator;
 	};
 
 }

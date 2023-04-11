@@ -162,6 +162,7 @@
     <ClInclude Include="src\Hudi\Components\AnimatorComponent\Transition.h" />
     <ClInclude Include="src\Hudi\Components\BehaviourComponent.h" />
     <ClInclude Include="src\Hudi\Components\Collider2DComponent.h" />
+    <ClInclude Include="src\Hudi\Components\Component.h" />
     <ClInclude Include="src\Hudi\Components\RigidBody2DComponent.h" />
     <ClInclude Include="src\Hudi\Components\SpriteRendererComponent.h" />
     <ClInclude Include="src\Hudi\Components\TransformComponent.h" />
@@ -185,6 +186,7 @@
     <ClInclude Include="src\Hudi\Physics\PhysicsSystem.h" />
     <ClInclude Include="src\Hudi\Physics\Solver.h" />
     <ClInclude Include="src\Hudi\Renderer\Buffer.h" />
+    <ClInclude Include="src\Hudi\Renderer\Framebuffer.h" />
     <ClInclude Include="src\Hudi\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Hudi\Renderer\OrthographicCamera.h" />
     <ClInclude Include="src\Hudi\Renderer\OrthographicCameraController.h" />
@@ -208,6 +210,7 @@
     <ClInclude Include="src\HudiEngine.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLTexture.h" />
@@ -640,6 +643,7 @@
     <ClCompile Include="src\Hudi\Physics\Solver.cpp" />
     <ClCompile Include="src\Hudi\Physics\algo.cpp" />
     <ClCompile Include="src\Hudi\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Hudi\Renderer\Framebuffer.cpp" />
     <ClCompile Include="src\Hudi\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="src\Hudi\Renderer\OrthographicCameraController.cpp" />
     <ClCompile Include="src\Hudi\Renderer\RenderCommand.cpp" />
@@ -656,6 +660,7 @@
     <ClCompile Include="src\Hudi\Source\Time.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLFramebuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLTexture.cpp" />

@@ -1,11 +1,14 @@
 #pragma once
 #include "hdpch.h"
-#include <ECS.h>
+
+#include "Component.h"
 
 namespace Hudi {
 
-	struct Collider : public ECS::Component
+#ifdef COLLIDER
+	class Collider : public Component
 	{
+	public:
 		virtual ~Collider() = default;
 		virtual const char* ToString() const override { return "Collider"; }
 
@@ -22,8 +25,9 @@ namespace Hudi {
 		static std::unordered_set<const char*> s_AvailableTags;
 	};
 
-	struct BoxCollider2D : public Collider
+	class BoxCollider2D : public Collider
 	{
+	public:
 		const char* ToString() const override { return "BoxCollider"; }
 
 		void Translate(float x, float y) override
@@ -39,7 +43,7 @@ namespace Hudi {
 
 		bool TestCollision(Collider* cb) override;
 
-	public:
+	
 		bool isDrawn = false;
 
 		Vec3 minPoint;
@@ -48,8 +52,9 @@ namespace Hudi {
 	public:
 	};
 
-	struct CircleCollider2D : public Collider
+	class CircleCollider2D : public Collider
 	{
+	public:
 		const char* ToString() const override { return "CircleCollider"; }
 
 		void Translate(float x, float y) override
@@ -67,5 +72,6 @@ namespace Hudi {
 		Vec3 center;
 		int radius;
 	};
+#endif
 
 }
