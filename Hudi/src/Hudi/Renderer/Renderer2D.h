@@ -17,7 +17,8 @@ namespace Hudi {
 
 	struct Quad
 	{
-		glm::vec3 position;
+		//glm::vec3 position;
+		glm::mat4 transform;
 		glm::vec2 size;
 		float angle;
 		Ref<Texture2D> texture;
@@ -25,7 +26,7 @@ namespace Hudi {
 		float tilingFactor;
 
 		Quad()
-			: position(glm::vec3(0.0f)), size(glm::vec2(1.0f)), angle(0.0f), texture(nullptr), color(glm::vec4(1.0f)), tilingFactor(1.0f) {}
+			: transform(1.0f), size(1.0f), angle(0.0f), texture(nullptr), color(1.0f), tilingFactor(1.0f) {}
 	};
 
 	class Renderer2D
@@ -35,6 +36,7 @@ namespace Hudi {
 		static void Shutdown();
 
 		static void BeginScene(OrthographicCamera& camera);
+		static void BeginScene(const glm::mat4& cameraProjection, const glm::mat4& cameraTransform);
 		static void EndScene();
 		
 		static void Flush();

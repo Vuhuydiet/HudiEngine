@@ -2,7 +2,9 @@
 #include "hdpch.h"
 
 #include "GameObject.h"
-#include "CameraComponent.h"
+#include "RenderSystem/RenderSystem.h"
+
+#include <glm/glm.hpp>
 
 namespace Hudi {
 
@@ -10,22 +12,27 @@ namespace Hudi {
 	{
 	public:
 		Scene(uint8_t index);
+		~Scene();
+		uint8_t GetBuildIndex() { return m_BuildIndex; }
 
 		void BeginScene();
 		void EndScene();
 
-		uint8_t GetBuildIndex() { return m_BuildIndex; }
-
 		void OnUpdate(float dt);
+		void Flush();
+		
+		void OnViewportResize(int width, int height);
+		glm::vec2 GetViewportSize() const { return { m_Width, m_Height }; }
 
 		// GameObject relevant
-		Ref<GameObject> CreateGameObject(const std::string& _name);
+		GameObject CreateEmptyObject(const std::string& _name);
+		GameObject CreateGameObject(const std::string& _name);
 
 		bool HasGameObject(const std::string& _name);
 		bool HasGameObject(uint32_t id);
 
-		Ref<GameObject> GetGameObject(const std::string& _name);
-		Ref<GameObject> GetGameObject(uint32_t id);
+		GameObject GetGameObject(const std::string& _name);
+		GameObject GetGameObject(uint32_t id);
 
 		void DestroyGameObject(const std::string& _name);
 		void DestroyGameObject(uint32_t id);
@@ -33,37 +40,37 @@ namespace Hudi {
 		std::string GetGameObjectName(uint32_t id);
 		void RenameGameObject(const std::string& _name, uint32_t id);
 
-		void SetActiveCamera(Ref<GameObject> cam);
-		const Ref<GameObject> GetActiveCamera();
-
-		// Looop through all GameObjects
+		// Loop through all GameObjects
 		template <typename Func>
-		void each(Func&& func);
+		void Each(Func&& func);
 	private:
 		uint8_t m_BuildIndex = 0;
+		int m_Width = 0;
+		int m_Height = 0;
 		
-		/*std::unordered_map<std::string, Ref<GameObject>> m_GameObjectRefs;
-		std::unordered_map<Ref<GameObject>, std::string> m_GameObjectNames;*/
-
-		std::unordered_map<uint32_t, Ref<GameObject>> m_GameObjects;
+	private:
+		std::unordered_map<uint32_t, GameObject> m_GameObjects;
 		
 		std::map<uint32_t, std::string> m_EntityToName;
-		std::unordered_map<std::string, uint32_t> m_NameToEntity;
+		std::unordered_map<const char*, uint32_t> m_NameToEntity;
 
-		Ref<GameObject> m_ActiveCamera = nullptr;
+		std::queue<uint32_t> m_DestroyedObjects = {};
+	private:
+		Ref<RenderSystem> m_RenderSystem;
+		Ref<ECS::World> m_World;
 
 	private:
-		Ref<ECS::World> m_World;
+		friend class SceneSerializer;
 	};
 
 
 	// --------- Impl ----------------------------------------------------------//
 	template <typename Func>
-	inline void Scene::each(Func&& func)
+	inline void Scene::Each(Func&& func)
 	{
-		for (auto& [id, name] : m_EntityToName)
+		for (auto& [id, object] : m_GameObjects)
 		{
-			std::forward<Func&&>(func)(id);
+			std::forward<Func>(func)(object);
 		}
 	}
 }

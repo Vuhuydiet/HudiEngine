@@ -1,0 +1,100 @@
+Scene: Untitled
+Objects:
+  - Entity: 1
+    Name: Main Camera
+    Transform:
+      Position: [0, 0, 11.6999998]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Camera:
+      Type: 0
+      Orthographic Data: [-3.03499985, 3.03499985, -3.36999989, 3.36999989, -10, 10]
+      Perspective Data: [48, 0.90059346, 5.69999981, 1000]
+  - Entity: 2
+    Name: vu dep trai (1) (4)
+    Transform:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 1]
+      Image file path: ""
+      Order: 0
+  - Entity: 3
+    Name: New GameObject (5)
+    Transform:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 1]
+      Image file path: ""
+      Order: 0
+  - Entity: 4
+    Name: New GameObject (2)
+    Transform:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 1]
+      Image file path: ""
+      Order: 0
+  - Entity: 5
+    Name: New GameObject (3)
+    Transform:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 1]
+      Image file path: ""
+      Order: 0
+  - Entity: 6
+    Name: New GameObject (4)
+    Transform:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 1]
+      Image file path: ""
+      Order: 0
+  - Entity: 7
+    Name: New GameObject (5) (6)
+    Transform:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 1]
+      Image file path: ""
+      Order: 0
+  - Entity: 8
+    Name: New GameObject (6) (7)
+    Transform:
+      Position: [1, -1.20000005, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 0.800000012, 1]
+      Image file path: ""
+      Order: 0
+  - Entity: 9
+    Name: New GameObject (8) (8)
+    Transform:
+      Position: [0, 1.89999998, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Size: [2.0999999, 1]
+      Color: [0.463709652, 0.289818525, 0.289818525, 1]
+      Image file path: assets/textures/hz.png
+      Order: 0

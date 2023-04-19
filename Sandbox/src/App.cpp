@@ -31,7 +31,7 @@ namespace Hudi {
 				{ShaderDataType::Float3, "a_Position"},
 				{ShaderDataType::Float2, "a_TextCoord"}
 				});
-			m_VertexArray->AddVertexBuffer(vertexBuffer);
+			m_VertexArray->SetVertexBuffer(vertexBuffer);
 
 			uint32_t indices[6] = { 0, 1, 2, 2, 3, 0 };
 			Ref<IndexBuffer> indexBuffer = IndexBuffer::Create(indices, 6);
@@ -159,23 +159,9 @@ public:
 	{
 	}
 
-	Hudi::WindowProps WindowProperties() override;
-
 private:
 
 };
-
-
-Hudi::WindowProps Sandbox::WindowProperties()
-{
-	Hudi::WindowProps props;
-	props.title = "Sandbox";
-	props.width = 800;
-	props.height = 600;
-	props.flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
-	props.VSync = false;
-	return props;
-}
 
 Hudi::Application* Hudi::CreateApplication()
 {

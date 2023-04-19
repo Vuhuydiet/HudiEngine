@@ -17,6 +17,8 @@ namespace Hudi {
 
 		void Begin();
 		void End();
+
+		void SetDarkThemeColors();
 	};
 
 }

@@ -34,3 +34,7 @@
 #include "Hudi/Core/Core.h"
 
 #include "Hudi/Debug/Instrumentor.h"
+
+#ifdef HD_PLATFORM_WINDOWS
+	#include <Windows.h>
+#endif

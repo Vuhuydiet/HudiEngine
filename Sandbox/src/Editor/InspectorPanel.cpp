@@ -13,7 +13,7 @@ namespace Hudi {
 
 		if (inspector)
 		{
-			ImGui::Begin("Inspector", &inspector);
+			/*ImGui::Begin("Inspector", &inspector);
 			Ref<GameObject> obj = MenuBar::Get().GetSelectedObject();
 			if (obj)
 			{
@@ -30,7 +30,7 @@ namespace Hudi {
 					}
 				}
 			}
-			ImGui::End();
+			ImGui::End();*/
 		}
 		ImGui::ShowDemoWindow();
 	}

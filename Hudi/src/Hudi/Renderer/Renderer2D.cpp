@@ -10,10 +10,10 @@ namespace Hudi {
 #define TOP_RIGHT		2
 #define TOP_LEFT		3
 
-	static const uint32_t MAX_QUADS					= 20000;
-	static const uint32_t MAX_VERTICES				= MAX_QUADS * 4;
-	static const uint32_t MAX_INDICES				= MAX_QUADS * 6;
-	static const uint32_t MAX_TEXTURE_SLOT			= 32;
+	static const uint32_t MAX_QUADS = 20000;
+	static const uint32_t MAX_VERTICES = MAX_QUADS * 4;
+	static const uint32_t MAX_INDICES = MAX_QUADS * 6;
+	static const uint32_t MAX_TEXTURE_SLOT = 32;
 
 	struct QuadVertex
 	{
@@ -36,23 +36,22 @@ namespace Hudi {
 		Ref<VertexBuffer> vertexBuffer;
 		Ref<Shader> shader;
 	};
-
 	static RendererData s_Data;
 
 	void Renderer2D::Init()
 	{
 		s_Data.vertexArray = VertexArray::Create();
+		s_Data.vertices = new QuadVertex[MAX_VERTICES];
 
 		s_Data.vertexBuffer = VertexBuffer::Create(MAX_VERTICES * sizeof(QuadVertex));
 		s_Data.vertexBuffer->SetLayout({
-			{ ShaderDataType::Float3, "a_Position"},
-			{ ShaderDataType::Float4, "a_Color"},
-			{ ShaderDataType::Float2, "a_TexCoord"},
-			{ ShaderDataType::Float, "a_TexIndex"},
-			{ ShaderDataType::Float, "a_TilingFactor"}
-		});
-		s_Data.vertexArray->AddVertexBuffer(s_Data.vertexBuffer);
-		s_Data.vertices = new QuadVertex[MAX_VERTICES];
+			{ ShaderDataType::Float3, "a_Position" },
+			{ ShaderDataType::Float4, "a_Color" },
+			{ ShaderDataType::Float2, "a_TexCoord" },
+			{ ShaderDataType::Float, "a_TexIndex" },
+			{ ShaderDataType::Float, "a_TilingFactor" }
+			});
+		s_Data.vertexArray->SetVertexBuffer(s_Data.vertexBuffer);
 
 		uint32_t* indices = new uint32_t[MAX_INDICES];
 		uint32_t offset = 0;
@@ -79,7 +78,7 @@ namespace Hudi {
 		s_Data.textures[0] = whiteTexture;
 
 		s_Data.shader = Shader::Create("assets/shaders/Texture.glsl");
-		
+
 		int* textureSlots = new int[MAX_TEXTURE_SLOT];
 		for (int i = 0; i < MAX_TEXTURE_SLOT; i++)
 		{
@@ -99,6 +98,13 @@ namespace Hudi {
 	{
 		s_Data.shader->Bind();
 		s_Data.shader->SetUniform("u_ProjectionView", camera.GetProjectionViewMatrix());
+		Reset();
+	}
+
+	void Renderer2D::BeginScene(const glm::mat4& projection, const glm::mat4& transform)
+	{
+		s_Data.shader->Bind();
+		s_Data.shader->SetUniform("u_ProjectionView", projection * glm::inverse(transform));
 		Reset();
 	}
 
@@ -129,24 +135,6 @@ namespace Hudi {
 		s_Data.textureCount = 1;
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
-	{
-		Quad quad;
-		quad.position = position;
-		quad.size = size;
-		quad.color = color;
-		DrawQuad(quad);
-	}
-
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, Ref<Texture2D> texture)
-	{
-		Quad quad;
-		quad.position = position;
-		quad.size = size;
-		quad.texture = texture;
-		DrawQuad(quad);
-	}
-
 	static inline float GetTextureIndex(Ref<Texture2D> texture)
 	{
 		if (!texture)
@@ -170,37 +158,55 @@ namespace Hudi {
 			BeginNewBatch();
 		}
 
-		float xoffset = quad.size.x / 2.0f;
-		float yoffset = quad.size.y / 2.0f;
+		float xoffset = quad.size.x * 0.5f;
+		float yoffset = quad.size.y * 0.5f;
 
 		float texIndex = GetTextureIndex(quad.texture);
 
 		uint32_t cur_pos = s_Data.quadCount * 4;
-		s_Data.vertices[cur_pos + BOTTOM_LEFT].pos = { quad.position.x - xoffset, quad.position.y - yoffset, quad.position.z };
+		s_Data.vertices[cur_pos + BOTTOM_LEFT].pos = quad.transform * glm::vec4{ -xoffset, -yoffset, 0.0f, 1.0f }; //{ quad.position.x - xoffset, quad.position.y - yoffset, quad.position.z };
 		s_Data.vertices[cur_pos + BOTTOM_LEFT].color = quad.color;
-		s_Data.vertices[cur_pos + BOTTOM_LEFT].texCoord = {0.0f, 0.0f};
+		s_Data.vertices[cur_pos + BOTTOM_LEFT].texCoord = { 0.0f, 0.0f };
 		s_Data.vertices[cur_pos + BOTTOM_LEFT].texIndex = texIndex;
 		s_Data.vertices[cur_pos + BOTTOM_LEFT].tilingFactor = quad.tilingFactor;
 
-		s_Data.vertices[cur_pos + BOTTOM_RIGHT].pos = { quad.position.x + xoffset, quad.position.y - yoffset, quad.position.z };
+		s_Data.vertices[cur_pos + BOTTOM_RIGHT].pos = quad.transform * glm::vec4{ xoffset, -yoffset, 0.0f, 1.0f };//{ quad.position.x + xoffset, quad.position.y - yoffset, quad.position.z };
 		s_Data.vertices[cur_pos + BOTTOM_RIGHT].color = quad.color;
-		s_Data.vertices[cur_pos + BOTTOM_RIGHT].texCoord = {1.0f, 0.0f};
+		s_Data.vertices[cur_pos + BOTTOM_RIGHT].texCoord = { 1.0f, 0.0f };
 		s_Data.vertices[cur_pos + BOTTOM_RIGHT].texIndex = texIndex;
 		s_Data.vertices[cur_pos + BOTTOM_RIGHT].tilingFactor = quad.tilingFactor;
 
-		s_Data.vertices[cur_pos + TOP_RIGHT].pos = { quad.position.x + xoffset, quad.position.y + yoffset, quad.position.z };
+		s_Data.vertices[cur_pos + TOP_RIGHT].pos = quad.transform * glm::vec4{ xoffset, yoffset, 0.0f, 1.0f }; //{ quad.position.x + xoffset, quad.position.y + yoffset, quad.position.z };
 		s_Data.vertices[cur_pos + TOP_RIGHT].color = quad.color;
-		s_Data.vertices[cur_pos + TOP_RIGHT].texCoord = {1.0f, 1.0f};
+		s_Data.vertices[cur_pos + TOP_RIGHT].texCoord = { 1.0f, 1.0f };
 		s_Data.vertices[cur_pos + TOP_RIGHT].texIndex = texIndex;
 		s_Data.vertices[cur_pos + TOP_RIGHT].tilingFactor = quad.tilingFactor;
 
-		s_Data.vertices[cur_pos + TOP_LEFT].pos = { quad.position.x - xoffset, quad.position.y + yoffset, quad.position.z };
+		s_Data.vertices[cur_pos + TOP_LEFT].pos = quad.transform * glm::vec4{ -xoffset, yoffset, 0.0f, 1.0f }; //{ quad.position.x - xoffset, quad.position.y + yoffset, quad.position.z };
 		s_Data.vertices[cur_pos + TOP_LEFT].color = quad.color;
-		s_Data.vertices[cur_pos + TOP_LEFT].texCoord = {0.0f, 1.0f};
+		s_Data.vertices[cur_pos + TOP_LEFT].texCoord = { 0.0f, 1.0f };
 		s_Data.vertices[cur_pos + TOP_LEFT].texIndex = texIndex;
 		s_Data.vertices[cur_pos + TOP_LEFT].tilingFactor = quad.tilingFactor;
 
 		s_Data.quadCount++;
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
+	{
+		Quad quad;
+		quad.transform= glm::translate(glm::mat4(1.0f), position);
+		quad.size = size;
+		quad.color = color;
+		DrawQuad(quad);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, Ref<Texture2D> texture)
+	{
+		Quad quad;
+		quad.transform = glm::translate(glm::mat4(1.0f), position);
+		quad.size = size;
+		quad.texture = texture;
+		DrawQuad(quad);
 	}
 
 }

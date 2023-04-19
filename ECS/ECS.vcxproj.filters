@@ -7,30 +7,23 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ECS.h" />
-    <ClInclude Include="src\ECS\Component.h">
+    <ClInclude Include="src\ECS\BaseComponent.h">
       <Filter>ECS</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager.h">
       <Filter>ECS</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\World.h">
-      <Filter>ECS</Filter>
-    </ClInclude>
     <ClInclude Include="src\ECS\EntityManager.h">
-      <Filter>ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ECS\Initializer.h">
       <Filter>ECS</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SystemManager.h">
       <Filter>ECS</Filter>
     </ClInclude>
-    <ClInclude Include="src\ecspch.h" />
+    <ClInclude Include="src\ECS\World.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\ECS\Initializer.cpp">
-      <Filter>ECS</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ecspch.cpp" />
+    <ClCompile Include="src\ECS\BuildFile.cpp" />
   </ItemGroup>
 </Project>

@@ -10,6 +10,12 @@ project "Hudi"
 	pchheader "hdpch.h"
 	pchsource "src/hdpch.cpp"
 
+	defines
+	{
+		"YAML_CPP_STATIC_DEFINE",
+		"_CRT_SECURE_NO_WARNINGS"
+	}
+
 	files
     {
         "src/**.h",
@@ -29,6 +35,7 @@ project "Hudi"
 		"vendor/ImGui",
 		"vendor/glm",
 		"vendor/stb_image",
+		"vendor/yaml-cpp/include",
 
 		"src",
 		"%{wks.location}/ECS/src"
@@ -49,6 +56,8 @@ project "Hudi"
 
 		"Glad",
 		"ImGui",
+		"yaml-cpp",
+
 		"ECS"
 	}
 

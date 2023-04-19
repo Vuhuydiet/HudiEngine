@@ -4,7 +4,7 @@
 
 namespace Hudi {
 
-	class Sandbox2D : public Layer
+	class Sandbox2D: public Layer
 	{
 	public:
 		Sandbox2D();

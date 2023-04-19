@@ -13,6 +13,16 @@ namespace Hudi {
 		//glEnable(GL_DEPTH_TEST);
 	}
 
+	void OpenGLRendererAPI::EnableDepthTest(bool enable)
+	{
+		//HD_CORE_INFO("Currently does not support depth testing!");
+		return;
+		if (enable)
+			glEnable(GL_DEPTH_TEST);
+		else
+			glDepthMask(GL_FALSE);
+	}
+
 	void OpenGLRendererAPI::SetViewport(int x, int y, uint32_t width, uint32_t height)
 	{
 		glViewport(x, y, width, height);

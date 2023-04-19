@@ -8,52 +8,52 @@ namespace Hudi {
 
 	void HierarchyPanel::OnImGuiRender()
 	{
-		m_OnDelete.clear();
+		//m_OnDelete.clear();
 
-		bool& hierarchy = MenuBar::Get().opt_Hierarchy;
-		if (hierarchy)
-		{
-			// Begin hierarchy
-			ImGui::Begin("Hierarchy", &hierarchy);
+		//bool& hierarchy = MenuBar::Get().opt_Hierarchy;
+		//if (hierarchy)
+		//{
+		//	// Begin hierarchy
+		//	ImGui::Begin("Hierarchy", &hierarchy);
 
-			auto& scene = SceneManager::Get().GetActiveScene();
-			scene->each([&](uint32_t id) {
-				std::string& name = scene->GetGameObjectName(id);
-				Ref<GameObject> gameObject = scene->GetGameObject(id);
-				if (!gameObject->GetParent())
-				{
-					DrawGameObjectNode(name, gameObject);
-				}
-			});
+		//	auto& scene = SceneManager::Get().GetActiveScene();
+		//	scene->Each([&](uint32_t id) {
+		//		std::string& name = scene->GetGameObjectName(id);
+		//		Ref<GameObject> gameObject = scene->GetGameObject(id);
+		//		if (!gameObject->GetParent())
+		//		{
+		//			DrawGameObjectNode(name, gameObject);
+		//		}
+		//	});
 
-			for (auto id : m_OnDelete)
-			{
-				scene->DestroyGameObject(id);
-			}
+		//	for (auto id : m_OnDelete)
+		//	{
+		//		scene->DestroyGameObject(id);
+		//	}
 
-			if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
-			{
-				MenuBar::Get().SetSelectedObject(nullptr);
-			}
+		//	if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
+		//	{
+		//		MenuBar::Get().SetSelectedObject(nullptr);
+		//	}
 
-			if (!m_OnGameObjectClick && ImGui::BeginPopupContextWindow(0, 1))
-			{
-				if (ImGui::MenuItem("Create new GameObject"))
-					scene->CreateGameObject("New GameObject");
+		//	if (!m_OnGameObjectClick && ImGui::BeginPopupContextWindow(0, 1))
+		//	{
+		//		if (ImGui::MenuItem("Create new GameObject"))
+		//			scene->CreateGameObject("New GameObject");
 
-				ImGui::EndPopup();
-			}
-			// End hierarchy
-			ImGui::End();
+		//		ImGui::EndPopup();
+		//	}
+		//	// End hierarchy
+		//	ImGui::End();
 
-			m_OnGameObjectClick = false;
-		}
+		//	m_OnGameObjectClick = false;
+		//}
 
 	}
 
 	void HierarchyPanel::DrawGameObjectNode(std::string& name, Ref<GameObject> gameObject)
 	{
-		bool opened = false;
+		/*bool opened = false;
 		ImGuiTreeNodeFlags flags =	(MenuBar::Get().GetSelectedObject() == gameObject ? ImGuiTreeNodeFlags_Selected : 0) |
 									(gameObject->GetChildren().size() != 0? ImGuiTreeNodeFlags_OpenOnArrow : ImGuiTreeNodeFlags_Leaf) |
 									ImGuiTreeNodeFlags_SpanAvailWidth;
@@ -96,7 +96,7 @@ namespace Hudi {
 				}
 			}
 			ImGui::TreePop();
-		}
+		}*/
 
 	}
 

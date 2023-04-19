@@ -1,65 +1,65 @@
 #pragma once
 #include "hdpch.h"
 
-#include "Hudi/Components/Component.h"
+#include "Components/Component.h"
 
 namespace Hudi {
 
 	class GameObject
 	{
 	public:
-		GameObject(Ref<ECS::World> _world);
-		virtual ~GameObject();
+		GameObject();
+		GameObject(ECS::World* _world);
 
-		void CreateGameObject();
-		void DestroyGameObject();
+		void Destroy();
+		void Reset();
 
-		void SetParent(Ref<GameObject> parent);
-		void AddChild(Ref<GameObject> child);
+		bool Valid() const { return m_Entity != 0 && world != nullptr; }
 
-		void RemoveParent();
-		void RemoveChild(Ref<GameObject> child);
+		ECS::Entity GetEntityID() const { return m_Entity; }
 
-		Ref<GameObject>& GetParent();
-		std::vector<Ref<GameObject>>& GetChildren();
-
-		operator ECS::Entity() const { return m_Entt; }
-		ECS::Entity GetEntityID() const { return m_Entt; }
+		bool operator== (const GameObject& other);
+		bool operator!= (const GameObject& other);
 
 		// ------- System -------/
-		bool Exist() { return world->Exists(m_Entt); }
+		bool Exist() { return world->Exists(m_Entity); }
 
 		template <typename T>
-		T& AddComponent() { return *world->AddComponent<T>(m_Entt); }
+		T& AddComponent() { return *world->AddComponent<T>(m_Entity); }
 
 		template <typename T>
-		T& AddComponent(Ref<Component> comp) { return *world->AddComponent<T>(m_Entt, comp); }
+		T& AddComponent(Ref<Component> comp) { return *world->AddComponent<T>(m_Entity, comp); }
 
 		template <typename T>
-		T& AddComponent(T component) { return *world->AddComponent<T>(m_Entt, NewRef<T>(comp)); }
+		T& AddComponent(T component) { return *world->AddComponent<T>(m_Entity, NewRef<T>(comp)); }
 
 		template <typename T>
-		bool HasComponent() { return world->HasComponent<T>(m_Entt); }
+		bool HasComponent() { return world->HasComponent<T>(m_Entity); }
 
 		template <typename T>
-		T& GetComponent() { return *world->GetComponent<T>(m_Entt); }
+		T& GetComponent() { return *world->GetComponent<T>(m_Entity); }
+		template <typename T>
+		T& GetOrAddComponent() { return HasComponent<T>() ? GetComponent<T>() : AddComponent<T>(); }
+
+		template <typename T>
+		Ref<T> GetComponentByRef() { return world->GetComponent<T>(m_Entity); }
 
 		std::vector<Ref<Component>> GetComponents();
 
+		template <typename T>
+		void RemoveComponent() { world->RemoveComponent<T>(m_Entity); }
+
 		template <typename T> 
-		void AddSystem() { world->AddSystem<T>(m_Entt); }
+		void AddSystem() { world->AddSystem<T>(m_Entity); }
 
-		void SetActive(bool active) { world->SetActive(m_Entt, active); }
-		bool IsActive() { return world->IsActive(m_Entt); }
-
-	private:
-		ECS::Entity m_Entt;
-
-		Ref<GameObject> m_Parent;
-		std::vector<Ref<GameObject>> m_Children;
+		void SetActive(bool active) { world->SetActive(m_Entity, active); }
+		bool IsActive() { return world->IsActive(m_Entity); }
 
 	private:
-		Ref<ECS::World> world;
+		ECS::Entity m_Entity;
+
+	private:
+		ECS::World* world;
 	};
 
 

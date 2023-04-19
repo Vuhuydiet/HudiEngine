@@ -72,9 +72,9 @@ namespace Hudi {
 		EventManager::Clear();
 		EventManager::OnUpdate();
 
-		// TODO: currently defining the window is freezing when dt > 0.5f seconds
+		// TODO: currently defining the window is freezing when dt > 0.05f seconds
 		// Find another way in the future
-		if (dt > 0.5f)
+		if (dt > 0.05f)
 		{
 			EventManager::Reset();
 		}

@@ -1,6 +1,6 @@
 workspace "HudiEngine"
 	architecture "x64"
-	startproject "Sandbox"
+	startproject "Hudigen"
 
 	configurations
 	{
@@ -14,6 +14,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 group "Dependencies"
 	include "Hudi/vendor/Glad"
 	include "Hudi/vendor/ImGui"
+	include "Hudi/vendor/yaml-cpp"
 	include "ECS"
 group ""
 
@@ -23,6 +24,7 @@ group ""
 
 group "Core"
 	include "Hudi"
+	include "Hudigen"
 group ""
 
 group "Test"

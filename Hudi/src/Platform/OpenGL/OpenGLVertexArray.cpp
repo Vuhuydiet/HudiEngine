@@ -45,7 +45,7 @@ namespace Hudi {
 		glBindVertexArray(0);
 	}
 
-	void OpenGLVertexArray::AddVertexBuffer(Ref<VertexBuffer> vertexBuffer)
+	void OpenGLVertexArray::SetVertexBuffer(Ref<VertexBuffer> vertexBuffer)
 	{
 		if (vertexBuffer->GetLayout().GetElements().size()==0) {
 			HD_CORE_ERROR("VertexBuffer does not have any layout yet. Wrong order?");
@@ -70,7 +70,7 @@ namespace Hudi {
 			index++;
 		}
 
-		m_VertexBuffers.push_back(vertexBuffer);
+		m_VertexBuffer = vertexBuffer;
 	}
 
 	void OpenGLVertexArray::SetIndexBuffer(Ref<IndexBuffer> indexBuffer)

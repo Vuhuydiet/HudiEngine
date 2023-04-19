@@ -49,7 +49,7 @@ namespace Hudi {
 		Renderer2D::BeginScene(m_CameraController.GetCamera());
 		{
 			Quad checkerboard;
-			checkerboard.position = { -0.1f, 0.0f, -0.2f };
+			checkerboard.transform = glm::translate(glm::mat4(1.0f), { -0.1f, 0.0f, -0.2f });
 			checkerboard.size = { 10.0f, 10.0f };
 			checkerboard.texture = m_Texture;
 			checkerboard.tilingFactor = 10.0f;
@@ -60,7 +60,7 @@ namespace Hudi {
 				for (float y = -5.0f; y <= 5.0f; y += 0.5f)
 				{
 					Quad quad;
-					quad.position = { x, y, 0.5f };
+					quad.transform = glm::translate(glm::mat4(1.0f), glm::vec3{ x, y, 0.5f});
 					quad.color = { (x + 5.0f) / 10.0f, (y + 5.0f) / 10.0f, 0.4f, 1.0f };
 					quad.size = { 0.45f, 0.45f };
 					Renderer2D::DrawQuad(quad);

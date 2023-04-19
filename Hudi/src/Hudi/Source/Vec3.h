@@ -1,6 +1,8 @@
 #pragma once
 #include "Vec2.h"
 
+#include <glm/glm.hpp>
+
 namespace Hudi {
 
 	struct Vec3
@@ -32,6 +34,11 @@ namespace Hudi {
 		}
 
 	public:
+		operator glm::vec3() const
+		{
+			return glm::vec3(x, y, z);
+		}
+
 		Vec3 operator+ (const Vec3& v1) const
 		{
 			Vec3 v;

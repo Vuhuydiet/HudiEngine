@@ -52,6 +52,12 @@ namespace Hudi {
 			Z = (char)'z', //SDLK_z,
 
 			/* Function keys */
+			L_CTRL = 1073742048, //SDLK_LCTRL,
+			R_CTRL = 1073742052, //SDLK_RCTRL,
+			L_SHIFT = 1073742049, //SDLK_LSHIFT,
+			R_SHIFT = 1073742053, //SDLK_RSHIFT,
+			L_ALT = 1073742050, //SDLK_LALT,
+			R_ALT = 1073742054, //SDLK_RALT
 			ENTER = 13, //SDLK_RETURN,
 
 			RIGHT	= 79 | (1 << 30), //SDLK_RIGHT,

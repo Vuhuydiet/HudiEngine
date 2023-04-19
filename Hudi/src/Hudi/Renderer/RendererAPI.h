@@ -15,6 +15,8 @@ namespace Hudi {
 	public:
 		virtual ~RendererAPI() = default;
 		virtual void Init() = 0;
+
+		virtual void EnableDepthTest(bool enable) = 0;
 		virtual void SetViewport(int x, int y, uint32_t width, uint32_t height) = 0;
 
 		virtual void SetClearColor(const glm::vec4& color) = 0;

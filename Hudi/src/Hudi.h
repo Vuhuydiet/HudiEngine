@@ -25,14 +25,10 @@
 #include "Hudi/Renderer/OrthographicCamera.h"
 #include "Hudi/Renderer/OrthographicCameraController.h"
 
-#include "Hudi/Components/TransformComponent.h"
-#include "Hudi/Components/BehaviourComponent.h"
-#include "Hudi/Components/SpriteRendererComponent.h"
-#include "Hudi/Components/AnimatorComponent/AnimationComponent.h"
-#include "Hudi/Components/AnimatorComponent/AnimatorComponent.h"
-#include "Hudi/Components/RigidBody2DComponent.h"
-#include "Hudi/Components/Collider2DComponent.h"
-
+#include "Hudi/Scene/Components/Component.h"
 #include "Hudi/Scene/GameObject.h"
 #include "Hudi/Scene/Scene.h"
 #include "Hudi/Scene/SceneManager.h"
+#include "Hudi/Scene/Serialize/SceneSerializer.h"
+
+#include "Hudi/Utils/PlatformUtils.h"

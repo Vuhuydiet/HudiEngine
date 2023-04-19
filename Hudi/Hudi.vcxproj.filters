@@ -7,12 +7,6 @@
     <Filter Include="src\Hudi">
       <UniqueIdentifier>{46A91FCF-3276-7ADA-5B8F-688247BBAF68}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Hudi\Components">
-      <UniqueIdentifier>{9B761C26-07D8-F933-9045-40E6FCA530F3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Hudi\Components\AnimatorComponent">
-      <UniqueIdentifier>{18AF88A7-8473-8797-4DD9-B761B95C23CD}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Hudi\Core">
       <UniqueIdentifier>{5E8913F9-CA49-8F2F-9384-D8ACFF03D40B}</UniqueIdentifier>
     </Filter>
@@ -28,14 +22,26 @@
     <Filter Include="src\Hudi\ImGui\imgui_resources">
       <UniqueIdentifier>{9430F542-8056-BFA9-699C-44755561E475}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Hudi\Physics">
-      <UniqueIdentifier>{B8926FE8-A48B-8E3A-CDBD-73BFB9156E46}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Hudi\Renderer">
       <UniqueIdentifier>{ACBB3CCD-18D2-3A63-6149-C684CD9E0BEB}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Hudi\Scene">
       <UniqueIdentifier>{E3729F1C-CF40-9322-B8D4-0349A4416F87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Hudi\Scene\Components">
+      <UniqueIdentifier>{18E4CCBF-84A6-004A-CD56-8FD63958D927}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Hudi\Scene\Components\AnimatorComponent">
+      <UniqueIdentifier>{D5496625-41AF-F9AB-CA87-9B8436ECEE1A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Hudi\Scene\Physics">
+      <UniqueIdentifier>{55A9F969-41A3-22BC-2A10-B9CC16A98828}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Hudi\Scene\RenderSystem">
+      <UniqueIdentifier>{174D8FED-835A-BDD3-0C41-B9BE784D898A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Hudi\Scene\Serialize">
+      <UniqueIdentifier>{5AF80135-461D-51B5-6F68-36455BEC4FD3}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Hudi\Source">
       <UniqueIdentifier>{86CC6FB1-F257-DD75-FB68-606A67733976}</UniqueIdentifier>
@@ -77,33 +83,6 @@
   <ItemGroup>
     <ClInclude Include="src\Hudi.h">
       <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hudi\Components\AnimatorComponent\AnimationComponent.h">
-      <Filter>src\Hudi\Components\AnimatorComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hudi\Components\AnimatorComponent\AnimatorComponent.h">
-      <Filter>src\Hudi\Components\AnimatorComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hudi\Components\AnimatorComponent\Condition.h">
-      <Filter>src\Hudi\Components\AnimatorComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hudi\Components\AnimatorComponent\Transition.h">
-      <Filter>src\Hudi\Components\AnimatorComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hudi\Components\BehaviourComponent.h">
-      <Filter>src\Hudi\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hudi\Components\Collider2DComponent.h">
-      <Filter>src\Hudi\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hudi\Components\RigidBody2DComponent.h">
-      <Filter>src\Hudi\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hudi\Components\SpriteRendererComponent.h">
-      <Filter>src\Hudi\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hudi\Components\TransformComponent.h">
-      <Filter>src\Hudi\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\Hudi\Core\Application.h">
       <Filter>src\Hudi\Core</Filter>
@@ -150,19 +129,10 @@
     <ClInclude Include="src\Hudi\ImGui\imgui_resources\imgui_impl_sdl2.h">
       <Filter>src\Hudi\ImGui\imgui_resources</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hudi\Physics\Collision2D.h">
-      <Filter>src\Hudi\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hudi\Physics\CollisionDetector.h">
-      <Filter>src\Hudi\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hudi\Physics\PhysicsSystem.h">
-      <Filter>src\Hudi\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hudi\Physics\Solver.h">
-      <Filter>src\Hudi\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="src\Hudi\Renderer\Buffer.h">
+      <Filter>src\Hudi\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Renderer\Framebuffer.h">
       <Filter>src\Hudi\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Hudi\Renderer\GraphicsContext.h">
@@ -175,9 +145,6 @@
       <Filter>src\Hudi\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Hudi\Renderer\RenderCommand.h">
-      <Filter>src\Hudi\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hudi\Renderer\RenderSystem.h">
       <Filter>src\Hudi\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Hudi\Renderer\Renderer.h">
@@ -198,17 +165,65 @@
     <ClInclude Include="src\Hudi\Renderer\VertexArray.h">
       <Filter>src\Hudi\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hudi\Scene\CameraComponent.h">
-      <Filter>src\Hudi\Scene</Filter>
+    <ClInclude Include="src\Hudi\Scene\Components\AnimatorComponent\AnimationComponent.h">
+      <Filter>src\Hudi\Scene\Components\AnimatorComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Scene\Components\AnimatorComponent\AnimatorComponent.h">
+      <Filter>src\Hudi\Scene\Components\AnimatorComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Scene\Components\AnimatorComponent\Condition.h">
+      <Filter>src\Hudi\Scene\Components\AnimatorComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Scene\Components\AnimatorComponent\Transition.h">
+      <Filter>src\Hudi\Scene\Components\AnimatorComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Scene\Components\BehaviourComponent.h">
+      <Filter>src\Hudi\Scene\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Scene\Components\CameraComponent.h">
+      <Filter>src\Hudi\Scene\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Scene\Components\Collider2DComponent.h">
+      <Filter>src\Hudi\Scene\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Scene\Components\Component.h">
+      <Filter>src\Hudi\Scene\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Scene\Components\RigidBody2DComponent.h">
+      <Filter>src\Hudi\Scene\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Scene\Components\SpriteRendererComponent.h">
+      <Filter>src\Hudi\Scene\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Scene\Components\TransformComponent.h">
+      <Filter>src\Hudi\Scene\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\Hudi\Scene\GameObject.h">
       <Filter>src\Hudi\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Scene\Physics\Collision2D.h">
+      <Filter>src\Hudi\Scene\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Scene\Physics\CollisionDetector.h">
+      <Filter>src\Hudi\Scene\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Scene\Physics\PhysicsSystem.h">
+      <Filter>src\Hudi\Scene\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Scene\Physics\Solver.h">
+      <Filter>src\Hudi\Scene\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Scene\RenderSystem\RenderSystem.h">
+      <Filter>src\Hudi\Scene\RenderSystem</Filter>
     </ClInclude>
     <ClInclude Include="src\Hudi\Scene\Scene.h">
       <Filter>src\Hudi\Scene</Filter>
     </ClInclude>
     <ClInclude Include="src\Hudi\Scene\SceneManager.h">
       <Filter>src\Hudi\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Scene\Serialize\SceneSerializer.h">
+      <Filter>src\Hudi\Scene\Serialize</Filter>
     </ClInclude>
     <ClInclude Include="src\Hudi\Source\KeyCodes.h">
       <Filter>src\Hudi\Source</Filter>
@@ -234,13 +249,16 @@
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
-    <ClInclude Include="src\Platform\OpenGL\OpenGLTexture.h">
+    <ClInclude Include="src\Platform\OpenGL\OpenGLTexture2D.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h">
@@ -1479,17 +1497,9 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hudi\Components\Component.h" />
-    <ClInclude Include="src\Hudi\Renderer\Framebuffer.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h" />
+    <ClInclude Include="src\Hudi\Utils\PlatformUtils.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Hudi\Components\AnimatorComponent\AnimationComponent.cpp">
-      <Filter>src\Hudi\Components\AnimatorComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Hudi\Components\AnimatorComponent\AnimatorComponent.cpp">
-      <Filter>src\Hudi\Components\AnimatorComponent</Filter>
-    </ClCompile>
     <ClCompile Include="src\Hudi\Core\Application.cpp">
       <Filter>src\Hudi\Core</Filter>
     </ClCompile>
@@ -1514,19 +1524,10 @@
     <ClCompile Include="src\Hudi\ImGui\imgui_resources\imgui_impl_sdl2.cpp">
       <Filter>src\Hudi\ImGui\imgui_resources</Filter>
     </ClCompile>
-    <ClCompile Include="src\Hudi\Physics\CollisionDetector.cpp">
-      <Filter>src\Hudi\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Hudi\Physics\PhysicsSystem.cpp">
-      <Filter>src\Hudi\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Hudi\Physics\Solver.cpp">
-      <Filter>src\Hudi\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Hudi\Physics\algo.cpp">
-      <Filter>src\Hudi\Physics</Filter>
-    </ClCompile>
     <ClCompile Include="src\Hudi\Renderer\Buffer.cpp">
+      <Filter>src\Hudi\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Renderer\Framebuffer.cpp">
       <Filter>src\Hudi\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Hudi\Renderer\OrthographicCamera.cpp">
@@ -1536,9 +1537,6 @@
       <Filter>src\Hudi\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Hudi\Renderer\RenderCommand.cpp">
-      <Filter>src\Hudi\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Hudi\Renderer\RenderSystem.cpp">
       <Filter>src\Hudi\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Hudi\Renderer\Renderer.cpp">
@@ -1559,14 +1557,38 @@
     <ClCompile Include="src\Hudi\Renderer\VertexArray.cpp">
       <Filter>src\Hudi\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Hudi\Scene\Components\AnimatorComponent\AnimationComponent.cpp">
+      <Filter>src\Hudi\Scene\Components\AnimatorComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Scene\Components\AnimatorComponent\AnimatorComponent.cpp">
+      <Filter>src\Hudi\Scene\Components\AnimatorComponent</Filter>
+    </ClCompile>
     <ClCompile Include="src\Hudi\Scene\GameObject.cpp">
       <Filter>src\Hudi\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Scene\Physics\CollisionDetector.cpp">
+      <Filter>src\Hudi\Scene\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Scene\Physics\PhysicsSystem.cpp">
+      <Filter>src\Hudi\Scene\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Scene\Physics\Solver.cpp">
+      <Filter>src\Hudi\Scene\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Scene\Physics\algo.cpp">
+      <Filter>src\Hudi\Scene\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Scene\RenderSystem\RenderSystem.cpp">
+      <Filter>src\Hudi\Scene\RenderSystem</Filter>
     </ClCompile>
     <ClCompile Include="src\Hudi\Scene\Scene.cpp">
       <Filter>src\Hudi\Scene</Filter>
     </ClCompile>
     <ClCompile Include="src\Hudi\Scene\SceneManager.cpp">
       <Filter>src\Hudi\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Scene\Serialize\SceneSerializer.cpp">
+      <Filter>src\Hudi\Scene\Serialize</Filter>
     </ClCompile>
     <ClCompile Include="src\Hudi\Source\Time.cpp">
       <Filter>src\Hudi\Source</Filter>
@@ -1577,13 +1599,16 @@
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLFramebuffer.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="src\Platform\OpenGL\OpenGLTexture.cpp">
+    <ClCompile Include="src\Platform\OpenGL\OpenGLTexture2D.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp">
@@ -1601,7 +1626,6 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Hudi\Renderer\Framebuffer.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLFramebuffer.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsPlatformUtils.cpp" />
   </ItemGroup>
 </Project>

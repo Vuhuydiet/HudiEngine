@@ -17,6 +17,7 @@ namespace Hudi {
 		bool VSync;
 
 		WindowProps();
+		WindowProps(const char* title, int xpos, int ypos, int width, int height, int flags = 0, bool VSync = false);
 	};
 
 	class HUDI_API Window

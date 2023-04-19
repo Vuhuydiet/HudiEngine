@@ -12,29 +12,24 @@ namespace Hudi {
 		m_IsRotate(rotate),
 		m_CameraPosition(0.0f),
 		m_CameraRotation(0.0f)
-	{
-	}
+	{}
 
 	void OrthographicCameraController::OnUpdate(float dt)
 	{
 		if (Input::IsKeyDown(Key::A))
 		{
-			HD_CORE_INFO("A");
 			m_CameraPosition.x -= m_CameraTranslationSpeed * dt;
 		}
 		if (Input::IsKeyDown(Key::D))
 		{
-			HD_CORE_INFO("D");
 			m_CameraPosition.x += m_CameraTranslationSpeed * dt;;
 		}
 		if (Input::IsKeyDown(Key::W))
 		{
-			HD_CORE_INFO("W");
 			m_CameraPosition.y += m_CameraTranslationSpeed * dt;
 		}
 		if (Input::IsKeyDown(Key::S))
 		{
-			HD_CORE_INFO("S");
 			m_CameraPosition.y -= m_CameraTranslationSpeed * dt;;
 		}
 		m_Camera.SetPosition(m_CameraPosition);
@@ -43,18 +38,27 @@ namespace Hudi {
 		{
 			if (Input::IsKeyDown(Key::F))
 			{
-				HD_CORE_INFO("F");
 				m_CameraRotation += m_CameraRotationSpeed * dt;
 			}
 			if (Input::IsKeyDown(Key::G))
 			{
-				HD_CORE_INFO("G");
 				m_CameraRotation -= m_CameraRotationSpeed * dt;
 			}
 			m_Camera.SetRotation(m_CameraRotation);
 		}
 
 		m_CameraTranslationSpeed = m_ZoomLevel;
+	}
+
+	void OrthographicCameraController::OnResize(float width, float height)
+	{
+		if (width <= 0.001f || height <= 0.001f)
+		{
+			HD_CORE_ERROR("Trying to resize the camera to an invalid value: {0}, {1}", width, height);
+			return;
+		}
+		m_AspectRatio = width / height;
+		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 	}
 
 	void OrthographicCameraController::OnEvent(Event& e)
@@ -65,8 +69,8 @@ namespace Hudi {
 		case MOUSE_WHEEL:
 		{
 			m_ZoomLevel -= event.wheel.y * 0.1f;
-			m_ZoomLevel = std::min(m_ZoomLevel, 5.0f);
-			m_ZoomLevel = std::max(m_ZoomLevel, 0.5f);
+			m_ZoomLevel = std::min(m_ZoomLevel, 10.0f);
+			m_ZoomLevel = std::max(m_ZoomLevel, 0.1f);
 
 			m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 			break;
@@ -75,15 +79,10 @@ namespace Hudi {
 			if (event.window.event == WINDOWEVENT_RESIZED)
 			{
 				auto& app = Application::Get();
-				m_AspectRatio = (float) app.GetWindow().GetWidth() * 1.0f / (float) app.GetWindow().GetHeight();
-				m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+				OnResize((float) app.GetWindow().GetWidth(), (float) app.GetWindow().GetHeight());
 			}
 			break;
 		}
-	}
-
-	void OrthographicCameraController::OnResize(float width, float heigth)
-	{
 	}
 
 }

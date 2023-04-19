@@ -11,15 +11,14 @@ namespace Hudi {
 
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application()
+	Application::Application(WindowProps props)
 		: m_LastFrameTime(0.0f),
-		m_Running(true),
-		m_Window(nullptr), m_ImGuiLayer(nullptr)
+		m_Running(true)
 	{
 		HD_CORE_ASSERT(s_Instance, "Already has an application!");
 		s_Instance = this;
 
-		m_Window = Scope<Window>(Window::Create(WindowProperties()));
+		m_Window = Scope<Window>(Window::Create(props));
 		EventManager::SetCallBackFn(HD_BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::Init();
@@ -84,11 +83,6 @@ namespace Hudi {
 			}
 			m_ImGuiLayer->End();
 		}
-	}
-
-	WindowProps Application::WindowProperties()
-	{
-		return WindowProps();
 	}
 
 	void Application::PushLayer(Layer* layer)

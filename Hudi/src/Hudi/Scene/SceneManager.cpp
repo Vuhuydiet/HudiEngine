@@ -3,28 +3,34 @@
 
 namespace Hudi {
 
-	Ref<Scene> SceneManager::CreateNewScene(const char* _name)
+	Ref<Scene> SceneManager::CreateNewScene(const std::string& _name)
 	{
+		std::string name = _name;
+
+		static uint8_t ind = 1;
+		if (m_StringToIndex.find(name) != m_StringToIndex.end())
+			name += " (" + std::to_string(ind++) + ")";
+
 		Ref<Scene> newScene = NewRef<Scene>(m_BuildIndexCount++);
 
-		m_StringsToIndexes[_name] = newScene->GetBuildIndex();
-		m_SceneNames[newScene->GetBuildIndex()] = _name;
+		m_StringToIndex[name] = newScene->GetBuildIndex();
+		m_SceneNames[newScene->GetBuildIndex()] = name;
 		m_Scenes[newScene->GetBuildIndex()] = newScene;
 
-		if (!s_ActiveScene)
-			s_ActiveScene = newScene->GetBuildIndex();
-		return m_Scenes[newScene->GetBuildIndex()];
+		if (!m_ActiveScene)
+			m_ActiveScene = newScene->GetBuildIndex();
+		return newScene;
 	}
 
 	Ref<Scene> SceneManager::GetActiveScene()
 	{
-		if (!s_ActiveScene || m_Scenes.find(s_ActiveScene) == m_Scenes.end())
+		if (!m_ActiveScene || m_Scenes.find(m_ActiveScene) == m_Scenes.end())
 		{
-			HD_CORE_ERROR("Current scene not found. s_ActiveScene: {0}", s_ActiveScene);
+			HD_CORE_ERROR("Current scene not found. s_ActiveScene: {0}", m_ActiveScene);
 			return nullptr;
 		}
 
-		return m_Scenes[s_ActiveScene];
+		return m_Scenes[m_ActiveScene];
 	}
 
 	Ref<Scene> SceneManager::GetScene(uint8_t index)
@@ -38,15 +44,29 @@ namespace Hudi {
 		return nullptr;
 	}
 
-	Ref<Scene> SceneManager::GetScene(const char* _name)
+	Ref<Scene> SceneManager::GetScene(const std::string& _name)
 	{
-		if (m_StringsToIndexes.find(_name) == m_StringsToIndexes.end())
+		if (m_StringToIndex.find(_name) == m_StringToIndex.end())
 		{
 			HD_CORE_ERROR("No scene with name {0} found.", _name);
 			return nullptr;
 		}
 
-		return m_Scenes[m_StringsToIndexes[_name]];
+		return m_Scenes[m_StringToIndex[_name]];
+	}
+
+	void SceneManager::DeleteScene(uint8_t index)
+	{
+		if (m_Scenes.find(index) == m_Scenes.end())
+		{
+			HD_CORE_WARN("Deleting a scene that does not exist! (index {0})", index);
+			return;
+		}
+		
+		const std::string& name = m_SceneNames[index];
+		m_StringToIndex.erase(name);
+		m_SceneNames.erase(index);
+		m_Scenes.erase(index);
 	}
 
 	void SceneManager::LoadScene(uint8_t index)
@@ -61,13 +81,13 @@ namespace Hudi {
 		}
 	}
 
-	void SceneManager::LoadScene(const char* _name)
+	void SceneManager::LoadScene(const std::string& _name)
 	{
-		if (m_StringsToIndexes.find(_name) == m_StringsToIndexes.end())
+		if (m_StringToIndex.find(_name) == m_StringToIndex.end())
 			return;
 
-		m_Scenes[s_ActiveScene]->EndScene();
-		s_ActiveScene = m_StringsToIndexes[_name];
-		m_Scenes[s_ActiveScene]->BeginScene();
+		m_Scenes[m_ActiveScene]->EndScene();
+		m_ActiveScene = m_StringToIndex[_name];
+		m_Scenes[m_ActiveScene]->BeginScene();
 	}
 }

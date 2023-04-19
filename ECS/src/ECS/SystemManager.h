@@ -7,6 +7,8 @@
 
 namespace ECS {
 
+	class World;
+
 	class System 
 	{
 	public:
@@ -21,6 +23,8 @@ namespace ECS {
 		Signature m_Signature;
 		std::unordered_set<Entity> m_Entities;
 
+		World* world = nullptr;
+		friend class World;
 	};
 
 	//---------------(Get System ID)-----------------//
@@ -48,6 +52,8 @@ namespace ECS {
 		void AddSystem(Entity entt, const Signature& sig);
 
 		void AddEntity(Entity entt, const Signature& sig);
+
+		void Invalidate(Entity entt, const Signature& sig);
 		
 		void DestroyEntity(Entity entt);
 
@@ -55,7 +61,6 @@ namespace ECS {
 		std::array<std::shared_ptr<System>, MAX_SYSTEMS> m_Systems;
 		size_t m_Size = 0;
 	};
-
 
 
 
@@ -96,6 +101,19 @@ namespace ECS {
 			if ((sysSig & sig) == sysSig)
 			{
 				system->AddEntity(entt);
+			}
+		}
+	}
+
+	inline void SystemManager::Invalidate(Entity entt, const Signature& sig)
+	{
+		for (size_t id = 0; id < m_Size; id++)
+		{
+			auto& system = m_Systems[id];
+			const auto& sysSig = system->GetSignature();
+			if ((sysSig & sig) != sysSig)
+			{
+				system->RemoveEntity(entt);
 			}
 		}
 	}

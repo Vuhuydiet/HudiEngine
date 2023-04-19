@@ -15,6 +15,10 @@ namespace Hudi {
 		VSync(false)
 	{}
 
+	WindowProps::WindowProps(const char* title, int xpos, int ypos, int width, int height, int flags, bool VSync)
+		: title(title), xpos(xpos), ypos(ypos), width(width), height(height), flags(flags), VSync(VSync) {}
+
+
 	Window* Window::Create(const WindowProps& props)
 	{
 #ifdef HD_PLATFORM_WINDOWS

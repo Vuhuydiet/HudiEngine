@@ -13,7 +13,7 @@ namespace Hudi {
 	class HUDI_API Application
 	{
 	public:
-		Application();
+		Application(WindowProps props = WindowProps());
 		virtual ~Application();
 
 		void Init();
@@ -30,9 +30,6 @@ namespace Hudi {
 		void Close() { m_Running = false; }
 
 		static Application& Get() { return *s_Instance; }
-
-	protected:
-		virtual WindowProps WindowProperties();
 
 	private:
 		void OnQuitEvent(Event& e);

@@ -2,7 +2,7 @@
 #include "Texture.h"
 
 #include "Renderer.h"
-#include "Platform/OpenGL/OpenGLTexture.h"
+#include "Platform/OpenGL/OpenGLTexture2D.h"
 
 namespace Hudi {
 
@@ -21,7 +21,7 @@ namespace Hudi {
 		return nullptr;
 	}
 
-	Ref<Texture2D> Texture2D::Create(const std::string& filePath)
+	Ref<Texture2D> Texture2D::Create(const std::string& filepath)
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -29,7 +29,7 @@ namespace Hudi {
 			HD_CORE_ASSERT(true, "RendererAPI \"None\" is not supported!");
 			return nullptr;
 		case RendererAPI::API::OpenGL:
-			return NewRef<OpenGLTexture2D>(filePath);
+			return NewRef<OpenGLTexture2D>(filepath);
 		}
 
 		HD_CORE_ASSERT(true, "Unknown renderer API!");
