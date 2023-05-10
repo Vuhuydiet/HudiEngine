@@ -23,8 +23,11 @@ namespace Hudi {
 		case ShaderDataType::Mat3:		return 4 * 3 * 3;
 		case ShaderDataType::Mat4:		return 4 * 4 * 4;
 		}
-
+#if defined(HD_CORE_ERROR)
 		HD_CORE_ERROR("Unknown ShaderDataType!");
+#elif defined(HD_ERROR)
+		HD_ERROR("Unknown ShaderDataType!");
+#endif
 		return 0;
 	}
 
@@ -47,7 +50,7 @@ namespace Hudi {
 	{
 	public:
 		BufferLayout() : m_Stride(0) {}
-		BufferLayout(const std::initializer_list<BufferElement>& elements)
+		BufferLayout(std::initializer_list<BufferElement> elements)
 			: m_Elements(elements), m_Stride(0)
 		{
 			CalculateOffsetAndStride();

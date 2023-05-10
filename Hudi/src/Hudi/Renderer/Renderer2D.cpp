@@ -2,13 +2,14 @@
 #include "Renderer2D.h"
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 namespace Hudi {
 
-#define BOTTOM_LEFT		0
-#define BOTTOM_RIGHT	1
-#define TOP_RIGHT		2
-#define TOP_LEFT		3
+	constexpr auto BOT_LEFT = 0;
+	constexpr auto BOT_RIGHT = 1;
+	constexpr auto TOP_RIGHT = 2;
+	constexpr auto TOP_LEFT = 3;
 
 	static const uint32_t MAX_QUADS = 20000;
 	static const uint32_t MAX_VERTICES = MAX_QUADS * 4;
@@ -22,6 +23,7 @@ namespace Hudi {
 		glm::vec2 texCoord;
 		float texIndex;
 		float tilingFactor;
+		int quadID;
 	};
 
 	struct RendererData
@@ -49,7 +51,8 @@ namespace Hudi {
 			{ ShaderDataType::Float4, "a_Color" },
 			{ ShaderDataType::Float2, "a_TexCoord" },
 			{ ShaderDataType::Float, "a_TexIndex" },
-			{ ShaderDataType::Float, "a_TilingFactor" }
+			{ ShaderDataType::Float, "a_TilingFactor" },
+			{ ShaderDataType::Int, "a_QuadID" }
 			});
 		s_Data.vertexArray->SetVertexBuffer(s_Data.vertexBuffer);
 
@@ -57,13 +60,13 @@ namespace Hudi {
 		uint32_t offset = 0;
 		for (uint32_t i = 0; i < MAX_INDICES; i += 6)
 		{
-			indices[i + 0] = offset + BOTTOM_LEFT;
-			indices[i + 1] = offset + BOTTOM_RIGHT;
+			indices[i + 0] = offset + BOT_LEFT;
+			indices[i + 1] = offset + BOT_RIGHT;
 			indices[i + 2] = offset + TOP_RIGHT;
 
 			indices[i + 3] = offset + TOP_RIGHT;
 			indices[i + 4] = offset + TOP_LEFT;
-			indices[i + 5] = offset + BOTTOM_LEFT;
+			indices[i + 5] = offset + BOT_LEFT;
 
 			offset += 4;
 		}
@@ -101,10 +104,17 @@ namespace Hudi {
 		Reset();
 	}
 
-	void Renderer2D::BeginScene(const glm::mat4& projection, const glm::mat4& transform)
+	void Renderer2D::BeginScene(const glm::mat4& cameraProjection, const glm::mat4& cameraTransform)
 	{
 		s_Data.shader->Bind();
-		s_Data.shader->SetUniform("u_ProjectionView", projection * glm::inverse(transform));
+		s_Data.shader->SetUniform("u_ProjectionView", cameraProjection * glm::inverse(cameraTransform));
+		Reset();
+	}
+
+	void Renderer2D::BeginScene(const glm::mat4& projectionView)
+	{
+		s_Data.shader->Bind();
+		s_Data.shader->SetUniform("u_ProjectionView", projectionView);
 		Reset();
 	}
 
@@ -151,7 +161,7 @@ namespace Hudi {
 		return (float)s_Data.textureCount - 1.0f;
 	}
 
-	void Renderer2D::DrawQuad(const Quad& quad)
+	void Renderer2D::DrawQuad(const Quad& quad, int quadID)
 	{
 		if (s_Data.quadCount >= MAX_QUADS)
 		{
@@ -160,33 +170,20 @@ namespace Hudi {
 
 		float xoffset = quad.size.x * 0.5f;
 		float yoffset = quad.size.y * 0.5f;
-
+		glm::vec2 vertexPos[] = { {-xoffset, -yoffset}, {xoffset, -yoffset}, {xoffset, yoffset}, {-xoffset, yoffset} };
+		glm::vec2 texCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
 		float texIndex = GetTextureIndex(quad.texture);
 
 		uint32_t cur_pos = s_Data.quadCount * 4;
-		s_Data.vertices[cur_pos + BOTTOM_LEFT].pos = quad.transform * glm::vec4{ -xoffset, -yoffset, 0.0f, 1.0f }; //{ quad.position.x - xoffset, quad.position.y - yoffset, quad.position.z };
-		s_Data.vertices[cur_pos + BOTTOM_LEFT].color = quad.color;
-		s_Data.vertices[cur_pos + BOTTOM_LEFT].texCoord = { 0.0f, 0.0f };
-		s_Data.vertices[cur_pos + BOTTOM_LEFT].texIndex = texIndex;
-		s_Data.vertices[cur_pos + BOTTOM_LEFT].tilingFactor = quad.tilingFactor;
-
-		s_Data.vertices[cur_pos + BOTTOM_RIGHT].pos = quad.transform * glm::vec4{ xoffset, -yoffset, 0.0f, 1.0f };//{ quad.position.x + xoffset, quad.position.y - yoffset, quad.position.z };
-		s_Data.vertices[cur_pos + BOTTOM_RIGHT].color = quad.color;
-		s_Data.vertices[cur_pos + BOTTOM_RIGHT].texCoord = { 1.0f, 0.0f };
-		s_Data.vertices[cur_pos + BOTTOM_RIGHT].texIndex = texIndex;
-		s_Data.vertices[cur_pos + BOTTOM_RIGHT].tilingFactor = quad.tilingFactor;
-
-		s_Data.vertices[cur_pos + TOP_RIGHT].pos = quad.transform * glm::vec4{ xoffset, yoffset, 0.0f, 1.0f }; //{ quad.position.x + xoffset, quad.position.y + yoffset, quad.position.z };
-		s_Data.vertices[cur_pos + TOP_RIGHT].color = quad.color;
-		s_Data.vertices[cur_pos + TOP_RIGHT].texCoord = { 1.0f, 1.0f };
-		s_Data.vertices[cur_pos + TOP_RIGHT].texIndex = texIndex;
-		s_Data.vertices[cur_pos + TOP_RIGHT].tilingFactor = quad.tilingFactor;
-
-		s_Data.vertices[cur_pos + TOP_LEFT].pos = quad.transform * glm::vec4{ -xoffset, yoffset, 0.0f, 1.0f }; //{ quad.position.x - xoffset, quad.position.y + yoffset, quad.position.z };
-		s_Data.vertices[cur_pos + TOP_LEFT].color = quad.color;
-		s_Data.vertices[cur_pos + TOP_LEFT].texCoord = { 0.0f, 1.0f };
-		s_Data.vertices[cur_pos + TOP_LEFT].texIndex = texIndex;
-		s_Data.vertices[cur_pos + TOP_LEFT].tilingFactor = quad.tilingFactor;
+		for (int i = 0; i < 4; i++)
+		{
+			s_Data.vertices[cur_pos + i].pos			= quad.transform * glm::vec4(vertexPos[i], 0.0f, 1.0f);
+			s_Data.vertices[cur_pos + i].color			= quad.color;
+			s_Data.vertices[cur_pos + i].texCoord		= texCoords[i];
+			s_Data.vertices[cur_pos + i].texIndex		= texIndex;
+			s_Data.vertices[cur_pos + i].tilingFactor	= quad.tilingFactor;
+			s_Data.vertices[cur_pos + i].quadID			= quadID;
+		}
 
 		s_Data.quadCount++;
 	}
@@ -194,7 +191,7 @@ namespace Hudi {
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
 	{
 		Quad quad;
-		quad.transform= glm::translate(glm::mat4(1.0f), position);
+		quad.transform = glm::translate(glm::mat4(1.0f), position);
 		quad.size = size;
 		quad.color = color;
 		DrawQuad(quad);

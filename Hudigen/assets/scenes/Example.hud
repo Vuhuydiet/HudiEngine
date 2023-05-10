@@ -3,98 +3,32 @@ Objects:
   - Entity: 1
     Name: Main Camera
     Transform:
-      Position: [0, 0, 11.6999998]
+      Position: [0, 0, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     Camera:
-      Type: 0
-      Orthographic Data: [-3.03499985, 3.03499985, -3.36999989, 3.36999989, -10, 10]
-      Perspective Data: [48, 0.90059346, 5.69999981, 1000]
+      Type: 1
+      Orthographic Data: [-4.53999996, 4.53999996, -3.4849999, 3.4849999, -10, 10]
+      Perspective Data: [45, 1.30272591, 0.100000001, 1000]
   - Entity: 2
-    Name: vu dep trai (1) (4)
+    Name: vu dep trai (1)
     Transform:
-      Position: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
+      Position: [-0.00046479702, -0.624711812, -1.34529698]
+      Rotation: [-74, -0, 0]
+      Scale: [13.9499998, 5.28000021, 4.62933731]
     Sprite Renderer:
       Size: [1, 1]
-      Color: [1, 1, 1, 1]
+      Color: [0.637096763, 0.403323352, 0.403323352, 1]
       Image file path: ""
       Order: 0
   - Entity: 3
-    Name: New GameObject (5)
-    Transform:
-      Position: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    Sprite Renderer:
-      Size: [1, 1]
-      Color: [1, 1, 1, 1]
-      Image file path: ""
-      Order: 0
-  - Entity: 4
     Name: New GameObject (2)
     Transform:
-      Position: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
+      Position: [0.54673779, 0.140000001, 0]
+      Rotation: [0, 0.359996319, 0]
+      Scale: [48.6176071, 4.62311649, 9.33330536]
     Sprite Renderer:
       Size: [1, 1]
-      Color: [1, 1, 1, 1]
+      Color: [0.943548381, 0.239691719, 0.239691719, 1]
       Image file path: ""
-      Order: 0
-  - Entity: 5
-    Name: New GameObject (3)
-    Transform:
-      Position: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    Sprite Renderer:
-      Size: [1, 1]
-      Color: [1, 1, 1, 1]
-      Image file path: ""
-      Order: 0
-  - Entity: 6
-    Name: New GameObject (4)
-    Transform:
-      Position: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    Sprite Renderer:
-      Size: [1, 1]
-      Color: [1, 1, 1, 1]
-      Image file path: ""
-      Order: 0
-  - Entity: 7
-    Name: New GameObject (5) (6)
-    Transform:
-      Position: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    Sprite Renderer:
-      Size: [1, 1]
-      Color: [1, 1, 1, 1]
-      Image file path: ""
-      Order: 0
-  - Entity: 8
-    Name: New GameObject (6) (7)
-    Transform:
-      Position: [1, -1.20000005, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    Sprite Renderer:
-      Size: [1, 1]
-      Color: [1, 1, 0.800000012, 1]
-      Image file path: ""
-      Order: 0
-  - Entity: 9
-    Name: New GameObject (8) (8)
-    Transform:
-      Position: [0, 1.89999998, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    Sprite Renderer:
-      Size: [2.0999999, 1]
-      Color: [0.463709652, 0.289818525, 0.289818525, 1]
-      Image file path: assets/textures/hz.png
       Order: 0

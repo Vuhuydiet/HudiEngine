@@ -1,0 +1,23 @@
+Scene: Untitled
+Objects:
+  - Entity: 1
+    Name: Main Camera
+    Transform:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Camera:
+      Type: 1
+      Orthographic Data: [-5.81999969, 5.81999969, -3.8499999, 3.8499999, -10, 10]
+      Perspective Data: [45, 1.51168835, 0.100000001, 1000]
+  - Entity: 2
+    Name: vu dep trai
+    Transform:
+      Position: [-4.11066961, -1.74298692, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 1]
+      Image file path: ""
+      Order: 0

@@ -3,16 +3,16 @@
 #include "hdpch.h"
 #include "Hudi/Core/Core.h"
 
-#include <SDL.h>
-
 #include "Hudi/Source/KeyCodes.h"
 #include "Hudi/Source/MouseCodes.h"
-#include "Hudi/Source/Vec2.h"
+
+#include <SDL.h>
+
+#include <glm/glm.hpp>
 
 namespace Hudi {
 
-	using EventType = int;
-	enum : EventType 
+	enum EventType 
 	{
 		QUIT				= SDL_QUIT,
 		WINDOW_EVENT		= SDL_WINDOWEVENT,
@@ -24,8 +24,7 @@ namespace Hudi {
 		MOUSE_WHEEL			= SDL_MOUSEWHEEL
 	};
 
-	using WindowEvent = int;
-	enum : WindowEvent
+	enum WindowEvent
 	{
 		WINDOWEVENT_RESIZED = SDL_WINDOWEVENT_RESIZED,
 		WINDOWEVENT_SIZE_CHANGED = SDL_WINDOWEVENT_SIZE_CHANGED
@@ -39,9 +38,13 @@ namespace Hudi {
 			: m_Event(e)
 		{}
 
-		EventType type() const { return m_Event.type; }
+		EventType type() const { return (EventType)m_Event.type; }
 
 		operator SDL_Event() const { return m_Event; }
+
+	public:
+		KeyCode GetKeyCode() const { return m_Event.key.keysym.sym; }
+		int GetYOffset() const { return m_Event.wheel.y; }
 
 	public:
 		bool handled = false;
@@ -86,7 +89,7 @@ namespace Hudi {
 		static bool MouseDown(MouseCode button);
 		static bool MouseUp(MouseCode button);
 
-		static Vec2<int> MousePosition();
+		static glm::vec2 MousePosition();
 	
 	private:
 		static std::function<void(Event&)> m_CallBackFn;

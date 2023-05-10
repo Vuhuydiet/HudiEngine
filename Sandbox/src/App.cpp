@@ -134,7 +134,6 @@ class Sandbox : public Hudi::Application
 public:
 	Sandbox()
 	{
-		HD_WARN("Currently disable timer!");
 		//Hudi::Time::SetFPS(30);
 
 		//PushLayer(new Hudi::EditorLayer());

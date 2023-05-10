@@ -50,7 +50,7 @@ namespace Hudi {
 		return EventManager::MouseUp(button);
 	}
 
-	Vec2<int> Input::GetMousePosition()
+	glm::vec2 Input::GetMousePosition()
 	{
 		return EventManager::MousePosition();
 	}

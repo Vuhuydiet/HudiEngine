@@ -76,8 +76,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>hdpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>YAML_CPP_STATIC_DEFINE;_CRT_SECURE_NO_WARNINGS;HD_PLATFORM_WINDOWS;HD_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;vendor\SDL2\include;vendor\SDL2_image\include;vendor\Glad\include;vendor\ImGui;vendor\glm;vendor\stb_image;vendor\yaml-cpp\include;src;..\ECS\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>HD_LIB;_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;HD_PLATFORM_WINDOWS;HD_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;vendor\SDL2\include;vendor\SDL2_image\include;vendor\Glad\include;vendor\ImGui;vendor\glm;vendor\stb_image;vendor\yaml-cpp\include;vendor\ImGuizmo;src;..\ECS\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -101,8 +101,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>hdpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>YAML_CPP_STATIC_DEFINE;_CRT_SECURE_NO_WARNINGS;HD_PLATFORM_WINDOWS;HD_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;vendor\SDL2\include;vendor\SDL2_image\include;vendor\Glad\include;vendor\ImGui;vendor\glm;vendor\stb_image;vendor\yaml-cpp\include;src;..\ECS\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>HD_LIB;_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;HD_PLATFORM_WINDOWS;HD_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;vendor\SDL2\include;vendor\SDL2_image\include;vendor\Glad\include;vendor\ImGui;vendor\glm;vendor\stb_image;vendor\yaml-cpp\include;vendor\ImGuizmo;src;..\ECS\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -130,8 +130,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>hdpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>YAML_CPP_STATIC_DEFINE;_CRT_SECURE_NO_WARNINGS;HD_PLATFORM_WINDOWS;HD_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;vendor\SDL2\include;vendor\SDL2_image\include;vendor\Glad\include;vendor\ImGui;vendor\glm;vendor\stb_image;vendor\yaml-cpp\include;src;..\ECS\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>HD_LIB;_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;HD_PLATFORM_WINDOWS;HD_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;vendor\SDL2\include;vendor\SDL2_image\include;vendor\Glad\include;vendor\ImGui;vendor\glm;vendor\stb_image;vendor\yaml-cpp\include;vendor\ImGuizmo;src;..\ECS\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -171,6 +171,7 @@
     <ClInclude Include="src\Hudi\ImGui\imgui_resources\imgui_impl_opengl3.h" />
     <ClInclude Include="src\Hudi\ImGui\imgui_resources\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="src\Hudi\ImGui\imgui_resources\imgui_impl_sdl2.h" />
+    <ClInclude Include="src\Hudi\Math\Math.h" />
     <ClInclude Include="src\Hudi\Renderer\Buffer.h" />
     <ClInclude Include="src\Hudi\Renderer\Framebuffer.h" />
     <ClInclude Include="src\Hudi\Renderer\GraphicsContext.h" />
@@ -208,8 +209,8 @@
     <ClInclude Include="src\Hudi\Source\Time.h" />
     <ClInclude Include="src\Hudi\Source\Vec2.h" />
     <ClInclude Include="src\Hudi\Source\Vec3.h" />
-    <ClInclude Include="src\HudiEngine.h" />
     <ClInclude Include="src\Hudi\Utils\PlatformUtils.h" />
+    <ClInclude Include="src\HudiEngine.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h" />
@@ -219,6 +220,7 @@
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\hdpch.h" />
+    <ClInclude Include="vendor\ImGuizmo\ImGuizmo.h" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
     <ClInclude Include="vendor\glm\glm\detail\_features.hpp" />
     <ClInclude Include="vendor\glm\glm\detail\_fixes.hpp" />
@@ -634,10 +636,12 @@
     <ClCompile Include="src\Hudi\Core\LayerStack.cpp" />
     <ClCompile Include="src\Hudi\Core\Log.cpp" />
     <ClCompile Include="src\Hudi\Core\Window.cpp" />
+    <ClCompile Include="src\Hudi\Debug\Instrumentor.cpp" />
     <ClCompile Include="src\Hudi\Events\Event.cpp" />
     <ClCompile Include="src\Hudi\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Hudi\ImGui\imgui_resources\imgui_impl_opengl3.cpp" />
     <ClCompile Include="src\Hudi\ImGui\imgui_resources\imgui_impl_sdl2.cpp" />
+    <ClCompile Include="src\Hudi\Math\Math.cpp" />
     <ClCompile Include="src\Hudi\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Hudi\Renderer\Framebuffer.cpp" />
     <ClCompile Include="src\Hudi\Renderer\OrthographicCamera.cpp" />
@@ -651,6 +655,7 @@
     <ClCompile Include="src\Hudi\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Hudi\Scene\Components\AnimatorComponent\AnimationComponent.cpp" />
     <ClCompile Include="src\Hudi\Scene\Components\AnimatorComponent\AnimatorComponent.cpp" />
+    <ClCompile Include="src\Hudi\Scene\Components\Components.cpp" />
     <ClCompile Include="src\Hudi\Scene\GameObject.cpp" />
     <ClCompile Include="src\Hudi\Scene\Physics\CollisionDetector.cpp" />
     <ClCompile Include="src\Hudi\Scene\Physics\PhysicsSystem.cpp" />
@@ -673,6 +678,9 @@
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\hdpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="vendor\ImGuizmo\ImGuizmo.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="vendor\stb_image\stb_image.cpp" />
   </ItemGroup>

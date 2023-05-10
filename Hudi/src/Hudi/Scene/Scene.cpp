@@ -34,6 +34,7 @@ namespace Hudi {
 	{
 		HD_CORE_INFO("Start scene {0}", m_BuildIndex);
 		m_RenderSystem = m_World->RegisterSystem<RenderSystem>();
+		m_RenderSystem->scene = this;
 	}
 
 	void Scene::EndScene()
@@ -44,7 +45,7 @@ namespace Hudi {
 	void Scene::OnUpdate(float dt)
 	{
 		m_World->EachComponents<Component>([](Ref<Component> comp) { comp->Awake(); });
-		m_World->EachComponents<Component>([=](Ref<Component> comp) { comp->Update(dt); });
+		m_World->EachComponents<Component>([dt](Ref<Component> comp) { comp->Update(dt); });
 		
 		m_RenderSystem->OnUpdate(dt);
 
@@ -55,6 +56,7 @@ namespace Hudi {
 	{
 		if (width <= 0 || height <= 0)
 			return;
+
 		m_Width = width, m_Height = height;
 		for (auto& entt : m_World->View<Camera>())
 		{
@@ -70,8 +72,8 @@ namespace Hudi {
 			uint32_t id = m_DestroyedObjects.front();
 			m_DestroyedObjects.pop();
 
-			GameObject go = m_GameObjects[id];
-			const std::string& name = m_EntityToName[id];
+			GameObject go = m_GameObjects.at(id);
+			const std::string& name = m_EntityToName.at(id);
 
 			m_GameObjects.erase(id);
 			m_EntityToName.erase(id);
@@ -112,9 +114,10 @@ namespace Hudi {
 		return m_NameToEntity.find(_name.c_str()) != m_NameToEntity.end();
 	}
 
-	bool Scene::HasGameObject(uint32_t id)
+	bool Scene::HasGameObject(GameObject object)
 	{
-		return m_EntityToName.find(id) != m_EntityToName.end();
+		uint32_t id = object.GetEntityID();
+		return m_GameObjects.find(id) != m_GameObjects.end() && m_GameObjects.at(id).world == m_World.get();
 	}
 
 	GameObject Scene::GetGameObject(const std::string& _name)
@@ -125,7 +128,7 @@ namespace Hudi {
 			return nullptr;
 		}
 
-		return m_GameObjects[m_NameToEntity[_name.c_str()]];
+		return m_GameObjects.at(m_NameToEntity.at(_name.c_str()));
 	}
 
 	GameObject Scene::GetGameObject(uint32_t id)
@@ -136,7 +139,7 @@ namespace Hudi {
 			return nullptr;
 		}
 
-		return m_GameObjects[id];
+		return m_GameObjects.at(id);
 	}
 
 	void Scene::DestroyGameObject(const std::string& _name)
@@ -147,12 +150,13 @@ namespace Hudi {
 			return;
 		}
 
-		uint32_t id = m_NameToEntity[_name.c_str()];
-		DestroyGameObject(id);
+		GameObject object = m_GameObjects.at(m_NameToEntity.at(_name.c_str()));
+		DestroyGameObject(object);
 	}
 
-	void Scene::DestroyGameObject(uint32_t id)
+	void Scene::DestroyGameObject(GameObject object)
 	{
+		uint32_t id = object.GetEntityID();
 		if (m_EntityToName.find(id) == m_EntityToName.end())
 		{
 			HD_CORE_ERROR("Destroyed a GameObject that does not exist!");
@@ -162,29 +166,52 @@ namespace Hudi {
 		m_DestroyedObjects.push(id);
 	}
 
-	std::string Scene::GetGameObjectName(uint32_t id)
+	std::string Scene::GetGameObjectName(GameObject object)
 	{
+		uint32_t id = object.GetEntityID();
 		if (m_EntityToName.find(id) == m_EntityToName.end())
 		{
 			HD_CORE_ERROR("Get the name of a GameObject that does not exist!");
 			return "unknown";
 		}
 
-		return m_EntityToName[id];
+		return m_EntityToName.at(id);
 	}
 
-	void Scene::RenameGameObject(const std::string& _name, uint32_t id)
+	void Scene::RenameGameObject(const std::string& _name, GameObject object)
 	{
+		uint32_t id = object.GetEntityID();
 		if (m_EntityToName.find(id) == m_EntityToName.end())
 		{
-			HD_ERROR("Renamed GameObject with ID \"{0}\" that does not exist!", id);
+			HD_CORE_ERROR("Renamed GameObject with ID \"{0}\" that does not exist!", id);
 			return;
 		}
 
-		std::string old_name = m_EntityToName[id];
+		std::string old_name = m_EntityToName.at(id);
 		m_EntityToName[id] = _name;
 		m_NameToEntity.erase(old_name.c_str());
 		m_NameToEntity[_name.c_str()] = id;
+	}
+
+	bool Scene::SetPrimaryCamera(GameObject camera)
+	{
+		if (!HasGameObject(camera) || !camera.HasComponent<Transform>() || !camera.HasComponent<Camera>())
+		{
+			HD_CORE_ERROR("Setting the primary camera object to be an object that does not exists in the scene!");
+			return false;
+		}
+		m_PrimaryCamera = camera;
+		return true;
+	}
+
+	void Scene::ResetPrimaryCamera()
+	{
+		m_PrimaryCamera.Reset();
+	}
+
+	GameObject Scene::GetPrimaryCamera()
+	{
+		return m_PrimaryCamera;
 	}
 
 }

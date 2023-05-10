@@ -4,6 +4,8 @@
 
 namespace Hudi {
 
+	class Scene;
+
 	class RenderSystem : public ECS::System
 	{
 	public:
@@ -12,6 +14,8 @@ namespace Hudi {
 		void OnUpdate(float dt);
 
 	private:
+		Scene* scene = nullptr;
+		friend class Scene;
 	};
 
 }

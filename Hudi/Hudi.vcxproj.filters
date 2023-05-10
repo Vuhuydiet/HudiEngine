@@ -22,6 +22,9 @@
     <Filter Include="src\Hudi\ImGui\imgui_resources">
       <UniqueIdentifier>{9430F542-8056-BFA9-699C-44755561E475}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Hudi\Math">
+      <UniqueIdentifier>{DFC918F9-4B8A-942F-14C5-DDAC8044D90B}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Hudi\Renderer">
       <UniqueIdentifier>{ACBB3CCD-18D2-3A63-6149-C684CD9E0BEB}</UniqueIdentifier>
     </Filter>
@@ -46,6 +49,9 @@
     <Filter Include="src\Hudi\Source">
       <UniqueIdentifier>{86CC6FB1-F257-DD75-FB68-606A67733976}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Hudi\Utils">
+      <UniqueIdentifier>{2607CD1C-12D5-C022-FB68-3149E7D59C87}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Platform">
       <UniqueIdentifier>{21CA02E5-0D2D-9289-B6B2-CA3FA2F45D0C}</UniqueIdentifier>
     </Filter>
@@ -57,6 +63,9 @@
     </Filter>
     <Filter Include="vendor">
       <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\ImGuizmo">
+      <UniqueIdentifier>{73BF7F4C-DF4A-ED10-E85B-700554664911}</UniqueIdentifier>
     </Filter>
     <Filter Include="vendor\glm">
       <UniqueIdentifier>{829FC5A8-6E57-07F6-D75E-E051C335A2E6}</UniqueIdentifier>
@@ -129,8 +138,8 @@
     <ClInclude Include="src\Hudi\ImGui\imgui_resources\imgui_impl_sdl2.h">
       <Filter>src\Hudi\ImGui\imgui_resources</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hudi\Renderer\Buffer.h">
-      <Filter>src\Hudi\Renderer</Filter>
+    <ClInclude Include="src\Hudi\Math\Math.h">
+      <Filter>src\Hudi\Math</Filter>
     </ClInclude>
     <ClInclude Include="src\Hudi\Renderer\Framebuffer.h">
       <Filter>src\Hudi\Renderer</Filter>
@@ -240,6 +249,9 @@
     <ClInclude Include="src\Hudi\Source\Vec3.h">
       <Filter>src\Hudi\Source</Filter>
     </ClInclude>
+    <ClInclude Include="src\Hudi\Utils\PlatformUtils.h">
+      <Filter>src\Hudi\Utils</Filter>
+    </ClInclude>
     <ClInclude Include="src\HudiEngine.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -269,6 +281,9 @@
     </ClInclude>
     <ClInclude Include="src\hdpch.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\ImGuizmo\ImGuizmo.h">
+      <Filter>vendor\ImGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="vendor\glm\glm\common.hpp">
       <Filter>vendor\glm\glm</Filter>
@@ -1497,7 +1512,7 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hudi\Utils\PlatformUtils.h" />
+    <ClInclude Include="src\Hudi\Renderer\Buffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Hudi\Core\Application.cpp">
@@ -1523,6 +1538,9 @@
     </ClCompile>
     <ClCompile Include="src\Hudi\ImGui\imgui_resources\imgui_impl_sdl2.cpp">
       <Filter>src\Hudi\ImGui\imgui_resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Math\Math.cpp">
+      <Filter>src\Hudi\Math</Filter>
     </ClCompile>
     <ClCompile Include="src\Hudi\Renderer\Buffer.cpp">
       <Filter>src\Hudi\Renderer</Filter>
@@ -1617,15 +1635,22 @@
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
       <Filter>src\Platform\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsPlatformUtils.cpp">
+      <Filter>src\Platform\Windows</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
       <Filter>src\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\hdpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="vendor\ImGuizmo\ImGuizmo.cpp">
+      <Filter>vendor\ImGuizmo</Filter>
+    </ClCompile>
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Platform\Windows\WindowsPlatformUtils.cpp" />
+    <ClCompile Include="src\Hudi\Debug\Instrumentor.cpp" />
+    <ClCompile Include="src\Hudi\Scene\Components\Components.cpp" />
   </ItemGroup>
 </Project>

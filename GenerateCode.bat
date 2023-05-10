@@ -1,2 +1,2 @@
-call CodeGenerator\bin\CodeGenerator.exe vs2022
+call CodeGenerator\bin\CodeGenerator.exe "Sandbox/Design Patterns/core.txt"
 PAUSE

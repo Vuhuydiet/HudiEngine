@@ -37,11 +37,12 @@ namespace Hudi {
 
 		static void BeginScene(OrthographicCamera& camera);
 		static void BeginScene(const glm::mat4& cameraProjection, const glm::mat4& cameraTransform);
+		static void BeginScene(const glm::mat4& projectionView);
 		static void EndScene();
 		
 		static void Flush();
 
-		static void DrawQuad(const Quad& quad);
+		static void DrawQuad(const Quad& quad, int quadID = 0);
 
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, Ref<Texture2D> texture);

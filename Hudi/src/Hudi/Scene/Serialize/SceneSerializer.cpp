@@ -13,6 +13,7 @@ namespace YAML {
 			Node node;
 			node.push_back(rhs.x);
 			node.push_back(rhs.y);
+			node.SetStyle(EmitterStyle::Flow);
 			return node;
 		}
 
@@ -35,6 +36,7 @@ namespace YAML {
 			node.push_back(rhs.x);
 			node.push_back(rhs.y);
 			node.push_back(rhs.z);
+			node.SetStyle(EmitterStyle::Flow);
 			return node;
 		}
 
@@ -59,6 +61,7 @@ namespace YAML {
 			node.push_back(rhs.y);
 			node.push_back(rhs.z);
 			node.push_back(rhs.w);
+			node.SetStyle(EmitterStyle::Flow);
 			return node;
 		}
 
@@ -83,6 +86,7 @@ namespace YAML {
 			node.push_back(rhs.x);
 			node.push_back(rhs.y);
 			node.push_back(rhs.z);
+			node.SetStyle(EmitterStyle::Flow);
 			return node;
 		}
 
@@ -109,6 +113,7 @@ namespace YAML {
 			node.push_back(rhs.top);
 			node.push_back(rhs.zNear);
 			node.push_back(rhs.zFar);
+			node.SetStyle(EmitterStyle::Flow);
 			return node;
 		}
 
@@ -136,6 +141,7 @@ namespace YAML {
 			node.push_back(rhs.aspectRatio);
 			node.push_back(rhs.zNear);
 			node.push_back(rhs.zFar);
+			node.SetStyle(EmitterStyle::Flow);
 			return node;
 		}
 
@@ -200,6 +206,7 @@ namespace Hudi {
 	SceneSerializer::SceneSerializer(Ref<Scene> scene)
 		: m_Scene(scene)
 	{
+		HD_CORE_ASSERT(!scene, "Cannot serialize a null scene!");
 	}
 
 	static void SerializeGameObject(YAML::Emitter& out, GameObject object, const std::string& name)
@@ -253,7 +260,7 @@ namespace Hudi {
 		out << YAML::Key << "Scene" << YAML::Value << "Untitled";
 		out << YAML::Key << "Objects" << YAML::Value << YAML::BeginSeq;
 		m_Scene->Each([&](GameObject object) {
-			SerializeGameObject(out, object, m_Scene->GetGameObjectName(object.GetEntityID()));
+			SerializeGameObject(out, object, m_Scene->GetGameObjectName(object));
 		});
 		out << YAML::EndSeq;
 		out << YAML::EndMap;
@@ -265,11 +272,7 @@ namespace Hudi {
 
 	bool SceneSerializer::Open(const std::string& filepath)
 	{
-		std::ifstream stream(filepath);
-		std::stringstream sstream;
-		sstream << stream.rdbuf();
-
-		YAML::Node data = YAML::Load(sstream.str());
+		YAML::Node data = YAML::LoadFile(filepath);
 		if (!data["Scene"])
 		{
 			HD_CORE_ERROR("No scene found in '{0}'!", filepath);

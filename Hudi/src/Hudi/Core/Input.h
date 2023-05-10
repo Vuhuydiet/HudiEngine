@@ -5,7 +5,7 @@
 #include "Hudi/Source/KeyCodes.h"
 #include "Hudi/Source/MouseCodes.h"
 
-#include "Hudi/Source/Vec2.h"
+#include <glm/glm.hpp>
 
 namespace Hudi {
 
@@ -24,7 +24,7 @@ namespace Hudi {
 		static bool IsMouseDown(MouseCode button);
 		static bool IsMouseUp(MouseCode button);
 
-		static Vec2<int> GetMousePosition();
+		static glm::vec2 GetMousePosition();
 	};
 
 }

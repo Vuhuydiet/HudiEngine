@@ -7,11 +7,11 @@
 
 namespace Hudi {
 
-	class Hudigen : public Application
+	class HudiGen : public Application
 	{
 	public:
-		Hudigen()
-			: Application(WindowProps("Hudigen", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+		HudiGen()
+			: Application(WindowProps("HudiGen", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 				1280, 720, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI))
 		{
 			HD_WARN("Currently disable FPS controller!");
@@ -29,5 +29,5 @@ namespace Hudi {
 
 Hudi::Application* Hudi::CreateApplication()
 {
-	return new Hudigen();
+	return new HudiGen();
 }

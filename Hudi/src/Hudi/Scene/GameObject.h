@@ -5,6 +5,8 @@
 
 namespace Hudi {
 
+	class Scene;
+
 	class GameObject
 	{
 	public:
@@ -14,7 +16,7 @@ namespace Hudi {
 		void Destroy();
 		void Reset();
 
-		bool Valid() const { return m_Entity != 0 && world != nullptr; }
+		bool Valid() const { return m_Entity > 0 && world != nullptr; }
 
 		ECS::Entity GetEntityID() const { return m_Entity; }
 
@@ -38,6 +40,7 @@ namespace Hudi {
 
 		template <typename T>
 		T& GetComponent() { return *world->GetComponent<T>(m_Entity); }
+
 		template <typename T>
 		T& GetOrAddComponent() { return HasComponent<T>() ? GetComponent<T>() : AddComponent<T>(); }
 
@@ -60,6 +63,7 @@ namespace Hudi {
 
 	private:
 		ECS::World* world;
+		friend class Scene;
 	};
 
 

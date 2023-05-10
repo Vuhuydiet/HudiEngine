@@ -9,7 +9,6 @@
     <ClInclude Include="src\CodeGenerator\CodeGenerator.h">
       <Filter>CodeGenerator</Filter>
     </ClInclude>
-    <ClInclude Include="src\cgpch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CodeGenerator\CodeGenerator.cpp">
@@ -18,6 +17,5 @@
     <ClCompile Include="src\CodeGenerator\generator.cpp">
       <Filter>CodeGenerator</Filter>
     </ClCompile>
-    <ClCompile Include="src\cgpch.cpp" />
   </ItemGroup>
 </Project>

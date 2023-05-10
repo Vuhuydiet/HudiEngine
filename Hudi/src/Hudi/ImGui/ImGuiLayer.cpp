@@ -4,11 +4,11 @@
 #include <glad/glad.h>
 #include <SDL.h>
 #include <SDL_opengl.h>
+
 #include <imgui.h>
 #include "imgui_resources/imgui_impl_sdl2.h"
 #include "imgui_resources/imgui_impl_opengl3.h"
-
-#include <glm/glm.hpp>
+#include <ImGuizmo.h>
 
 #include "Hudi/Core/Application.h"
 
@@ -55,12 +55,12 @@ namespace Hudi {
 			style.WindowRounding = 0.0f;
 			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 		}
-		style.WindowMenuButtonPosition = ImGuiDir_None;
+		//style.WindowMenuButtonPosition = ImGuiDir_None;
 
 		auto window = (SDL_Window*)Application::Get().GetWindow().GetNativeWindow();
 		auto gl_context = SDL_GL_GetCurrentContext();
 		ImGui_ImplSDL2_InitForOpenGL(window, gl_context);
-		ImGui_ImplOpenGL3_Init("#version 130");
+		ImGui_ImplOpenGL3_Init("#version 410");
 	}
 
 	void ImGuiLayer::OnDetach()
@@ -80,6 +80,8 @@ namespace Hudi {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplSDL2_NewFrame();
 		ImGui::NewFrame();
+
+		ImGuizmo::BeginFrame();
 	}
 
 	void ImGuiLayer::End()

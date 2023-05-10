@@ -1,7 +1,8 @@
-#include "cgpch.h"
 #include "CodeGenerator.h"
 
-CodeGenerator::CodeGenerator()
+#include <iostream>
+
+void CodeGenerator::Generate()
 {
 	std::string in_filePath, out_filePath;
 
@@ -20,24 +21,22 @@ CodeGenerator::CodeGenerator()
 		std::cout << "Cannot write.\n";
 
 	GenerateCode();
+
+	write.close();
 }
 
-
-CodeGenerator::CodeGenerator(std::string input, std::string output)
+void CodeGenerator::Generate(const std::string& input, const std::string& output)
 {
 	read.open(input, std::ios::in);
 	if (read.fail())
-		std::cout << "Cannot read.\n";
+		printf("Cannot open '%s'!\n", input.c_str());
 
 	write.open(output, std::ios::out);
 	if (write.fail())
-		std::cout << "Cannot write.\n";
+		printf("Cannot open '%s'!\n", output.c_str());
 
 	GenerateCode();
-}
 
-CodeGenerator::~CodeGenerator()
-{
 	write.close();
 }
 

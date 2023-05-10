@@ -10,17 +10,8 @@ namespace Hudi {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		//glEnable(GL_DEPTH_TEST);
-	}
-
-	void OpenGLRendererAPI::EnableDepthTest(bool enable)
-	{
-		//HD_CORE_INFO("Currently does not support depth testing!");
-		return;
-		if (enable)
-			glEnable(GL_DEPTH_TEST);
-		else
-			glDepthMask(GL_FALSE);
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_LINE_SMOOTH);
 	}
 
 	void OpenGLRendererAPI::SetViewport(int x, int y, uint32_t width, uint32_t height)

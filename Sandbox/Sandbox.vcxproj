@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>HD_PLATFORM_WINDOWS;HD_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Hudi\vendor\spdlog\include;..\Hudi\vendor\SDL2\include;..\Hudi\vendor\SDL2_image\include;..\Hudi\vendor\ImGui;..\Hudi\vendor\glm;src;..\CodeGenerator\src;..\ECS\src;..\Hudi\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Hudi\vendor\spdlog\include;..\Hudi\vendor\SDL2\include;..\Hudi\vendor\SDL2_image\include;..\Hudi\vendor\ImGui;..\Hudi\vendor\glm;src;..\ECS\src;..\Hudi\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -99,7 +99,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>HD_PLATFORM_WINDOWS;HD_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Hudi\vendor\spdlog\include;..\Hudi\vendor\SDL2\include;..\Hudi\vendor\SDL2_image\include;..\Hudi\vendor\ImGui;..\Hudi\vendor\glm;src;..\CodeGenerator\src;..\ECS\src;..\Hudi\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Hudi\vendor\spdlog\include;..\Hudi\vendor\SDL2\include;..\Hudi\vendor\SDL2_image\include;..\Hudi\vendor\ImGui;..\Hudi\vendor\glm;src;..\ECS\src;..\Hudi\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -123,7 +123,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>HD_PLATFORM_WINDOWS;HD_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Hudi\vendor\spdlog\include;..\Hudi\vendor\SDL2\include;..\Hudi\vendor\SDL2_image\include;..\Hudi\vendor\ImGui;..\Hudi\vendor\glm;src;..\CodeGenerator\src;..\ECS\src;..\Hudi\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Hudi\vendor\spdlog\include;..\Hudi\vendor\SDL2\include;..\Hudi\vendor\SDL2_image\include;..\Hudi\vendor\ImGui;..\Hudi\vendor\glm;src;..\ECS\src;..\Hudi\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -158,9 +158,6 @@
     <ClCompile Include="src\Sandbox2D.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CodeGenerator\CodeGenerator.vcxproj">
-      <Project>{47EBA3A8-B3AB-1FDF-7CE6-685CE86564BB}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\Hudi\Hudi.vcxproj">
       <Project>{CF89867C-BBC0-870D-64AD-6D1050C3030F}</Project>
     </ProjectReference>

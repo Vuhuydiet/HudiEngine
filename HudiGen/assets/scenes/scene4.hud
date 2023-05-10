@@ -1,0 +1,34 @@
+Scene: Untitled
+Objects:
+  - Entity: 1
+    Name: New GameObject
+    Transform:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Camera:
+      Type: 1
+      Orthographic Data: [-5, 5, -5, 5, -10, 10]
+      Perspective Data: [45, 1.20000005, 0.100000001, 1000]
+  - Entity: 2
+    Name: New GameObject (2)
+    Transform:
+      Position: [2.5, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Size: [1, 1.60000002]
+      Color: [0.935483873, 0.0226326529, 0.0226326529, 1]
+      Image file path: ""
+      Order: 0
+  - Entity: 3
+    Name: New GameObject (3)
+    Transform:
+      Position: [0, 0.400000006, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 0.733333349]
+      Image file path: assets/textures/hz.png
+      Order: 0

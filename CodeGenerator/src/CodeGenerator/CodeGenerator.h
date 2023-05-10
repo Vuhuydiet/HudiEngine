@@ -1,12 +1,17 @@
 #pragma once
-#include "cgpch.h"
+
+#include <string>
+#include <vector>
+#include <deque>
+#include <fstream>
 
 class CodeGenerator
 {
 public:
-	CodeGenerator();
-	CodeGenerator(std::string input, std::string output);
-	~CodeGenerator();
+	static CodeGenerator& Get() { static CodeGenerator s_Instance; return s_Instance; }
+
+	void Generate();
+	void Generate(const std::string& input, const std::string& output);
 private:
 	void GenerateCode();
 

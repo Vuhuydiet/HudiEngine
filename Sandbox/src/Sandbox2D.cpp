@@ -5,6 +5,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <imgui.h>
 
+#define HD_CORE_IS() Stack s;
+
 namespace Hudi {
 
 	Sandbox2D::Sandbox2D()
@@ -18,6 +20,7 @@ namespace Hudi {
 
 	void Sandbox2D::OnAttach()
 	{
+
 		m_Texture = Texture2D::Create("assets/textures/hz.png");
 
 		FramebufferSpecification specs;

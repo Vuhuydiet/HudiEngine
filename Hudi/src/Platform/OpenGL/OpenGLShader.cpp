@@ -116,7 +116,7 @@ namespace Hudi {
 				glDeleteProgram(program);
 
 				HD_CORE_ERROR("{0}", infoLog.data());
-				HD_CORE_ASSERT(true, "Shader compilation failed!");
+				HD_CORE_ASSERT(false, "Shader compilation failed!");
 				return;
 			}
 			glAttachShader(program, shader);
@@ -143,7 +143,7 @@ namespace Hudi {
 			}
 
 			HD_CORE_ERROR("{0}", infoLog.data());
-			HD_CORE_ASSERT(true, "Shader program linking error!");
+			HD_CORE_ASSERT(false, "Shader program linking error!");
 			return;
 		}
 			

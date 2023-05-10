@@ -12,18 +12,23 @@ project "Hudi"
 
 	defines
 	{
-		"YAML_CPP_STATIC_DEFINE",
-		"_CRT_SECURE_NO_WARNINGS"
+		"HD_LIB",
+
+		"_CRT_SECURE_NO_WARNINGS",
+		"YAML_CPP_STATIC_DEFINE"
 	}
 
 	files
     {
         "src/**.h",
         "src/**.cpp",
+
 		"vendor/glm/**.hpp",
 		"vendor/glm/**.inl",
 		"vendor/stb_image/**.h",
-		"vendor/stb_image/**.cpp"
+		"vendor/stb_image/**.cpp",
+		"vendor/ImGuizmo/ImGuizmo.h",
+		"vendor/ImGuizmo/ImGuizmo.cpp"
     }
 
 	includedirs
@@ -36,6 +41,7 @@ project "Hudi"
 		"vendor/glm",
 		"vendor/stb_image",
 		"vendor/yaml-cpp/include",
+		"vendor/ImGuizmo",
 
 		"src",
 		"%{wks.location}/ECS/src"
@@ -60,6 +66,9 @@ project "Hudi"
 
 		"ECS"
 	}
+
+	filter "files:vendor/ImGuizmo/**.cpp"
+		flags { "NoPCH" }
 
 	filter "system:windows"
 		systemversion "latest"

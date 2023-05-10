@@ -8,11 +8,11 @@ namespace Hudi {
 	{
 		enum : MouseCode
 		{
-			Button_LEFT		= 1, // SDL_BUTTON_LEFT,
-			Button_MIDDLE	= 2, // SDL_BUTTON_MIDDLE,
-			Button_RIGHT	= 3, // SDL_BUTTON_RIGHT,
-			Button_X1		= 4, // SDL_BUTTON_X1,
-			Button_X2		= 5 // SDL_BUTTON_X2
+			BUTTON_LEFT		= 1, // SDL_BUTTON_LEFT,
+			BUTTON_MIDDLE	= 2, // SDL_BUTTON_MIDDLE,
+			BUTTON_RIGHT	= 3, // SDL_BUTTON_RIGHT,
+			BUTTON_X1		= 4, // SDL_BUTTON_X1,
+			BUTTON_X2		= 5 // SDL_BUTTON_X2
 		};
 	}
 

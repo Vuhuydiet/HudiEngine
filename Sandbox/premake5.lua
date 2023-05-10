@@ -23,14 +23,12 @@ project "Sandbox"
 		"%{wks.location}/Hudi/vendor/glm",
 
 		"src",
-		"%{wks.location}/CodeGenerator/src",
 		"%{wks.location}/ECS/src",
 		"%{wks.location}/Hudi/src"
 	}
 
 	links
 	{
-		"CodeGenerator",
 		"Hudi"
 	}
 

@@ -23,26 +23,14 @@ namespace Hudi {
 
 		Renderer::Init();
 
-		////////////////////////////////////////////////////////////////////
-		///--------------------------------------------------------------///
-		////////////////////////////////////////////////////////////////////
-
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
 	}
 
-	void Application::Init()
-	{
-	}
-
 	Application::~Application()
 	{
-		Shutdown();
-	}
-
-	void Application::Shutdown()
-	{
 		Renderer::Shutdown();
+		s_Instance = nullptr;
 	}
 
 	void Application::OnEvent(Event& e)

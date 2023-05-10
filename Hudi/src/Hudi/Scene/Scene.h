@@ -29,16 +29,20 @@ namespace Hudi {
 		GameObject CreateGameObject(const std::string& _name);
 
 		bool HasGameObject(const std::string& _name);
-		bool HasGameObject(uint32_t id);
+		bool HasGameObject(GameObject object);
 
 		GameObject GetGameObject(const std::string& _name);
 		GameObject GetGameObject(uint32_t id);
 
 		void DestroyGameObject(const std::string& _name);
-		void DestroyGameObject(uint32_t id);
+		void DestroyGameObject(GameObject object);
 
-		std::string GetGameObjectName(uint32_t id);
-		void RenameGameObject(const std::string& _name, uint32_t id);
+		std::string GetGameObjectName(GameObject object);
+		void RenameGameObject(const std::string& _name, GameObject object);
+
+		bool SetPrimaryCamera(GameObject camera);
+		void ResetPrimaryCamera();
+		GameObject GetPrimaryCamera();
 
 		// Loop through all GameObjects
 		template <typename Func>
@@ -54,7 +58,9 @@ namespace Hudi {
 		std::map<uint32_t, std::string> m_EntityToName;
 		std::unordered_map<const char*, uint32_t> m_NameToEntity;
 
-		std::queue<uint32_t> m_DestroyedObjects = {};
+		std::queue<uint32_t> m_DestroyedObjects;
+
+		GameObject m_PrimaryCamera;
 	private:
 		Ref<RenderSystem> m_RenderSystem;
 		Ref<ECS::World> m_World;

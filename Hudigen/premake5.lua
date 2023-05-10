@@ -1,5 +1,5 @@
 
-project "Hudigen"
+project "HudiGen"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"
@@ -7,6 +7,11 @@ project "Hudigen"
 
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
+
+	defines
+	{
+		"HD_APP"
+	}
 
 	files
 	{
@@ -20,10 +25,10 @@ project "Hudigen"
 		"%{wks.location}/Hudi/vendor/SDL2/include",
 		"%{wks.location}/Hudi/vendor/SDL2_image/include",
 		"%{wks.location}/Hudi/vendor/ImGui",
+		"%{wks.location}/Hudi/vendor/ImGuizmo",
 		"%{wks.location}/Hudi/vendor/glm",
 
 		"src",
-		"%{wks.location}/CodeGenerator/src",
 		"%{wks.location}/ECS/src",
 		"%{wks.location}/Hudi/src"
 	}

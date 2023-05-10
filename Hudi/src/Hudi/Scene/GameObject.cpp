@@ -38,6 +38,14 @@ namespace Hudi {
 		return m_Entity != other.m_Entity || world != other.world;
 	}
 
-
+	std::vector<Ref<Component>> GameObject::GetComponents()
+	{
+		std::vector<Ref<Component>> res;
+		for (auto& comp : world->GetComponents(m_Entity))
+		{
+			res.push_back(std::static_pointer_cast<Component>(comp));
+		}
+		return res;
+	}
 
 }

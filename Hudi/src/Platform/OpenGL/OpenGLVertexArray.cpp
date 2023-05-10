@@ -48,26 +48,70 @@ namespace Hudi {
 	void OpenGLVertexArray::SetVertexBuffer(Ref<VertexBuffer> vertexBuffer)
 	{
 		if (vertexBuffer->GetLayout().GetElements().size()==0) {
-			HD_CORE_ERROR("VertexBuffer does not have any layout yet. Wrong order?");
+			HD_CORE_ERROR("VertexBuffer's not had any layouts yet. Wrong order?");
 			return;
 		}
 
 		glBindVertexArray(m_RendererID);
 		vertexBuffer->Bind();
 
+		BufferLayout layout = vertexBuffer->GetLayout();
 		uint32_t index = 0;
-		for (const auto& e : vertexBuffer->GetLayout())
+		for (const auto& element : layout)
 		{
-			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(
-				index,
-				e.GetComponentCount(),
-				SDTtoGLenum(e.type),
-				e.normalized ? GL_TRUE : GL_FALSE,
-				vertexBuffer->GetLayout().GetStride(),
-				(const void*)e.offset);
-
-			index++;
+			switch (element.type)
+			{
+			case ShaderDataType::Float:
+			case ShaderDataType::Float2:
+			case ShaderDataType::Float3:
+			case ShaderDataType::Float4:
+			{
+				glEnableVertexAttribArray(index);
+				glVertexAttribPointer(index,
+					element.GetComponentCount(),
+					SDTtoGLenum(element.type),
+					element.normalized ? GL_TRUE : GL_FALSE,
+					layout.GetStride(),
+					(const void*)element.offset);
+				index++;
+				break;
+			}
+			case ShaderDataType::Int:
+			case ShaderDataType::Int2:
+			case ShaderDataType::Int3:
+			case ShaderDataType::Int4:
+			case ShaderDataType::Bool:
+			{
+				glEnableVertexAttribArray(index);
+				glVertexAttribIPointer(index,
+					element.GetComponentCount(),
+					SDTtoGLenum(element.type),
+					layout.GetStride(),
+					(const void*)element.offset);
+				index++;
+				break;
+			}
+			case ShaderDataType::Mat3:
+			case ShaderDataType::Mat4:
+			{
+				uint8_t count = element.GetComponentCount();
+				for (uint8_t i = 0; i < count; i++)
+				{
+					glEnableVertexAttribArray(index);
+					glVertexAttribPointer(index,
+						count,
+						SDTtoGLenum(element.type),
+						element.normalized ? GL_TRUE : GL_FALSE,
+						layout.GetStride(),
+						(const void*)(element.offset + sizeof(float) * count * i));
+					glVertexAttribDivisor(index, 1);
+					index++;
+				}
+				break;
+			}
+			default:
+				HD_CORE_ASSERT(false, "Unknown ShaderDataType!");
+			}
 		}
 
 		m_VertexBuffer = vertexBuffer;

@@ -140,9 +140,9 @@ namespace Hudi {
 		return m_KeyJustDown.find(key) != m_KeyJustDown.end();
 	}
 
-	bool EventManager::KeyJustUp(KeyCode key)
+	bool EventManager::KeyJustUp(KeyCode keycode)
 	{
-		return m_KeyJustUp.find(key) != m_KeyJustUp.end();
+		return m_KeyJustUp.find(keycode) != m_KeyJustUp.end();
 	}
 
 	bool EventManager::KeyDown(KeyCode keycode)
@@ -172,15 +172,15 @@ namespace Hudi {
 
 	bool EventManager::MouseUp(MouseCode mousebuttoncode)
 	{
-		return MouseDown(mousebuttoncode);
+		return !MouseDown(mousebuttoncode);
 	}
 
-	Vec2<int> EventManager::MousePosition()
+	glm::vec2 EventManager::MousePosition()
 	{
-		Vec2<int> pos;
-		SDL_GetMouseState(&pos.x, &pos.y);
+		int xpos, ypos;
+		SDL_GetMouseState(&xpos, &ypos);
 
-		return pos;
+		return { xpos, ypos };
 	}
 
 

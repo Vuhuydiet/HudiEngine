@@ -16,18 +16,15 @@ namespace Hudi {
 		Application(WindowProps props = WindowProps());
 		virtual ~Application();
 
-		void Init();
-		void Shutdown();
-
 		void OnEvent(Event& e);
 
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* overlay);
 
-		Window& GetWindow() { return *m_Window; }
-
 		bool IsRunning() const { return m_Running; }
 		void Close() { m_Running = false; }
+
+		Window& GetWindow() { return *m_Window; }
 
 		static Application& Get() { return *s_Instance; }
 

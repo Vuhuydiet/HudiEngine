@@ -24,10 +24,14 @@
 
 #ifdef HD_ENABLE_ASSERTS
 	#include "Log.h"
+	#define HD_CORE_ASSERT_S(x) { if(x) { HD_CORE_ERROR("Assertion Failed"); __debugbreak(); } }
 	#define HD_CORE_ASSERT(x, ...) { if(x) { HD_CORE_ERROR("Assertion Failed:"); HD_CORE_ERROR(__VA_ARGS__); __debugbreak(); } }
+	#define HD_ASSERT_S(x) { if(x) { HD_ERROR("Assertion Failed"); __debugbreak(); } }
 	#define HD_ASSERT(x, ...) { if(x) { HD_ERROR("Assertion Failed:"); HD_ERROR(__VA_ARGS__); __debugbreak(); } }
 #else
+	#define HD_CORE_ASSERT_S(x)
 	#define HD_CORE_ASSERT(x, ...)
+	#define HD_ASSERT_S(x)
 	#define HD_ASSERT(x, ...)
 #endif
 

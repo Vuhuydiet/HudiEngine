@@ -1,6 +1,6 @@
 workspace "HudiEngine"
 	architecture "x64"
-	startproject "Hudigen"
+	startproject "HudiGen"
 
 	configurations
 	{
@@ -18,13 +18,9 @@ group "Dependencies"
 	include "ECS"
 group ""
 
-group "Utilities"
-	include "CodeGenerator"
-group ""
-
 group "Core"
 	include "Hudi"
-	include "Hudigen"
+	include "HudiGen"
 group ""
 
 group "Test"

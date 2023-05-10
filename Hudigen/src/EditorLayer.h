@@ -1,11 +1,11 @@
 #pragma once
+#include <string>
 
 #include <Hudi.h>
 #include <imgui.h>
 
-#include "Editor/MenuBar.h"
-#include "Editor/HierarchyPanel.h"
-#include "Editor/InspectorPanel.h"
+#include "Pannels/Hierarchy/HierarchyPanels.h"
+#include "Pannels/ContentBrowser/ContentBrowerPanel.h"
 
 namespace Hudi {
 
@@ -16,22 +16,31 @@ namespace Hudi {
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
 
+		virtual void OnEvent(Event& event) override;
 		virtual void OnUpdate(float dt) override;
 		virtual void OnImGuiRender() override;
 
-		virtual void OnEvent(Event& e) override;
 	private:
+		void BeginDockspace();
+		void EndDockspace();
+		void OnImGuiRenderMenuBar();
+		void NewScene();
+		void OpenScene();
+		void SaveScene();
+		void SaveSceneAs();
+		void CloseScene();
+
 		void OnKeyPressedEvent(Event& e);
-	private:
-		Ref<Framebuffer> m_Framebuffer;
-
-		glm::vec2 m_ViewportSize;
-		float frametime = 0.0f;
 
 	private:
-		MenuBar m_MenuBar;
-		HierarchyPanel m_HierarchyPanel;
-		InspectorPanel m_InspectorPanel;
+		std::string m_CurrentScenePath;
+
+		bool m_OpenedHierarchy = true;
+		bool m_OpenedInspector = true;
+		bool m_OpenedViewport = true;
+		HierarchyPanels m_HierarchyPanels;
+
+		ContentBrowerPanel m_ContentBrowerPanel;
 	};
 }
 

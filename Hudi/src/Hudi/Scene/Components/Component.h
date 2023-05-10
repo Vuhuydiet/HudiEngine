@@ -8,7 +8,7 @@ namespace Hudi {
 	{
 	public:
 		virtual ~Component() = default;
-	protected:
+	public:
 		template <typename T>
 		T& AddComponent() { world->AddComponent<T>(m_Entt, std::make_shared<T>()); return GetComponent<T>(); }
 		template <typename T>
