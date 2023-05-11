@@ -141,6 +141,9 @@
     <ClInclude Include="src\Hudi\Math\Math.h">
       <Filter>src\Hudi\Math</Filter>
     </ClInclude>
+    <ClInclude Include="src\Hudi\Renderer\Buffer.h">
+      <Filter>src\Hudi\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Hudi\Renderer\Framebuffer.h">
       <Filter>src\Hudi\Renderer</Filter>
     </ClInclude>
@@ -1512,7 +1515,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hudi\Renderer\Buffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Hudi\Core\Application.cpp">
@@ -1526,6 +1528,9 @@
     </ClCompile>
     <ClCompile Include="src\Hudi\Core\Window.cpp">
       <Filter>src\Hudi\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Debug\Instrumentor.cpp">
+      <Filter>src\Hudi\Debug</Filter>
     </ClCompile>
     <ClCompile Include="src\Hudi\Events\Event.cpp">
       <Filter>src\Hudi\Events</Filter>
@@ -1580,6 +1585,9 @@
     </ClCompile>
     <ClCompile Include="src\Hudi\Scene\Components\AnimatorComponent\AnimatorComponent.cpp">
       <Filter>src\Hudi\Scene\Components\AnimatorComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Scene\Components\Components.cpp">
+      <Filter>src\Hudi\Scene\Components</Filter>
     </ClCompile>
     <ClCompile Include="src\Hudi\Scene\GameObject.cpp">
       <Filter>src\Hudi\Scene</Filter>
@@ -1650,7 +1658,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Hudi\Debug\Instrumentor.cpp" />
-    <ClCompile Include="src\Hudi\Scene\Components\Components.cpp" />
   </ItemGroup>
 </Project>
