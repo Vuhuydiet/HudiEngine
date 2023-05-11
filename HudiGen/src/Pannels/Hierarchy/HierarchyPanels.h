@@ -1,8 +1,18 @@
 #pragma once
 
+#include <string>
+
 #include <Hudi.h>
 
 namespace Hudi {
+
+	struct PanelCommand
+	{
+		enum Type { None, OpenScene };
+
+		Type type;
+		void* data;
+	};
 
 	class HierarchyPanels
 	{
@@ -17,6 +27,8 @@ namespace Hudi {
 		Ref<Scene> GetContext();
 		GameObject GetSelectedObject();
 
+		bool PollCommand(PanelCommand& command);
+
 		void SetViewportState(int state);
 
 	private:
@@ -30,6 +42,8 @@ namespace Hudi {
 	private:
 		Ref<Scene> m_Context = nullptr;
 		GameObject m_SelectedObject;
+
+		std::queue<PanelCommand> m_Commands;
 
 		Ref<Framebuffer> m_Framebuffer;
 	};

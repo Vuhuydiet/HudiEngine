@@ -11,7 +11,7 @@ Objects:
       Orthographic Data: [-4.53999996, 4.53999996, -3.4849999, 3.4849999, -10, 10]
       Perspective Data: [45, 1.30272591, 0.100000001, 1000]
   - Entity: 2
-    Name: vu dep trai (1)
+    Name: vu dep trai (1) (2)
     Transform:
       Position: [-0.00046479702, -0.624711812, -1.34529698]
       Rotation: [-74, -0, 0]
@@ -29,6 +29,6 @@ Objects:
       Scale: [48.6176071, 4.62311649, 9.33330536]
     Sprite Renderer:
       Size: [1, 1]
-      Color: [0.943548381, 0.239691719, 0.239691719, 1]
+      Color: [0.455645144, 0.455645144, 0.455645144, 1]
       Image file path: ""
       Order: 0

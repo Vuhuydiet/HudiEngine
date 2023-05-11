@@ -53,7 +53,6 @@ namespace Hudi {
 				}
 			}
 		}
-
 	}
 
 	static void OnViewportEditUpdate(float dt, Ref<Scene> context, GameObject& selectedObject);
@@ -95,7 +94,6 @@ namespace Hudi {
 		RenderCommand::SetClearColor(67, 70, 75, 255);
 		RenderCommand::Clear();
 
-		// Clear attachment
 		s_Framebuffer->ClearAttachment(1, 0);
 
 		if (context)
@@ -119,7 +117,7 @@ namespace Hudi {
 
 			Renderer2D::EndScene();
 		}
-		//HD_INFO("Over: {0}", s_IsOverGizmos);
+		
 		if (s_IsFocus && Input::IsMousePressed(Mouse::BUTTON_LEFT) && !Input::IsKeyDown(Key::L_ALT))
 		{
 			auto [mx, my] = ImGui::GetMousePos();
@@ -217,18 +215,24 @@ namespace Hudi {
 		if (s_State != 0)
 			return;
 
+		// Drag drop scene
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_PANEL"))
+			{
+				void* data = malloc(payload->DataSize);
+				if (data)
+					memcpy(data, payload->Data, payload->DataSize);
+				m_Commands.push({ PanelCommand::OpenScene, data });
+			}
+			ImGui::EndDragDropTarget();
+		}
+
 		// Gizmos
 		s_IsUsingGizmos = false;
 		s_IsOverGizmos = false;
 		static uint32_t wait = 0;
-		if (!m_SelectedObject.Valid())
-		{
-			wait = 0;
-		}
-		else
-		{
-			wait++;
-		}
+		wait = m_SelectedObject.Valid() ? wait + 1 : 0;
 		if (s_GizmosMod != -1 && m_SelectedObject.Valid() && wait > 1) 
 		{
 			ImGuizmo::SetOrthographic(false);

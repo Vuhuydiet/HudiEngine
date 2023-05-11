@@ -11,11 +11,11 @@ layout(location = 5) in int   a_QuadID;
 
 uniform mat4 u_ProjectionView;
 
-out vec4	   v_Color;
-out vec2	   v_TexCoord;
-out flat float v_TexIndex;
-out float	   v_TilingFactor;
-out flat int   v_QuadID;
+layout(location = 0) out vec4	    v_Color;
+layout(location = 1) out vec2	    v_TexCoord;
+layout(location = 2) out flat float v_TexIndex;
+layout(location = 3) out float	    v_TilingFactor;
+layout(location = 4) out flat int   v_QuadID;
 
 void main()
 {
@@ -34,16 +34,16 @@ void main()
 #type fragment
 #version 450 core
 
-layout(location = 0) out vec4 color;
-layout(location = 1) out int pixelID;
-
-in vec4		  v_Color;				
-in vec2		  v_TexCoord;
-in flat float v_TexIndex;
-in float      v_TilingFactor;
-in flat int   v_QuadID;
+layout(location = 0) in vec4		 v_Color;				
+layout(location = 1) in vec2		 v_TexCoord;
+layout(location = 2) in flat float   v_TexIndex;
+layout(location = 3) in float        v_TilingFactor;
+layout(location = 4) in flat int     v_QuadID;
 			
 uniform sampler2D u_Textures[32];
+
+layout(location = 0) out vec4 color;
+layout(location = 1) out int pixelID;
 
 void main()
 {

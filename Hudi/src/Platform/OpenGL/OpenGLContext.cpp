@@ -19,6 +19,9 @@ namespace Hudi {
 
 		// Glad setup
 		gladLoadGLLoader(SDL_GL_GetProcAddress);
+
+		std::cout << glGetString(GL_VERSION) << '\n';
+		std::cout << glGetString(GL_RENDERER) << '\n';
 	}
 
 	void OpenGLContext::SetAttributes()

@@ -5,7 +5,7 @@
 #include <imgui.h>
 
 #include "Pannels/Hierarchy/HierarchyPanels.h"
-#include "Pannels/ContentBrowser/ContentBrowerPanel.h"
+#include "Pannels/ContentBrowser/ContentBrowserPanel.h"
 
 namespace Hudi {
 
@@ -25,6 +25,7 @@ namespace Hudi {
 		void EndDockspace();
 		void OnImGuiRenderMenuBar();
 		void NewScene();
+		void OpenScene(const std::filesystem::path& path);
 		void OpenScene();
 		void SaveScene();
 		void SaveSceneAs();
@@ -40,7 +41,7 @@ namespace Hudi {
 		bool m_OpenedViewport = true;
 		HierarchyPanels m_HierarchyPanels;
 
-		ContentBrowerPanel m_ContentBrowerPanel;
+		ContentBrowserPanel m_ContentBrowserPanel;
 	};
 }
 

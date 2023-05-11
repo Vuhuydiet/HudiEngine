@@ -253,7 +253,7 @@ namespace Hudi {
 		out << YAML::EndMap; // GameObject
 	}
 
-	void SceneSerializer::Save(const std::string& filepath)
+	void SceneSerializer::Save(const std::filesystem::path& filepath)
 	{
 		YAML::Emitter out;
 		out << YAML::BeginMap;
@@ -265,14 +265,14 @@ namespace Hudi {
 		out << YAML::EndSeq;
 		out << YAML::EndMap;
 
-		std::ofstream fout(filepath);
+		std::ofstream fout(filepath.string());
 		fout << out.c_str();
 		fout.close();
 	}
 
-	bool SceneSerializer::Open(const std::string& filepath)
+	bool SceneSerializer::Open(const std::filesystem::path& filepath)
 	{
-		YAML::Node data = YAML::LoadFile(filepath);
+		YAML::Node data = YAML::LoadFile(filepath.string());
 		if (!data["Scene"])
 		{
 			HD_CORE_ERROR("No scene found in '{0}'!", filepath);

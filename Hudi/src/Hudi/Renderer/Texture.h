@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Hudi/Core/Core.h"
 
 namespace Hudi {
 	

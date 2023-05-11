@@ -33,6 +33,23 @@ namespace Hudi {
 
 	void EditorLayer::OnUpdate(float dt)
 	{
+		// Poll Commands
+		PanelCommand command;
+		while (m_HierarchyPanels.PollCommand(command))
+		{
+			switch (command.type)
+			{
+			case PanelCommand::None:
+				break;
+			case PanelCommand::OpenScene:
+				std::filesystem::path path = (const char*)command.data;
+				OpenScene(path);
+				break;
+			}
+			free(command.data);
+		}
+
+		// Update Panels
 		m_HierarchyPanels.OnUpdate(dt);
 	}
 
@@ -42,7 +59,7 @@ namespace Hudi {
 
 		OnImGuiRenderMenuBar();
 		m_HierarchyPanels.OnImGuiRender(m_OpenedHierarchy, m_OpenedInspector, m_OpenedViewport);
-		m_ContentBrowerPanel.OnImGuiRender();
+		m_ContentBrowserPanel.OnImGuiRender();
 
 		EndDockspace();
 	}
@@ -200,30 +217,18 @@ namespace Hudi {
 			{
 				//ShowExampleMenuFile();
 				if (ImGui::MenuItem("New", "Ctrl+N"))
-				{
 					NewScene();
-				}
 				if (ImGui::MenuItem("Open...", "Ctrl+O"))
-				{
 					OpenScene();
-				}
 				if (ImGui::MenuItem("Save", "Ctrl+S"))
-				{
 					SaveScene();
-				}
 				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"))
-				{
 					SaveSceneAs();
-				}
 				if (ImGui::MenuItem("Close Scene", "Ctrl+P"))
-				{
 					CloseScene();
-				}
 				ImGui::Separator();
 				if (ImGui::MenuItem("Close"))
-				{
 					Application::Get().Close();
-				}
 
 				ImGui::EndMenu();
 			}
@@ -245,11 +250,12 @@ namespace Hudi {
 	void EditorLayer::NewScene()
 	{
 		m_HierarchyPanels.SetContext(NewRef<Scene>(0));
+		m_CurrentScenePath.clear();
 	}
 
-	void EditorLayer::OpenScene()
+	void EditorLayer::OpenScene(const std::filesystem::path& path)
 	{
-		std::string filepath = FileDialogs::OpenFile("Scene Files (*.hud)\0*.hud\0");
+		const std::string& filepath = path.string();
 		if (!filepath.empty())
 		{
 			m_CurrentScenePath = filepath;
@@ -258,6 +264,12 @@ namespace Hudi {
 			serializer.Open(filepath);
 			m_HierarchyPanels.SetContext(newScene);
 		}
+	}
+
+	void EditorLayer::OpenScene()
+	{
+		std::string filepath = FileDialogs::OpenFile("Scene Files (*.hud)\0*.hud\0");
+		OpenScene(filepath);
 	}
 
 	void EditorLayer::SaveScene()

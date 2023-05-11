@@ -46,4 +46,13 @@ namespace Hudi {
 		return m_SelectedObject;
 	}
 
+	bool HierarchyPanels::PollCommand(PanelCommand& command) {
+		if (m_Commands.empty())
+			return false;
+
+		command = m_Commands.front();
+		m_Commands.pop();
+		return true;
+	}
+
 }
