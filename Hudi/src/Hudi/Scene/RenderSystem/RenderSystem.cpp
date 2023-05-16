@@ -3,32 +3,35 @@
 
 #include "Hudi/Renderer/Renderer2D.h"
 
-#include "Hudi/Scene/Components/Component.h"
+#include "Hudi/Scene/Components/TransformComponent.h"
+#include "Hudi/Scene/Components/SpriteRendererComponent.h"
+#include "Hudi/Scene/Components/CameraComponent.h"
 #include "Hudi/Scene/Scene.h"
 
 namespace Hudi {
 
 	RenderSystem::RenderSystem()
 	{
-		m_Signature.set(ECS::GetComponentID<Transform>());
-		m_Signature.set(ECS::GetComponentID<SpriteRenderer>());
+		SetNeededComponent<Transform, SpriteRenderer>();
 	}
 
-	void RenderSystem::OnUpdate(float dt)
+	void RenderSystem::OnUpdate(float dt, ECS::Entity camera)
 	{
 		RenderCommand::SetClearColor(169, 169, 169, 255);
 		RenderCommand::Clear();
 
-		GameObject camera = scene->GetPrimaryCamera();
-		if (camera.Valid())
+		if (world->Exists(camera))
 		{
-			const glm::mat4& cameraProjection = world->GetComponent<Camera>(camera.GetEntityID())->GetProjection();
-			const glm::mat4& cameraTranform = world->GetComponent<Transform>(camera.GetEntityID())->Transformation();
+			const glm::mat4& cameraProjection = world->GetComponent<Camera>(camera)->GetProjection();
+			const glm::mat4& cameraTranform = world->GetComponent<Transform>(camera)->Transformation();
 			Renderer2D::BeginScene(cameraProjection, cameraTranform);
-			for (const auto& entt : m_Entities)
+			for (const auto& entity : m_Entities)
 			{
-				const Transform& transform = *world->GetComponent<Transform>(entt);
-				const SpriteRenderer& sprite = *world->GetComponent<SpriteRenderer>(entt);
+				if (!world->IsActive(entity))
+					continue;
+
+				const Transform& transform = *world->GetComponent<Transform>(entity);
+				const SpriteRenderer& sprite = *world->GetComponent<SpriteRenderer>(entity);
 
 				Quad quad;
 				quad.transform = transform.Transformation();

@@ -39,8 +39,8 @@ namespace Hudi {
 		//io.Fonts->AddFontFromFileTTF("assets/fonts/opensans/OpenSans-Bold.ttf", fontSize);
 		//io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/opensans/OpenSans-Regular.ttf", fontSize);
 
-		float fontSize = 17.0f;
-		io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/opensans/static/OpenSans/OpenSans-Regular.ttf", fontSize);
+		float fontSize = 16.0f;
+		io.FontDefault = io.Fonts->AddFontFromFileTTF("resources/fonts/opensans/static/OpenSans/OpenSans-Regular.ttf", fontSize);
 
 		// Setup Dear ImGui style
 		//ImGui::StyleColorsDark();

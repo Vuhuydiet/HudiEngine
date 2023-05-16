@@ -2,6 +2,8 @@
 #include "Scene.h"
 
 #include "Components/Component.h"
+#include "Components/CameraComponent.h"
+#include "Components/SpriteRendererComponent.h"
 
 #include "Hudi/Renderer/Renderer2D.h"
 
@@ -11,12 +13,12 @@ namespace Hudi {
 		: m_BuildIndex(index)
 	{
 		m_World = NewRef<ECS::World>();
+		m_RenderSystem = m_World->RegisterSystem<RenderSystem>();
+		m_Physics2DSystem = m_World->RegisterSystem<Physics2DSystem>();
 	}
 
 	Scene::~Scene()
 	{
-		m_RenderSystem = nullptr;
-
 		for (auto& [id, object] : m_GameObjects)
 		{
 			object.Destroy();
@@ -27,19 +29,21 @@ namespace Hudi {
 		m_EntityToName.clear();
 		m_NameToEntity.clear();
 
+		m_RenderSystem = nullptr;
+		m_Physics2DSystem = nullptr;
 		m_World = nullptr;
 	}
 
 	void Scene::BeginScene()
 	{
-		HD_CORE_INFO("Start scene {0}", m_BuildIndex);
-		m_RenderSystem = m_World->RegisterSystem<RenderSystem>();
-		m_RenderSystem->scene = this;
+		HD_CORE_INFO("Start scene {0}.", m_BuildIndex);
+		m_Physics2DSystem->Begin();
 	}
 
 	void Scene::EndScene()
 	{
-		HD_CORE_INFO("End scene {0}", m_BuildIndex);
+		HD_CORE_INFO("End scene {0}.", m_BuildIndex);
+		m_Physics2DSystem->End();
 	}
 
 	void Scene::OnUpdate(float dt)
@@ -47,9 +51,10 @@ namespace Hudi {
 		m_World->EachComponents<Component>([](Ref<Component> comp) { comp->Awake(); });
 		m_World->EachComponents<Component>([dt](Ref<Component> comp) { comp->Update(dt); });
 		
-		m_RenderSystem->OnUpdate(dt);
+		m_Physics2DSystem->OnUpdate(dt);
+		m_RenderSystem->OnUpdate(dt, m_PrimaryCamera.GetEntityID());
 
-		m_World->Flush();
+		Invalidate();
 	}
 
 	void Scene::OnViewportResize(int width, int height)
@@ -58,7 +63,7 @@ namespace Hudi {
 			return;
 
 		m_Width = width, m_Height = height;
-		for (auto& entt : m_World->View<Camera>())
+		for (const auto& entt : m_World->View<Camera>())
 		{
 			auto& camera = m_World->GetComponent<Camera>(entt);
 			camera->Resize((float)width, (float)height);
@@ -77,19 +82,50 @@ namespace Hudi {
 
 			m_GameObjects.erase(id);
 			m_EntityToName.erase(id);
-			m_NameToEntity.erase(name.c_str());
+			m_NameToEntity.erase(name);
 
 			go.Destroy();
 		}
 		m_World->Flush();
 	}
 
+	void Scene::Invalidate()
+	{
+		for (auto& [id, object] : m_GameObjects)
+		{
+			if (!object.Exist())
+			{
+				DestroyGameObject(object);
+			}
+		}
+		Flush();
+	}
+
+	Ref<Scene> Scene::Copy() const
+	{
+		Ref<Scene> newScene = NewRef<Scene>(0);
+		for (const auto& [id, object] : this->m_GameObjects)
+		{
+			const std::string& objName = this->m_EntityToName.at(id);
+			GameObject newObject = newScene->CreateEmptyObject(objName);
+			newObject.Copy(object);
+		}
+		const std::string primaryCameraName = this->GetGameObjectName(this->m_PrimaryCamera);
+		newScene->SetPrimaryCamera(primaryCameraName);
+		return newScene;
+	}
+
 	GameObject Scene::CreateEmptyObject(const std::string& _name)
 	{
-		std::string name = _name;
+		if (_name == "##unknown")
+		{
+			HD_CORE_ERROR("Can not create GameObject with the name '##unknown'.");
+			return GameObject();
+		}
 
-		static uint8_t ind = 1;
-		if (m_NameToEntity.find(name.c_str()) != m_NameToEntity.end())
+		std::string name = _name;
+		static uint32_t ind = 1;
+		if (m_NameToEntity.find(name) != m_NameToEntity.end())
 			name += " (" + std::to_string(ind++) + ")";
 
 		GameObject obj(m_World.get());
@@ -97,7 +133,7 @@ namespace Hudi {
 		uint32_t id = obj.GetEntityID();
 		m_GameObjects[id] = obj;
 		m_EntityToName[id] = name;
-		m_NameToEntity[name.c_str()] = id;
+		m_NameToEntity[name] = id;
 		return obj;
 	}
 
@@ -109,34 +145,34 @@ namespace Hudi {
 		return obj;
 	}
 
-	bool Scene::HasGameObject(const std::string& _name)
+	bool Scene::HasGameObject(const std::string& _name) const
 	{
-		return m_NameToEntity.find(_name.c_str()) != m_NameToEntity.end();
+		return m_NameToEntity.find(_name) != m_NameToEntity.end();
 	}
 
-	bool Scene::HasGameObject(GameObject object)
+	bool Scene::HasGameObject(GameObject object) const
 	{
 		uint32_t id = object.GetEntityID();
 		return m_GameObjects.find(id) != m_GameObjects.end() && m_GameObjects.at(id).world == m_World.get();
 	}
 
-	GameObject Scene::GetGameObject(const std::string& _name)
+	GameObject Scene::GetGameObject(const std::string& _name) const
 	{
-		if (m_NameToEntity.find(_name.c_str()) == m_NameToEntity.end())
+		if (m_NameToEntity.find(_name) == m_NameToEntity.end())
 		{
 			HD_CORE_ERROR("Game Object named \"{0}\" does not exist!", _name);
-			return nullptr;
+			return GameObject();
 		}
 
-		return m_GameObjects.at(m_NameToEntity.at(_name.c_str()));
+		return m_GameObjects.at(m_NameToEntity.at(_name));
 	}
 
-	GameObject Scene::GetGameObject(uint32_t id)
+	GameObject Scene::GetGameObject(uint32_t id) const
 	{
 		if (m_EntityToName.find(id) == m_EntityToName.end())
 		{
 			HD_CORE_ERROR("Game Object with ID \"{0}\" does not exist!", id);
-			return nullptr;
+			return GameObject();
 		}
 
 		return m_GameObjects.at(id);
@@ -144,13 +180,13 @@ namespace Hudi {
 
 	void Scene::DestroyGameObject(const std::string& _name)
 	{
-		if (m_NameToEntity.find(_name.c_str()) == m_NameToEntity.end())
+		if (m_NameToEntity.find(_name) == m_NameToEntity.end())
 		{
 			HD_CORE_ERROR("GameObject named \"{0}\" does not exist in the scene!", _name);
 			return;
 		}
 
-		GameObject object = m_GameObjects.at(m_NameToEntity.at(_name.c_str()));
+		GameObject object = m_GameObjects.at(m_NameToEntity.at(_name));
 		DestroyGameObject(object);
 	}
 
@@ -166,13 +202,13 @@ namespace Hudi {
 		m_DestroyedObjects.push(id);
 	}
 
-	std::string Scene::GetGameObjectName(GameObject object)
+	std::string Scene::GetGameObjectName(GameObject object) const
 	{
 		uint32_t id = object.GetEntityID();
 		if (m_EntityToName.find(id) == m_EntityToName.end())
 		{
 			HD_CORE_ERROR("Get the name of a GameObject that does not exist!");
-			return "unknown";
+			return "##unknown";
 		}
 
 		return m_EntityToName.at(id);
@@ -189,8 +225,8 @@ namespace Hudi {
 
 		std::string old_name = m_EntityToName.at(id);
 		m_EntityToName[id] = _name;
-		m_NameToEntity.erase(old_name.c_str());
-		m_NameToEntity[_name.c_str()] = id;
+		m_NameToEntity.erase(old_name);
+		m_NameToEntity[_name] = id;
 	}
 
 	bool Scene::SetPrimaryCamera(GameObject camera)
@@ -204,12 +240,20 @@ namespace Hudi {
 		return true;
 	}
 
+	bool Scene::SetPrimaryCamera(const std::string& cameraName)
+	{
+		GameObject camera = GetGameObject(cameraName);
+		if (!camera.Valid())
+			return false;
+		return SetPrimaryCamera(camera);
+	}
+
 	void Scene::ResetPrimaryCamera()
 	{
 		m_PrimaryCamera.Reset();
 	}
 
-	GameObject Scene::GetPrimaryCamera()
+	GameObject Scene::GetPrimaryCamera() const
 	{
 		return m_PrimaryCamera;
 	}

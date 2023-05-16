@@ -1,5 +1,6 @@
 #pragma once
 
+#include <map>
 #include <filesystem>
 
 #include <Hudi.h>
@@ -17,8 +18,7 @@ namespace Hudi {
 		std::filesystem::path m_CurrentPath;
 
 	private:
-		Ref<Texture2D> m_FolderIcon;
-		Ref<Texture2D> m_TextFileIcon;
+		std::map<std::string, Ref<Texture2D>> m_Icons;
 	};
 
 }

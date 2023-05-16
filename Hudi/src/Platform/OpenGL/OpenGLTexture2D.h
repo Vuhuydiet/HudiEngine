@@ -1,5 +1,7 @@
 #pragma once
 
+#include <filesystem>
+
 #include "Hudi/Renderer/Texture.h"
 
 #include <glad/glad.h>
@@ -10,7 +12,7 @@ namespace Hudi {
 	{
 	public:
 		OpenGLTexture2D(uint32_t width, uint32_t height);
-		OpenGLTexture2D(const std::string& filePath);
+		OpenGLTexture2D(const std::filesystem::path& filePath);
 		virtual ~OpenGLTexture2D();
 
 		virtual uint32_t GetWidth() const override { return m_Width; }
@@ -32,7 +34,7 @@ namespace Hudi {
 		GLenum m_InternalFormat;
 		GLenum m_DataFormat;
 
-		std::string m_FilePath;
+		std::filesystem::path m_FilePath;
 
 	};
 

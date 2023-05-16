@@ -7,13 +7,14 @@
 namespace Hudi {
 
 	extern const std::filesystem::path g_AssetsPath = "assets";
-	static const std::string s_ContentBrowerIconPath = "resources\\images\\icons\\content_brower\\light\\";
+	static const std::string s_ContentBrowerIconPath = "resources\\images\\icons\\content_browser\\light\\";
 
 	ContentBrowserPanel::ContentBrowserPanel()
 		: m_CurrentPath(g_AssetsPath)
 	{
-		m_FolderIcon = Texture2D::Create(s_ContentBrowerIconPath + "folder.png");
-		m_TextFileIcon = Texture2D::Create(s_ContentBrowerIconPath + "txt.png");
+		m_Icons["folder"] = Texture2D::Create(s_ContentBrowerIconPath + "folder.png");
+		m_Icons["text"] = Texture2D::Create(s_ContentBrowerIconPath + "txt.png");
+		m_Icons["png"] = Texture2D::Create(s_ContentBrowerIconPath + "png.png");
 	}
 
 	void ContentBrowserPanel::OnImGuiRender()
@@ -44,14 +45,19 @@ namespace Hudi {
 			ImGui::PushID(id++);
 			std::filesystem::path itemPath = item.path();
 
-			Ref<Texture2D> iconTexture = nullptr;
+			Ref<Texture2D> icon = nullptr;
 			if (item.is_directory())
-				iconTexture = m_FolderIcon;
-			else if (itemPath.extension() == ".hud")
-				iconTexture = m_TextFileIcon;
+				icon = m_Icons.at("folder");
+			else
+			{
+				if (itemPath.filename().extension() == ".hud")
+					icon = m_Icons.at("text");
+				else if (itemPath.filename().extension() == ".png")
+					icon = m_Icons.at("png");
+			}
 
-			if (iconTexture)
-				ImGui::ImageButton((ImTextureID)iconTexture->GetRendererID(), { iconWidth, iconWidth }, { 0, 1 }, { 1, 0 });
+			if (icon)
+				ImGui::ImageButton((ImTextureID)icon->GetRendererID(), { iconWidth, iconWidth }, { 0, 1 }, { 1, 0 });
 
 			if (item.is_directory() && isDoubleClick && ImGui::IsItemHovered())
 			{
@@ -65,8 +71,16 @@ namespace Hudi {
 					ImGui::EndDragDropSource();
 				}
 			}
+			else if (itemPath.filename().extension() == ".png")
+			{
+				if (ImGui::BeginDragDropSource())
+				{
+					ImGui::SetDragDropPayload("CONTENT_BROWSER_PANEL", itemPath.string().c_str(), itemPath.string().size() * sizeof(char) + 1);
+					ImGui::EndDragDropSource();
+				}
+			}
 
-			if (iconTexture)
+			if (icon)
 			{
 				ImGui::TextWrapped("%s", itemPath.filename().string().c_str());
 				ImGui::NextColumn();

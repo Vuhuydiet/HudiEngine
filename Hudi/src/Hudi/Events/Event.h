@@ -14,6 +14,7 @@ namespace Hudi {
 
 	enum EventType 
 	{
+		FIRST_EVENT				= SDL_FIRSTEVENT,
 		QUIT				= SDL_QUIT,
 		WINDOW_EVENT		= SDL_WINDOWEVENT,
 		KEY_DOWN			= SDL_KEYDOWN,
@@ -44,7 +45,7 @@ namespace Hudi {
 
 	public:
 		KeyCode GetKeyCode() const { return m_Event.key.keysym.sym; }
-		int GetYOffset() const { return m_Event.wheel.y; }
+		int GetWheelYOffset() const { return m_Event.wheel.y; }
 
 	public:
 		bool handled = false;
@@ -90,6 +91,7 @@ namespace Hudi {
 		static bool MouseUp(MouseCode button);
 
 		static glm::vec2 MousePosition();
+		static glm::vec2 MouseDeltaPos() { return m_CurrentMousePos - m_PreviousMousePos; }
 	
 	private:
 		static std::function<void(Event&)> m_CallBackFn;
@@ -104,6 +106,9 @@ namespace Hudi {
 		static std::unordered_set<MouseCode> m_ButtonJustDown;
 		static std::unordered_set<MouseCode> m_ButtonJustUp;
 		static std::unordered_set<MouseCode> m_MouseButtonDownEvent;
+
+		static glm::vec2 m_CurrentMousePos;
+		static glm::vec2 m_PreviousMousePos;
 	};
 
 	/*class HUDI_API Event

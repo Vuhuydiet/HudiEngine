@@ -1,207 +1,11 @@
 #include "hdpch.h"
 #include "SceneSerializer.h"
 
+#include "EDHudiTypes.h"
+
 #include <yaml-cpp/yaml.h>
 
-namespace YAML {
-
-	template <>
-	struct convert<glm::vec2>
-	{
-		static Node encode(const glm::vec2& rhs)
-		{
-			Node node;
-			node.push_back(rhs.x);
-			node.push_back(rhs.y);
-			node.SetStyle(EmitterStyle::Flow);
-			return node;
-		}
-
-		static bool decode(const Node& node, glm::vec2& rhs)
-		{
-			if (!node.IsSequence() || node.size() != 2)
-				return false;
-			rhs.x = node[0].as<float>();
-			rhs.y = node[1].as<float>();
-			return true;
-		}
-	};
-
-	template <>
-	struct convert<glm::vec3>
-	{
-		static Node encode(const glm::vec3& rhs)
-		{
-			Node node;
-			node.push_back(rhs.x);
-			node.push_back(rhs.y);
-			node.push_back(rhs.z);
-			node.SetStyle(EmitterStyle::Flow);
-			return node;
-		}
-
-		static bool decode(const Node& node, glm::vec3& rhs)
-		{
-			if (!node.IsSequence() || node.size() != 3)
-				return false;
-			rhs.x = node[0].as<float>();
-			rhs.y = node[1].as<float>();
-			rhs.z = node[2].as<float>();
-			return true;
-		}
-	};
-
-	template <>
-	struct convert<glm::vec4>
-	{
-		static Node encode(const glm::vec4& rhs)
-		{
-			Node node;
-			node.push_back(rhs.x);
-			node.push_back(rhs.y);
-			node.push_back(rhs.z);
-			node.push_back(rhs.w);
-			node.SetStyle(EmitterStyle::Flow);
-			return node;
-		}
-
-		static bool decode(const Node& node, glm::vec4& rhs)
-		{
-			if (!node.IsSequence() || node.size() != 4)
-				return false;
-			rhs.x = node[0].as<float>();
-			rhs.y = node[1].as<float>();
-			rhs.z = node[2].as<float>();
-			rhs.w = node[3].as<float>();
-			return true;
-		}
-	};
-
-	template <>
-	struct convert<Hudi::Vec3>
-	{
-		static Node encode(const Hudi::Vec3& rhs)
-		{
-			Node node;
-			node.push_back(rhs.x);
-			node.push_back(rhs.y);
-			node.push_back(rhs.z);
-			node.SetStyle(EmitterStyle::Flow);
-			return node;
-		}
-
-		static bool decode(const Node& node, Hudi::Vec3& rhs)
-		{
-			if (!node.IsSequence() || node.size() != 3)
-				return false;
-			rhs.x = node[0].as<float>();
-			rhs.y = node[1].as<float>();
-			rhs.z = node[2].as<float>();
-			return true;
-		}
-	};
-
-	template <>
-	struct convert<Hudi::Camera::OrthographicData>
-	{
-		static Node encode(const Hudi::Camera::OrthographicData& rhs)
-		{
-			Node node;
-			node.push_back(rhs.left);
-			node.push_back(rhs.right);
-			node.push_back(rhs.bottom);
-			node.push_back(rhs.top);
-			node.push_back(rhs.zNear);
-			node.push_back(rhs.zFar);
-			node.SetStyle(EmitterStyle::Flow);
-			return node;
-		}
-
-		static bool decode(const Node& node, Hudi::Camera::OrthographicData& rhs)
-		{
-			if (!node.IsSequence() || node.size() != 6)
-				return false;
-			rhs.left		= node[0].as<float>();
-			rhs.right		= node[1].as<float>();
-			rhs.bottom		= node[2].as<float>();
-			rhs.top			= node[3].as<float>();
-			rhs.zNear		= node[4].as<float>();
-			rhs.zFar		= node[5].as<float>();
-			return true;
-		}
-	};
-
-	template <>
-	struct convert<Hudi::Camera::PerspectiveData>
-	{
-		static Node encode(const Hudi::Camera::PerspectiveData& rhs)
-		{
-			Node node;
-			node.push_back(rhs.FOV);
-			node.push_back(rhs.aspectRatio);
-			node.push_back(rhs.zNear);
-			node.push_back(rhs.zFar);
-			node.SetStyle(EmitterStyle::Flow);
-			return node;
-		}
-
-		static bool decode(const Node& node, Hudi::Camera::PerspectiveData& rhs)
-		{
-			if (!node.IsSequence() || node.size() != 4)
-				return false;
-			rhs.FOV			= node[0].as<float>();
-			rhs.aspectRatio = node[1].as<float>();
-			rhs.zNear		= node[2].as<float>();
-			rhs.zFar		= node[3].as<float>();
-			return true;
-		}
-	};
-
-}
-
 namespace Hudi {
-
-	YAML::Emitter& operator<< (YAML::Emitter& out, const glm::vec2& v)
-	{
-		out << YAML::Flow;
-		out << YAML::BeginSeq << v.x << v.y << YAML::EndSeq;
-		return out;
-	}
-
-	YAML::Emitter& operator<< (YAML::Emitter& out, const glm::vec3& v)
-	{
-		out << YAML::Flow;
-		out << YAML::BeginSeq << v.x << v.y << v.z << YAML::EndSeq;
-		return out;
-	}
-
-	YAML::Emitter& operator<< (YAML::Emitter& out, const glm::vec4& v)
-	{
-		out << YAML::Flow;
-		out << YAML::BeginSeq << v.x << v.y << v.z << v.w << YAML::EndSeq;
-		return out;
-	}
-
-	YAML::Emitter& operator<< (YAML::Emitter& out, const Vec3& v)
-	{
-		out << YAML::Flow;
-		out << YAML::BeginSeq << v.x << v.y << v.z << YAML::EndSeq;
-		return out;
-	}
-
-	inline YAML::Emitter& operator<< (YAML::Emitter& out, const Camera::OrthographicData& data)
-	{
-		out << YAML::Flow;
-		out << YAML::BeginSeq << data.left << data.right << data.bottom << data.top << data.zNear << data.zFar << YAML::EndSeq;
-		return out;
-	}
-
-	inline YAML::Emitter& operator<< (YAML::Emitter& out, const Camera::PerspectiveData& data)
-	{
-		out << YAML::Flow;
-		out << YAML::BeginSeq << data.FOV << data.aspectRatio << data.zNear << data.zFar << YAML::EndSeq;
-		return out;
-	}
 
 	SceneSerializer::SceneSerializer(Ref<Scene> scene)
 		: m_Scene(scene)
@@ -234,7 +38,7 @@ namespace Hudi {
 			out << YAML::BeginMap;
 			out << YAML::Key << "Size" << YAML::Value << sprite.size;
 			out << YAML::Key << "Color" << YAML::Value << sprite.color;
-			out << YAML::Key << "Image file path" << YAML::Value << sprite.filepath;
+			out << YAML::Key << "Image file path" << YAML::Value << sprite.filepath.string();
 			out << YAML::Key << "Order" << YAML::Value << sprite.order;
 			out << YAML::EndMap;
 		}
@@ -250,6 +54,30 @@ namespace Hudi {
 			out << YAML::EndMap;
 		}
 
+		if (object.HasComponent<Rigidbody2D>())
+		{
+			const auto& rb2 = object.GetComponent<Rigidbody2D>();
+			out << YAML::Key << "Rigidbody 2D";
+			out << YAML::BeginMap;
+			out << YAML::Key << "Type" << YAML::Value << (int)rb2.type;
+			out << YAML::Key << "Fixed Rotation" << YAML::Value << rb2.fixedRotation;
+			out << YAML::EndMap;
+		}
+
+		if (object.HasComponent<BoxCollider2D>())
+		{
+			const auto& box2 = object.GetComponent<BoxCollider2D>();
+			out << YAML::Key << "Box Collider 2D";
+			out << YAML::BeginMap;
+			out << YAML::Key << "Offset" << YAML::Value << box2.offset;
+			out << YAML::Key << "Size" << YAML::Value << box2.size;
+			out << YAML::Key << "Density" << YAML::Value << box2.density;
+			out << YAML::Key << "Friction" << YAML::Value << box2.friction;
+			out << YAML::Key << "Restitution" << YAML::Value << box2.restitution;
+			out << YAML::Key << "Restitution Threshold" << YAML::Value << box2.restitutionThreshold;
+			out << YAML::EndMap;
+		}
+
 		out << YAML::EndMap; // GameObject
 	}
 
@@ -258,6 +86,7 @@ namespace Hudi {
 		YAML::Emitter out;
 		out << YAML::BeginMap;
 		out << YAML::Key << "Scene" << YAML::Value << "Untitled";
+		out << YAML::Key << "Primary Camera" << YAML::Value << m_Scene->GetGameObjectName(m_Scene->GetPrimaryCamera());
 		out << YAML::Key << "Objects" << YAML::Value << YAML::BeginSeq;
 		m_Scene->Each([&](GameObject object) {
 			SerializeGameObject(out, object, m_Scene->GetGameObjectName(object));
@@ -280,6 +109,7 @@ namespace Hudi {
 		}
 
 		std::string sceneName = data["Scene"].as<std::string>();
+		std::string primaryCameraName = data["Primary Camera"].as<std::string>();
 
 		YAML::Node objects = data["Objects"];
 		if (!objects)
@@ -320,7 +150,29 @@ namespace Hudi {
 				cameraComponent.SetProjectionData(camera["Orthographic Data"].as<Camera::OrthographicData>());
 				cameraComponent.SetProjectionData(camera["Perspective Data"].as<Camera::PerspectiveData>());
 			}
+
+			YAML::Node rb2 = object["Rigidbody 2D"];
+			if (rb2)
+			{
+				Rigidbody2D& rb2Component = newobject.GetOrAddComponent<Rigidbody2D>();
+				rb2Component.type = (Rigidbody2D::BodyType)rb2["Type"].as<int>();
+				rb2Component.fixedRotation = rb2["Fixed Rotation"].as<bool>();
+			}
+
+			YAML::Node box2 = object["Box Collider 2D"];
+			if (box2)
+			{
+				BoxCollider2D& box2Component = newobject.GetOrAddComponent<BoxCollider2D>();
+				box2Component.offset = box2["Offset"].as<glm::vec2>();
+				box2Component.size = box2["Size"].as<glm::vec2>();
+				box2Component.density = box2["Density"].as<float>();
+				box2Component.friction = box2["Friction"].as<float>();
+				box2Component.restitution = box2["Restitution"].as<float>();
+				box2Component.restitutionThreshold = box2["Restitution Threshold"].as<float>();
+			}
 		}
+		m_Scene->SetPrimaryCamera(primaryCameraName);
+
 		return true;
 	}
 

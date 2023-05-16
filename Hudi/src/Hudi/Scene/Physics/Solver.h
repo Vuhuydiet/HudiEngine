@@ -4,7 +4,7 @@
 #include <ECS.h>
 
 #include "Hudi/Scene/Components/TransformComponent.h"
-#include "Hudi/Scene/Components/RigidBody2DComponent.h"
+#include "Hudi/Scene/Components/Rigidbody2DComponent.h"
 #include "Hudi/Scene/Components/Collider2DComponent.h"
 
 #include "Hudi/Scene/Physics/Collision2D.h"

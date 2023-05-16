@@ -39,14 +39,11 @@ namespace Hudi {
 		{
 			switch (command.type)
 			{
-			case PanelCommand::None:
-				break;
 			case PanelCommand::OpenScene:
 				std::filesystem::path path = (const char*)command.data;
 				OpenScene(path);
 				break;
 			}
-			free(command.data);
 		}
 
 		// Update Panels
@@ -70,6 +67,11 @@ namespace Hudi {
 
 		EventDispatcher dispatcher(event);
 		dispatcher.Dispatch(KEY_DOWN, HD_BIND_EVENT_FN(EditorLayer::OnKeyPressedEvent));
+		
+		if (event.type() == QUIT)
+		{
+			CloseApp();
+		}
 	}
 
 	void EditorLayer::OnKeyPressedEvent(Event& event)
@@ -190,10 +192,10 @@ namespace Hudi {
 			ImGui::PopStyleVar(2);
 
 		// DockSpace
-		ImGuiIO& io = ImGui::GetIO();
 		ImGuiStyle& style = ImGui::GetStyle();
 		float minWinSizeX = style.WindowMinSize.x;
-		style.WindowMinSize.x = 370.0f;
+		style.WindowMinSize.x = 300.0f;
+		ImGuiIO& io = ImGui::GetIO();
 		if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
 		{
 			ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
@@ -211,24 +213,25 @@ namespace Hudi {
 
 	void EditorLayer::OnImGuiRenderMenuBar()
 	{
+		bool isEditing = m_HierarchyPanels.GetViewportState() == ViewportState::Edit;
 		if (ImGui::BeginMenuBar())
 		{
 			if (ImGui::BeginMenu("File"))
 			{
 				//ShowExampleMenuFile();
-				if (ImGui::MenuItem("New", "Ctrl+N"))
+				if (ImGui::MenuItem("New", "Ctrl+N", nullptr, isEditing))
 					NewScene();
-				if (ImGui::MenuItem("Open...", "Ctrl+O"))
+				if (ImGui::MenuItem("Open...", "Ctrl+O", nullptr, isEditing))
 					OpenScene();
-				if (ImGui::MenuItem("Save", "Ctrl+S"))
+				if (ImGui::MenuItem("Save", "Ctrl+S", nullptr, isEditing))
 					SaveScene();
-				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"))
+				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S", nullptr, isEditing))
 					SaveSceneAs();
-				if (ImGui::MenuItem("Close Scene", "Ctrl+P"))
+				if (ImGui::MenuItem("Close Scene", "Ctrl+P", nullptr, isEditing))
 					CloseScene();
 				ImGui::Separator();
 				if (ImGui::MenuItem("Close"))
-					Application::Get().Close();
+					CloseApp();
 
 				ImGui::EndMenu();
 			}
@@ -249,31 +252,47 @@ namespace Hudi {
 
 	void EditorLayer::NewScene()
 	{
+		if (m_HierarchyPanels.GetViewportState() != ViewportState::Edit)
+			return;
+
 		m_HierarchyPanels.SetContext(NewRef<Scene>(0));
 		m_CurrentScenePath.clear();
 	}
 
 	void EditorLayer::OpenScene(const std::filesystem::path& path)
 	{
-		const std::string& filepath = path.string();
-		if (!filepath.empty())
+		if (m_HierarchyPanels.GetViewportState() != ViewportState::Edit)
+			return;
+		if (path.extension() != ".hud")
 		{
-			m_CurrentScenePath = filepath;
+			HD_ERROR("Can only open .hud Hudi Scene files.");
+			return;
+		}
+
+		if (!path.empty())
+		{
+			m_CurrentScenePath = path;
 			Ref<Scene> newScene = NewRef<Scene>(0);
 			SceneSerializer serializer(newScene);
-			serializer.Open(filepath);
+			serializer.Open(path);
 			m_HierarchyPanels.SetContext(newScene);
 		}
 	}
 
 	void EditorLayer::OpenScene()
 	{
+		if (m_HierarchyPanels.GetViewportState() != ViewportState::Edit)
+			return;
+
 		std::string filepath = FileDialogs::OpenFile("Scene Files (*.hud)\0*.hud\0");
 		OpenScene(filepath);
 	}
 
 	void EditorLayer::SaveScene()
 	{
+		if (m_HierarchyPanels.GetViewportState() != ViewportState::Edit)
+			return;
+
 		Ref<Scene> scene = m_HierarchyPanels.GetContext();
 		if (!scene)
 			return;
@@ -291,6 +310,9 @@ namespace Hudi {
 
 	void EditorLayer::SaveSceneAs()
 	{
+		if (m_HierarchyPanels.GetViewportState() != ViewportState::Edit)
+			return;
+
 		Ref<Scene> scene = m_HierarchyPanels.GetContext();
 		if (!scene)
 			return;
@@ -306,7 +328,19 @@ namespace Hudi {
 
 	void EditorLayer::CloseScene()
 	{
+		if (m_HierarchyPanels.GetViewportState() != ViewportState::Edit)
+			return;
+
 		m_HierarchyPanels.SetContext(nullptr);
+	}
+
+	void EditorLayer::CloseApp()
+	{
+		if (m_HierarchyPanels.GetViewportState() == ViewportState::Runtime)
+		{
+			m_HierarchyPanels.SetViewportEdit();
+		}
+		Application::Get().Close();
 	}
 }
 

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <filesystem>
+
 #include "Component.h"
 
 #include "Hudi/Renderer/Texture.h"
@@ -16,16 +18,12 @@ namespace Hudi {
 		}
 		const char* ToString() const override { return "SpriteRenderer"; }
 
-		void SetFilePath(const std::string& _filepath)
+		void SetFilePath(const std::filesystem::path& _filepath)
 		{
 			if (_filepath.empty())
-			{
-				texture = nullptr;
-				filepath = "";
 				return;
-			}
 
-			Ref<Texture2D> tex = Texture2D::Create(_filepath);
+			Ref<Texture2D> tex = Texture2D::Create(_filepath.string());
 			if (tex->Valid())
 			{
 				texture = tex;
@@ -38,7 +36,7 @@ namespace Hudi {
 		}
 
 	public:
-		std::string filepath;
+		std::filesystem::path filepath;
 
 		Ref<Texture2D> texture;
 		glm::vec4 color;

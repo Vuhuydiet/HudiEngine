@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <queue>
+#include <type_traits>
 
 #include "EntityManager.h"
 #include "ComponentManager.h"
@@ -13,8 +14,6 @@ namespace ECS {
 	{
 	public:
 		World();
-
-		void Flush();
 
 	public:
 		template <typename T>
@@ -28,12 +27,14 @@ namespace ECS {
 		void SetActive(Entity entt, bool active);
 		bool IsActive(Entity entt) { return m_EntityManager->IsActive(entt); }
 
+		void Flush();
+
 	public:
 		template <typename T, typename ... Args>
 		std::shared_ptr<T> CreateComponent(Args&&... args);
 
-		template <typename T>
-		std::shared_ptr<T> AddComponent(Entity entt);
+		template <typename T, typename ... Args>
+		std::shared_ptr<T> AddComponent(Entity entt, Args&& ... args);
 
 		template <typename T>
 		std::shared_ptr<T> AddComponent(Entity emtt, std::shared_ptr<BaseComponent> comp);
@@ -52,7 +53,7 @@ namespace ECS {
 		template <typename T>
 		void RemoveComponent(Entity entt);
 
-		template <typename T>
+		template <typename T, typename ... Args>
 		std::vector<Entity> View();
 
 		// Function passed in must take a std::shared_ptr<Comp> as an argument
@@ -94,12 +95,11 @@ namespace ECS {
 		while (!s_DestroyedEntities.empty())
 		{
 			Entity entt = s_DestroyedEntities.front();
+			s_DestroyedEntities.pop();
 
 			m_EntityManager->DestroyEntity(entt);
 			m_ComponentManager->DestroyEntity(entt);
 			m_SystemManager->DestroyEntity(entt);
-
-			s_DestroyedEntities.pop();
 		}
 	}
 
@@ -111,11 +111,11 @@ namespace ECS {
 		return std::static_pointer_cast<T>(component);
 	}
 
-	template <typename T>
-	inline std::shared_ptr<T> World::AddComponent(Entity entt)
+	template <typename T, typename ... Args>
+	inline std::shared_ptr<T> World::AddComponent(Entity entt, Args&&... args)
 	{
-		std::shared_ptr<BaseComponent> component = CreateComponent<T>();
-		component->m_Entt = entt;
+		std::shared_ptr<BaseComponent> component = CreateComponent<T>(args...);
+		component->m_Entity = entt;
 
 		m_ComponentManager->AddComponent<T>(entt, component);
 		component->Init();
@@ -183,20 +183,42 @@ namespace ECS {
 		m_SystemManager->Invalidate(entt, sig);
 	}
 
-	template <typename T>
-	inline std::vector<Entity> World::View()
+	template <typename... Args>
+	typename decltype(std::enable_if<sizeof...(Args) == 0>::type()) ViewHelper(World* world, std::vector<Entity>& entities) {}
+	template <typename T, typename ... Args>
+	void ViewHelper(World* world, std::vector<Entity>& entities)
 	{
-		return m_ComponentManager->View<T>();
+		for (auto& entity : entities)
+		{
+			if (entity && !world->HasComponent<T>())
+				entity = 0;
+		}
+		ViewHelper<Args...>();
+	}
+	template <typename T, typename ... Args>
+	std::vector<Entity> World::View()
+	{
+		std::vector<Entity> temp = m_ComponentManager->View<T>();
+		ViewHelper<Args...>(this, temp);
+
+		std::vector<Entity> res;
+		for (const auto& entity : temp)
+		{
+			if (entity != 0)
+				res.push_back(entity);
+		}
+		return res;
 	}
 
 	inline void World::SetActive(Entity entt, bool active)
 	{
 		m_EntityManager->SetActive(entt, active);
 
-		if (!active)
+		/*if (!active)
 			m_SystemManager->DestroyEntity(entt);
 		else
 			m_SystemManager->AddEntity(entt, m_EntityManager->GetComponentSignature(entt));
+		*/
 	}
 
 }

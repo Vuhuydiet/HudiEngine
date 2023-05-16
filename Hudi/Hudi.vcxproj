@@ -77,7 +77,7 @@
       <PrecompiledHeaderFile>hdpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>HD_LIB;_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;HD_PLATFORM_WINDOWS;HD_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;vendor\SDL2\include;vendor\SDL2_image\include;vendor\Glad\include;vendor\ImGui;vendor\glm;vendor\stb_image;vendor\yaml-cpp\include;vendor\ImGuizmo;src;..\ECS\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;vendor\SDL2\include;vendor\SDL2_image\include;vendor\Glad\include;vendor\ImGui;vendor\glm;vendor\stb_image;vendor\yaml-cpp\include;vendor\ImGuizmo;vendor\Box2D\include;src;..\ECS\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -102,7 +102,7 @@
       <PrecompiledHeaderFile>hdpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>HD_LIB;_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;HD_PLATFORM_WINDOWS;HD_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;vendor\SDL2\include;vendor\SDL2_image\include;vendor\Glad\include;vendor\ImGui;vendor\glm;vendor\stb_image;vendor\yaml-cpp\include;vendor\ImGuizmo;src;..\ECS\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;vendor\SDL2\include;vendor\SDL2_image\include;vendor\Glad\include;vendor\ImGui;vendor\glm;vendor\stb_image;vendor\yaml-cpp\include;vendor\ImGuizmo;vendor\Box2D\include;src;..\ECS\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -131,7 +131,7 @@
       <PrecompiledHeaderFile>hdpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>HD_LIB;_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;HD_PLATFORM_WINDOWS;HD_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;vendor\SDL2\include;vendor\SDL2_image\include;vendor\Glad\include;vendor\ImGui;vendor\glm;vendor\stb_image;vendor\yaml-cpp\include;vendor\ImGuizmo;src;..\ECS\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;vendor\SDL2\include;vendor\SDL2_image\include;vendor\Glad\include;vendor\ImGui;vendor\glm;vendor\stb_image;vendor\yaml-cpp\include;vendor\ImGuizmo;vendor\Box2D\include;src;..\ECS\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -192,17 +192,19 @@
     <ClInclude Include="src\Hudi\Scene\Components\CameraComponent.h" />
     <ClInclude Include="src\Hudi\Scene\Components\Collider2DComponent.h" />
     <ClInclude Include="src\Hudi\Scene\Components\Component.h" />
-    <ClInclude Include="src\Hudi\Scene\Components\RigidBody2DComponent.h" />
+    <ClInclude Include="src\Hudi\Scene\Components\Rigidbody2DComponent.h" />
     <ClInclude Include="src\Hudi\Scene\Components\SpriteRendererComponent.h" />
     <ClInclude Include="src\Hudi\Scene\Components\TransformComponent.h" />
     <ClInclude Include="src\Hudi\Scene\GameObject.h" />
     <ClInclude Include="src\Hudi\Scene\Physics\Collision2D.h" />
     <ClInclude Include="src\Hudi\Scene\Physics\CollisionDetector.h" />
+    <ClInclude Include="src\Hudi\Scene\Physics\Physics2D\Physics2DSystem.h" />
     <ClInclude Include="src\Hudi\Scene\Physics\PhysicsSystem.h" />
     <ClInclude Include="src\Hudi\Scene\Physics\Solver.h" />
     <ClInclude Include="src\Hudi\Scene\RenderSystem\RenderSystem.h" />
     <ClInclude Include="src\Hudi\Scene\Scene.h" />
     <ClInclude Include="src\Hudi\Scene\SceneManager.h" />
+    <ClInclude Include="src\Hudi\Scene\Serialize\EDHudiTypes.h" />
     <ClInclude Include="src\Hudi\Scene\Serialize\SceneSerializer.h" />
     <ClInclude Include="src\Hudi\Source\KeyCodes.h" />
     <ClInclude Include="src\Hudi\Source\MouseCodes.h" />
@@ -658,6 +660,7 @@
     <ClCompile Include="src\Hudi\Scene\Components\Components.cpp" />
     <ClCompile Include="src\Hudi\Scene\GameObject.cpp" />
     <ClCompile Include="src\Hudi\Scene\Physics\CollisionDetector.cpp" />
+    <ClCompile Include="src\Hudi\Scene\Physics\Physics2D\Physics2DSystem.cpp" />
     <ClCompile Include="src\Hudi\Scene\Physics\PhysicsSystem.cpp" />
     <ClCompile Include="src\Hudi\Scene\Physics\Solver.cpp" />
     <ClCompile Include="src\Hudi\Scene\Physics\algo.cpp" />
@@ -693,6 +696,9 @@
     </ProjectReference>
     <ProjectReference Include="vendor\yaml-cpp\yaml-cpp.vcxproj">
       <Project>{88F1A057-74BE-FB62-9DD7-E90A890331F1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="vendor\Box2D\Box2D.vcxproj">
+      <Project>{A434E80C-1049-10BE-D9CA-B31D459E0CEF}</Project>
     </ProjectReference>
     <ProjectReference Include="..\ECS\ECS.vcxproj">
       <Project>{60E1870B-CCEA-877C-5566-9E7CC16E937C}</Project>

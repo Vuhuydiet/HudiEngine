@@ -1,6 +1,8 @@
 #pragma once
 
 #include <unordered_set>
+#include <map>
+#include <type_traits>
 
 #include "EntityManager.h"
 #include "ComponentManager.h"
@@ -14,10 +16,19 @@ namespace ECS {
 	public:
 		virtual ~System() = default;
 
+		template <typename T, typename ... Args>
+		void SetNeededComponent();
 		Signature GetSignature() const { return m_Signature; }
 
-		void AddEntity(Entity entt) { m_Entities.insert(entt); }
-		void RemoveEntity(Entity entt) { m_Entities.erase(entt); }
+		void AddEntity(Entity entt) { OnEntityAdded(entt);  m_Entities.insert(entt); }
+		void RemoveEntity(Entity entt) { OnEntityRemoved(entt);  m_Entities.erase(entt); }
+
+		virtual void OnEntityAdded(Entity entity) {}
+		virtual void OnEntityRemoved(Entity entity) {}
+
+	private:
+		template <typename ... Args>
+		typename decltype(std::enable_if<sizeof...(Args)==0>::type()) SetNeededComponent() {}
 
 	protected:
 		Signature m_Signature;
@@ -46,7 +57,7 @@ namespace ECS {
 	{
 	public:
 		template <typename T>
-		std::shared_ptr<T> RegisterSystem();
+		std::shared_ptr<System> RegisterSystem();
 
 		template <typename T>
 		void AddSystem(Entity entt, const Signature& sig);
@@ -58,32 +69,43 @@ namespace ECS {
 		void DestroyEntity(Entity entt);
 
 	private:
-		std::array<std::shared_ptr<System>, MAX_SYSTEMS> m_Systems;
-		size_t m_Size = 0;
+		std::map<SystemID, std::shared_ptr<System>> m_Systems;
+		// size_t m_Size = 0;
 	};
 
 
 
 	// ------------------ Definitions --------------------------------------//
+
+	template <typename T, typename ... Args>
+	void System::SetNeededComponent()
+	{
+		m_Signature.set(GetComponentID<T>());
+		SetNeededComponent<Args...>();
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////
+	/// System Manager ///////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////
+
 	template <typename T>
-	inline std::shared_ptr<T> SystemManager::RegisterSystem()
+	inline std::shared_ptr<System> SystemManager::RegisterSystem()
 	{
 		SystemID id = GetSystemID<T>();
-
-		if (id == m_Size)
+		if (m_Systems.find(id) == m_Systems.end())
 		{
 			m_Systems[id] = std::make_shared<T>();
-			m_Size++;
+			//m_Size++;
 		}
 
-		return std::static_pointer_cast<T>(m_Systems[id]);
+		return m_Systems.at(id);
 	}
 
 	template <typename T>
 	inline void SystemManager::AddSystem(Entity entt, const Signature& sig)
 	{
 		SystemID id = GetSystemID<T>();
-		System* system = m_Systems[id];
+		System* system = m_Systems.at(id);
 		Signature sysSig = system->GetSignature();
 
 		if ((sig & sysSig) == sysSig)
@@ -94,9 +116,8 @@ namespace ECS {
 
 	inline void SystemManager::AddEntity(Entity entt, const Signature& sig)
 	{
-		for (size_t id = 0; id < m_Size; id++)
+		for (auto& [systemID, system] : m_Systems)
 		{
-			auto& system = m_Systems[id];
 			const auto& sysSig = system->GetSignature();
 			if ((sysSig & sig) == sysSig)
 			{
@@ -107,9 +128,8 @@ namespace ECS {
 
 	inline void SystemManager::Invalidate(Entity entt, const Signature& sig)
 	{
-		for (size_t id = 0; id < m_Size; id++)
+		for (auto& [systemID, system] : m_Systems)
 		{
-			auto& system = m_Systems[id];
 			const auto& sysSig = system->GetSignature();
 			if ((sysSig & sig) != sysSig)
 			{
@@ -120,9 +140,9 @@ namespace ECS {
 
 	inline void SystemManager::DestroyEntity(Entity entt)
 	{
-		for (size_t id = 0; id < m_Size; id++)
+		for (auto& [systemID, system] : m_Systems)
 		{
-			m_Systems[id]->RemoveEntity(entt);
+			system->RemoveEntity(entt);
 		}
 	}
 }

@@ -6,6 +6,39 @@
 
 namespace Hudi {
 
+    void DrawInputScalar(const char* label, ImGuiDataType data_type, void* p_data, const void* p_step, const void* p_step_fast, const char* format, ImGuiInputTextFlags flags, float columnWidth)
+    {
+        ImGui::PushID(label);
+
+        ImGui::Columns(2, nullptr, false);
+        ImGui::SetColumnWidth(0, columnWidth);
+
+        ImGui::Text(label);
+        ImGui::NextColumn();
+
+        ImGui::InputScalar("##intputscalar", data_type, p_data, p_step, p_step_fast, format, flags);
+
+        ImGui::Columns(1);
+        ImGui::PopID();
+    }
+
+
+    void DrawFloatControl(const char* label, float& value, float dragSpeed, float min, float max, const char* fmt, float columnWidth)
+    {
+        ImGui::PushID(label);
+        
+        ImGui::Columns(2, nullptr, false);
+        ImGui::SetColumnWidth(0, columnWidth);
+
+        ImGui::Text(label);
+        ImGui::NextColumn();
+
+        ImGui::DragFloat("##float", &value, dragSpeed, min, max, fmt, ImGuiSliderFlags_AlwaysClamp);
+        
+        ImGui::Columns(1);
+        ImGui::PopID();
+    }
+
     void DrawFloat2Control(const char* label, glm::vec2& values, float resetValue, float dragSpeed, float columnWidth)
     {
         ImGui::PushID(label);
@@ -103,5 +136,23 @@ namespace Hudi {
         ImGui::Columns(1);
         ImGui::PopID();
     }
+
+    void DrawColorEdit4(const char* label, glm::vec4& color, float columnWidth)
+    {
+        ImGui::PushID(label);
+
+        ImGui::Columns(2, nullptr, false);
+        ImGui::SetColumnWidth(0, columnWidth);
+
+        ImGui::Text(label);
+        ImGui::NextColumn();
+
+        ImGui::ColorEdit4("##color", glm::value_ptr(color), ImGuiColorEditFlags_NoLabel);
+
+        ImGui::Columns(1);
+        ImGui::PopID();
+
+    }
+
 
 }

@@ -3,6 +3,12 @@
 #include "TransformComponent.h"
 #include "CameraComponent.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/quaternion.hpp>
+
 namespace Hudi {
 
 	Transform::Transform() : scale(1.0f), localScale(1.0f) {}
@@ -60,5 +66,13 @@ namespace Hudi {
 		}
 	}
 
+	Camera& Camera::operator= (const Camera& other)
+	{
+		this->m_Type = other.m_Type;
+		this->m_Projection = other.m_Projection;
+		this->m_OrthographicData = other.m_OrthographicData;
+		this->m_Perspective = other.m_Perspective;
 
+		return *this;
+	}
 }

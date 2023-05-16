@@ -21,7 +21,7 @@ namespace Hudi {
 		glm::vec3 pos;
 		glm::vec4 color;
 		glm::vec2 texCoord;
-		float texIndex;
+		int texIndex;
 		float tilingFactor;
 		int quadID;
 	};
@@ -50,7 +50,7 @@ namespace Hudi {
 			{ ShaderDataType::Float3, "a_Position" },
 			{ ShaderDataType::Float4, "a_Color" },
 			{ ShaderDataType::Float2, "a_TexCoord" },
-			{ ShaderDataType::Float, "a_TexIndex" },
+			{ ShaderDataType::Int, "a_TexIndex" },
 			{ ShaderDataType::Float, "a_TilingFactor" },
 			{ ShaderDataType::Int, "a_QuadID" }
 			});
@@ -77,10 +77,9 @@ namespace Hudi {
 		Ref<Texture2D> whiteTexture = Texture2D::Create(1, 1);
 		uint32_t data = 0xffffffff;
 		whiteTexture->SetData(&data, sizeof(data));
-		whiteTexture->Bind(0);
 		s_Data.textures[0] = whiteTexture;
 
-		s_Data.shader = Shader::Create("assets/shaders/Texture.glsl");
+		s_Data.shader = Shader::Create("resources/shaders/Texture.glsl");
 
 		int* textureSlots = new int[MAX_TEXTURE_SLOT];
 		for (int i = 0; i < MAX_TEXTURE_SLOT; i++)
@@ -126,7 +125,7 @@ namespace Hudi {
 
 	void Renderer2D::Flush()
 	{
-		for (uint32_t i = 1; i < s_Data.textureCount; i++)
+		for (uint32_t i = 0; i < s_Data.textureCount; i++)
 		{
 			s_Data.textures[i]->Bind(i);
 		}
@@ -145,20 +144,20 @@ namespace Hudi {
 		s_Data.textureCount = 1;
 	}
 
-	static inline float GetTextureIndex(Ref<Texture2D> texture)
+	static inline int GetTextureIndex(Ref<Texture2D> texture)
 	{
 		if (!texture)
-			return 0.0f;
+			return 0;
 		for (uint32_t i = 0; i < s_Data.textureCount; i++)
 		{
 			if (*s_Data.textures[i].get() == *texture.get())
 			{
-				return (float)i;
+				return i;
 			}
 		}
 		// TODO: flush texture
 		s_Data.textures[s_Data.textureCount++] = texture;
-		return (float)s_Data.textureCount - 1.0f;
+		return s_Data.textureCount - 1;
 	}
 
 	void Renderer2D::DrawQuad(const Quad& quad, int quadID)
@@ -170,9 +169,9 @@ namespace Hudi {
 
 		float xoffset = quad.size.x * 0.5f;
 		float yoffset = quad.size.y * 0.5f;
-		glm::vec2 vertexPos[] = { {-xoffset, -yoffset}, {xoffset, -yoffset}, {xoffset, yoffset}, {-xoffset, yoffset} };
-		glm::vec2 texCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
-		float texIndex = GetTextureIndex(quad.texture);
+		glm::vec2 vertexPos[4] = { {-xoffset, -yoffset}, {xoffset, -yoffset}, {xoffset, yoffset}, {-xoffset, yoffset} };
+		glm::vec2 texCoords[4] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
+		int texIndex = GetTextureIndex(quad.texture);
 
 		uint32_t cur_pos = s_Data.quadCount * 4;
 		for (int i = 0; i < 4; i++)

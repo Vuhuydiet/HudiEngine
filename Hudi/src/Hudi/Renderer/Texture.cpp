@@ -21,7 +21,7 @@ namespace Hudi {
 		return nullptr;
 	}
 
-	Ref<Texture2D> Texture2D::Create(const std::string& filepath)
+	Ref<Texture2D> Texture2D::Create(const std::filesystem::path& filepath)
 	{
 		switch (Renderer::GetAPI())
 		{

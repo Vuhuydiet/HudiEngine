@@ -55,4 +55,9 @@ namespace Hudi {
 		return EventManager::MousePosition();
 	}
 
+	glm::vec2 Input::GetMouseDeltaPos()
+	{
+		return EventManager::MouseDeltaPos();
+	}
+
 }

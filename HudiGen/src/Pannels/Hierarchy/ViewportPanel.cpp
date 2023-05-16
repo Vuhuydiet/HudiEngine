@@ -12,11 +12,11 @@
 
 namespace Hudi {
 
-	static int s_State = 0;
+	static ViewportState s_State = ViewportState::Edit;
 	static bool s_IsFocus = false;
 	static bool s_IsHovered = false;
 	static glm::vec2 s_ViewportSize(800, 600);
-	glm::vec2 s_ViewportBounds[2];
+	static glm::vec2 s_ViewportBounds[2];
 
 	static int s_GizmosMod = ImGuizmo::OPERATION::TRANSLATE;
 	static bool s_IsUsingGizmos = false;
@@ -25,9 +25,42 @@ namespace Hudi {
 
 	static Ref<Framebuffer> s_Framebuffer = nullptr;
 
-	void HierarchyPanels::SetViewportState(int state)
+	static Ref<Scene> s_SrcContext = nullptr;
+
+	void HierarchyPanels::SetViewportPlay()
 	{
-		s_State = state;
+		if (s_State == ViewportState::Runtime)
+		{
+			HD_WARN("Already on Viewport runtime state!");
+			return;
+		}
+
+		s_State = ViewportState::Runtime;
+		
+		s_SrcContext = m_Context;
+		m_Context = m_Context->Copy();
+		if (m_SelectedObject.Valid())
+			m_SelectedObject = m_Context->GetGameObject(s_SrcContext->GetGameObjectName(m_SelectedObject));
+
+		m_Context->BeginScene();
+	}
+
+	void HierarchyPanels::SetViewportEdit()
+	{
+		if (s_State == ViewportState::Edit)
+		{
+			HD_WARN("Already on Viewport runtime state!");
+			return;
+		}
+
+		s_State = ViewportState::Edit;
+
+		m_Context->EndScene();
+		
+		if (m_SelectedObject.Valid())
+			m_SelectedObject = s_SrcContext->GetGameObject(m_Context->GetGameObjectName(m_SelectedObject));
+		m_Context = s_SrcContext;
+		s_SrcContext = nullptr;
 	}
 
 	void HierarchyPanels::OnViewportEvent(Event& event)
@@ -35,9 +68,9 @@ namespace Hudi {
 		if (!s_IsFocus)
 			return;
 
-		if (s_State == 0)
+		if (s_State == ViewportState::Edit)
 		{
-			s_EditorCamera.OnEvent(event);
+			s_EditorCamera.OnEvent(event, s_IsOverGizmos ? EventType::MOUSE_MOTION : EventType::FIRST_EVENT);
 
 			if (event.type() == EventType::KEY_DOWN)
 			{
@@ -54,6 +87,7 @@ namespace Hudi {
 			}
 		}
 	}
+	ViewportState HierarchyPanels::GetViewportState() const { return s_State; }
 
 	static void OnViewportEditUpdate(float dt, Ref<Scene> context, GameObject& selectedObject);
 	static void OnViewportRuntimeUpdate(float dt, Ref<Scene> context);
@@ -73,10 +107,10 @@ namespace Hudi {
 
 		switch (s_State)
 		{
-		case 0:
+		case ViewportState::Edit:
 			OnViewportEditUpdate(dt, m_Context, m_SelectedObject);
 			break;
-		case 1:
+		case ViewportState::Runtime:
 			OnViewportRuntimeUpdate(dt, m_Context);
 			break;
 		}
@@ -130,14 +164,7 @@ namespace Hudi {
 			if (!s_IsOverGizmos && mouseX >= 0 && mouseX < (int)viewportSize.x && mouseY >= 0 && mouseY < (int)viewportSize.y)
 			{
 				int pixelData = s_Framebuffer->ReadPixel(1, mouseX, mouseY);
-				if (pixelData != 0)
-				{
-					selectedObject = context->GetGameObject(pixelData);
-				}
-				else
-				{
-					selectedObject.Reset();
-				}
+				selectedObject = pixelData != 0 ? context->GetGameObject(pixelData) : GameObject();
 			}
 		}
 
@@ -147,37 +174,10 @@ namespace Hudi {
 	void OnViewportRuntimeUpdate(float dt, Ref<Scene> context)
 	{
 		s_Framebuffer->Bind();
-		//SceneManager::Get().GetActiveScene()->OnUpdate(dt);
-
-		RenderCommand::SetClearColor(67, 70, 75, 255);
-		RenderCommand::Clear();
 
 		if (context)
 		{
-			GameObject camera = context->GetPrimaryCamera();
-			if (camera.Valid())
-			{
-				const glm::mat4& cameraProjection = camera.GetComponent<Camera>().GetProjection();
-				const glm::mat4& cameraTranform = camera.GetComponent<Transform>().Transformation();
-				Renderer2D::BeginScene(cameraProjection, cameraTranform);
-
-				context->Each([&](GameObject object) {
-					if (!object.HasComponent<Transform>() || !object.HasComponent<SpriteRenderer>())
-						return;
-
-					const Transform& transform = object.GetComponent<Transform>();
-					const SpriteRenderer& sprite = object.GetComponent<SpriteRenderer>();
-
-					Quad quad;
-					quad.transform = transform.Transformation();
-					quad.size = sprite.size;
-					quad.texture = sprite.texture;
-					quad.color = sprite.color;
-					Renderer2D::DrawQuad(quad);
-				});
-
-				Renderer2D::EndScene();
-			}
+			context->OnUpdate(dt);
 		}
 
 		s_Framebuffer->Unbind();
@@ -189,11 +189,33 @@ namespace Hudi {
 		if (!open)
 			return;
 
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 2 });
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, { 0, 0 });
+		ImGui::PushStyleColor(ImGuiCol_Button, { 0, 0, 0, 0 });
+		ImGui::Begin("##toolbar", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollWithMouse);;
+
+		std::string icon = s_State == ViewportState::Edit ? "play_button" : "stop_button";
+		float iconSize = ImGui::GetWindowHeight() - 4.0f;
+		ImGui::SetCursorPosX(ImGui::GetWindowContentRegionMax().x * 0.5f - iconSize * 0.5f);
+		if (ImGui::ImageButton((ImTextureID)m_Icons.at(icon)->GetRendererID(), { iconSize, iconSize }, { 0, 1 }, { 1, 0 }, 0))
+		{
+			if (s_State == ViewportState::Edit)
+				SetViewportPlay();
+			else if (s_State == ViewportState::Runtime)
+				SetViewportEdit();
+		}
+		
+		// End Tool Bar
+		ImGui::End();
+		ImGui::PopStyleColor(1);
+		ImGui::PopStyleVar(2);
+
+		// --------------- Viewport --------------------------------------------------------- //
 		ImGuiWindowFlags flags = 0;
 		flags |= ImGuiWindowFlags_NoTitleBar;
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
-		ImGui::Begin("Viewport", &open, flags);
+		ImGui::Begin("Viewport", &open, ImGuiWindowFlags_NoTitleBar);
 		ImGui::PopStyleVar();
 
 		s_IsFocus = ImGui::IsWindowFocused();
@@ -206,24 +228,28 @@ namespace Hudi {
 		s_ViewportBounds[1] = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
 
 		// Resize
-		ImVec2 size = ImGui::GetContentRegionAvail();
-		s_ViewportSize = { size.x, size.y };
+		ImVec2 windowAvailSize = ImGui::GetContentRegionAvail();
+		s_ViewportSize = { windowAvailSize.x, windowAvailSize.y };
 
 		size_t texIndex = s_Framebuffer->GetColorAttachmentID();
-		ImGui::Image((void*)texIndex, ImVec2{ size.x, size.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+		ImGui::Image((void*)texIndex, ImVec2{ windowAvailSize.x, windowAvailSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
-		if (s_State != 0)
+		// ---------------------- Edit State Only ----------------------------------------- //
+		if (s_State != ViewportState::Edit)
+		{
+			// End Viewport
+			ImGui::End();
 			return;
+		}
 
 		// Drag drop scene
 		if (ImGui::BeginDragDropTarget())
 		{
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_PANEL"))
 			{
-				void* data = malloc(payload->DataSize);
-				if (data)
-					memcpy(data, payload->Data, payload->DataSize);
-				m_Commands.push({ PanelCommand::OpenScene, data });
+				std::filesystem::path path = (const char*)payload->Data;
+				if (path.extension().string() == ".hud")
+					m_Commands.emplace(PanelCommand::OpenScene, payload->Data, payload->DataSize);
 			}
 			ImGui::EndDragDropTarget();
 		}
@@ -264,6 +290,7 @@ namespace Hudi {
 
 		}
 
+		// End Viewport
 		ImGui::End();
 	}
 

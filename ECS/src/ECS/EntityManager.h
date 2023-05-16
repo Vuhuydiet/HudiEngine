@@ -30,6 +30,7 @@ namespace ECS {
 
 		Signature& GetComponentSignature(Entity entt) { return m_AvailableComponents[entt]; }
 
+		std::vector<Entity> GetActiveEntities();
 		bool Exists(Entity entt) { return m_Exists[entt]; }
 
 		void SetActive(Entity entt, bool active) { m_IsActives[entt] = active; }
@@ -48,14 +49,13 @@ namespace ECS {
 	// ------------- Definitions --------------------------------------------------------//
 	inline EntityManager::EntityManager()
 	{
-		for (int i = 1; i < MAX_ENTITIES; i++)
+		for (int i = 0; i < MAX_ENTITIES; i++)
 		{
-			m_EntityQueue.push(i);
 			m_Exists[i] = false;
 			m_IsActives[i] = false;
+			if (i != 0)
+				m_EntityQueue.push(i);
 		}
-		m_Exists[0] = false;
-		m_IsActives[0] = false;
 	}
 
 	inline Entity EntityManager::CreateEntity()

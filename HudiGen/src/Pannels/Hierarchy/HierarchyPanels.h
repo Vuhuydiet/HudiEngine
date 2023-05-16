@@ -10,12 +10,27 @@ namespace Hudi {
 	{
 		enum Type { None, OpenScene };
 
-		Type type;
-		void* data;
+		PanelCommand() = default;
+		PanelCommand(Type _type, const void* _data, size_t _dataSize);
+		PanelCommand(const PanelCommand& other);
+		~PanelCommand();
+		PanelCommand& operator= (const PanelCommand& other);
+
+		Type type = Type::None;
+		void* data = nullptr;
+		size_t dataSize = 0;
+	};
+
+	enum ViewportState 
+	{ 
+		None = 0,
+		Edit,
+		Runtime
 	};
 
 	class HierarchyPanels
 	{
+	public:
 	public:
 		HierarchyPanels();
 
@@ -29,7 +44,9 @@ namespace Hudi {
 
 		bool PollCommand(PanelCommand& command);
 
-		void SetViewportState(int state);
+		ViewportState GetViewportState() const;
+		void SetViewportPlay();
+		void SetViewportEdit();
 
 	private:
 		void OnImGuiRenderHierarchyPanel(bool& open);
@@ -46,6 +63,7 @@ namespace Hudi {
 		std::queue<PanelCommand> m_Commands;
 
 		Ref<Framebuffer> m_Framebuffer;
+		std::map<std::string, Ref<Texture2D>> m_Icons;
 	};
 
 }

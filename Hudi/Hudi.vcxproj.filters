@@ -40,6 +40,9 @@
     <Filter Include="src\Hudi\Scene\Physics">
       <UniqueIdentifier>{55A9F969-41A3-22BC-2A10-B9CC16A98828}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Hudi\Scene\Physics\Physics2D">
+      <UniqueIdentifier>{3DC66706-2917-5348-527B-410A3E2BE6B1}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Hudi\Scene\RenderSystem">
       <UniqueIdentifier>{174D8FED-835A-BDD3-0C41-B9BE784D898A}</UniqueIdentifier>
     </Filter>
@@ -201,7 +204,7 @@
     <ClInclude Include="src\Hudi\Scene\Components\Component.h">
       <Filter>src\Hudi\Scene\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hudi\Scene\Components\RigidBody2DComponent.h">
+    <ClInclude Include="src\Hudi\Scene\Components\Rigidbody2DComponent.h">
       <Filter>src\Hudi\Scene\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\Hudi\Scene\Components\SpriteRendererComponent.h">
@@ -218,6 +221,9 @@
     </ClInclude>
     <ClInclude Include="src\Hudi\Scene\Physics\CollisionDetector.h">
       <Filter>src\Hudi\Scene\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Scene\Physics\Physics2D\Physics2DSystem.h">
+      <Filter>src\Hudi\Scene\Physics\Physics2D</Filter>
     </ClInclude>
     <ClInclude Include="src\Hudi\Scene\Physics\PhysicsSystem.h">
       <Filter>src\Hudi\Scene\Physics</Filter>
@@ -1515,6 +1521,7 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
+    <ClInclude Include="src\Hudi\Scene\Serialize\EDHudiTypes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Hudi\Core\Application.cpp">
@@ -1594,6 +1601,9 @@
     </ClCompile>
     <ClCompile Include="src\Hudi\Scene\Physics\CollisionDetector.cpp">
       <Filter>src\Hudi\Scene\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Scene\Physics\Physics2D\Physics2DSystem.cpp">
+      <Filter>src\Hudi\Scene\Physics\Physics2D</Filter>
     </ClCompile>
     <ClCompile Include="src\Hudi\Scene\Physics\PhysicsSystem.cpp">
       <Filter>src\Hudi\Scene\Physics</Filter>

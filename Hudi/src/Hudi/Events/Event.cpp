@@ -35,6 +35,9 @@ namespace Hudi {
 	std::unordered_set<MouseCode> EventManager::m_ButtonJustUp;
 	std::unordered_set<MouseCode> EventManager::m_MouseButtonDownEvent;
 
+	glm::vec2 EventManager::m_CurrentMousePos = { 0, 0 };
+	glm::vec2 EventManager::m_PreviousMousePos = { 0, 0 };
+
 	void EventManager::Init()
 	{
 		Clear();
@@ -115,6 +118,8 @@ namespace Hudi {
 				}
 				case MOUSE_MOTION:
 				{
+					m_PreviousMousePos = m_CurrentMousePos;
+					m_CurrentMousePos = { e.motion.x, e.motion.y };
 					break;
 				}
 				case MOUSE_WHEEL:

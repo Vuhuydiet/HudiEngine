@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ECS.h>
+#include "Hudi/Scene/GameObject.h"
 
 namespace Hudi {
 
@@ -11,11 +12,8 @@ namespace Hudi {
 	public:
 		RenderSystem();
 
-		void OnUpdate(float dt);
+		void OnUpdate(float dt, ECS::Entity camera);
 
-	private:
-		Scene* scene = nullptr;
-		friend class Scene;
 	};
 
 }

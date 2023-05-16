@@ -1,5 +1,7 @@
 #pragma once
-#include "hdpch.h"
+
+#include <vector>
+#include <filesystem>
 
 #include "Components/Component.h"
 
@@ -16,50 +18,53 @@ namespace Hudi {
 		void Destroy();
 		void Reset();
 
+		void Copy(const GameObject& srcObj);
 		bool Valid() const { return m_Entity > 0 && world != nullptr; }
 
 		ECS::Entity GetEntityID() const { return m_Entity; }
 
-		bool operator== (const GameObject& other);
-		bool operator!= (const GameObject& other);
+		bool operator== (const GameObject& other) const;
+		bool operator!= (const GameObject& other) const;
 
 		// ------- System -------/
-		bool Exist() { return world->Exists(m_Entity); }
+		bool Exist() const { return world->Exists(m_Entity); }
+
+		template <typename T, typename ... Args>
+		T& AddComponent(Args&&... args) const { return *world->AddComponent<T>(m_Entity, args...); }
 
 		template <typename T>
-		T& AddComponent() { return *world->AddComponent<T>(m_Entity); }
+		T& AddComponent(Ref<Component> comp) const { return *world->AddComponent<T>(m_Entity, comp); }
 
 		template <typename T>
-		T& AddComponent(Ref<Component> comp) { return *world->AddComponent<T>(m_Entity, comp); }
+		T& AddComponent(T component) const { return *world->AddComponent<T>(m_Entity, NewRef<T>(comp)); }
 
 		template <typename T>
-		T& AddComponent(T component) { return *world->AddComponent<T>(m_Entity, NewRef<T>(comp)); }
+		bool HasComponent() const { return world->HasComponent<T>(m_Entity); }
 
 		template <typename T>
-		bool HasComponent() { return world->HasComponent<T>(m_Entity); }
+		T& GetComponent() const { return *world->GetComponent<T>(m_Entity); }
 
 		template <typename T>
-		T& GetComponent() { return *world->GetComponent<T>(m_Entity); }
+		T& GetOrAddComponent() const { return HasComponent<T>() ? GetComponent<T>() : AddComponent<T>(); }
 
 		template <typename T>
-		T& GetOrAddComponent() { return HasComponent<T>() ? GetComponent<T>() : AddComponent<T>(); }
+		Ref<T> GetComponentByRef() const { return world->GetComponent<T>(m_Entity); }
+
+		std::vector<Ref<Component>> GetComponents() const;
 
 		template <typename T>
-		Ref<T> GetComponentByRef() { return world->GetComponent<T>(m_Entity); }
-
-		std::vector<Ref<Component>> GetComponents();
-
-		template <typename T>
-		void RemoveComponent() { world->RemoveComponent<T>(m_Entity); }
+		void RemoveComponent() const { world->RemoveComponent<T>(m_Entity); }
 
 		template <typename T> 
-		void AddSystem() { world->AddSystem<T>(m_Entity); }
+		void AddSystem() const { world->AddSystem<T>(m_Entity); }
 
-		void SetActive(bool active) { world->SetActive(m_Entity, active); }
-		bool IsActive() { return world->IsActive(m_Entity); }
+		void SetActive(bool active) const { world->SetActive(m_Entity, active); }
+		bool IsActive() const { return world->IsActive(m_Entity); }
 
 	private:
 		ECS::Entity m_Entity;
+
+		std::vector<std::filesystem::path> m_ScriptPaths;
 
 	private:
 		ECS::World* world;

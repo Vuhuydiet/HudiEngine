@@ -26,6 +26,6 @@ namespace Hudi {
 		virtual ~Texture2D() = default;
 
 		static Ref<Texture2D> Create(uint32_t width, uint32_t height);
-		static Ref<Texture2D> Create(const std::string& filePath);
+		static Ref<Texture2D> Create(const std::filesystem::path& filePath);
 	};
 }

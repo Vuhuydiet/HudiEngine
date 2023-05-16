@@ -30,11 +30,12 @@ namespace Hudi {
 		void SaveScene();
 		void SaveSceneAs();
 		void CloseScene();
+		void CloseApp();
 
 		void OnKeyPressedEvent(Event& e);
 
 	private:
-		std::string m_CurrentScenePath;
+		std::filesystem::path m_CurrentScenePath;
 
 		bool m_OpenedHierarchy = true;
 		bool m_OpenedInspector = true;

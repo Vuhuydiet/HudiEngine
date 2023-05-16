@@ -10,16 +10,18 @@ namespace ECS {
 	class BaseComponent
 	{
 	public:
-		BaseComponent() : m_Entt(0), enabled(true) {}
+		BaseComponent() : m_Entity(0), enabled(true) {}
 		virtual ~BaseComponent() = default;
 		virtual void Init() {}
 
 		virtual const char* ToString() const = 0;
 
+		BaseComponent& operator= (const BaseComponent& other) { return *this; }
+
 	public:
 		bool enabled = true;
 	protected:
-		Entity m_Entt;
+		Entity m_Entity;
 		World* world = nullptr;
 		friend class World;
 	};

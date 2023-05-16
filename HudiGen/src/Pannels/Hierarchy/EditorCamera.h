@@ -13,7 +13,7 @@ namespace Hudi {
 		EditorCamera(float fov, float aspectRatio, float nearClip, float farClip);
 
 		void OnUpdate(float dt);
-		void OnEvent(Event& e);
+		void OnEvent(Event& e, EventType blockEvent = EventType::FIRST_EVENT);
 
 		inline float GetDistance() const { return m_Distance; }
 		inline void SetDistance(float distance) { m_Distance = distance; }
@@ -36,7 +36,8 @@ namespace Hudi {
 		void UpdateProjection();
 		void UpdateView();
 
-		bool OnMouseScroll(Event& e);
+		void OnMouseScroll(Event& e);
+		void OnMouseMotion(Event& e);
 
 		void MousePan(const glm::vec2& delta);
 		void MouseRotate(const glm::vec2& delta);
@@ -50,8 +51,8 @@ namespace Hudi {
 	private:
 		float m_FOV = 45.0f, m_AspectRatio = 1.778f, m_NearClip = 0.1f, m_FarClip = 1000.0f;
 
-		glm::mat4 m_Projection;
-		glm::mat4 m_ViewMatrix;
+		glm::mat4 m_Projection = glm::mat4(1.0f);
+		glm::mat4 m_ViewMatrix = glm::mat4(1.0f);
 		glm::vec3 m_Position = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 m_FocalPoint = { 0.0f, 0.0f, 0.0f };
 

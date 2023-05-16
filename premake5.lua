@@ -15,6 +15,7 @@ group "Dependencies"
 	include "Hudi/vendor/Glad"
 	include "Hudi/vendor/ImGui"
 	include "Hudi/vendor/yaml-cpp"
+	include "Hudi/vendor/Box2D"
 	include "ECS"
 group ""
 

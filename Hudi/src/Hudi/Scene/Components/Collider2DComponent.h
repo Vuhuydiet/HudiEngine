@@ -1,9 +1,26 @@
 #pragma once
-#include "hdpch.h"
 
 #include "Component.h"
 
+#include <glm/glm.hpp>
+
 namespace Hudi {
+
+	class BoxCollider2D : public Component
+	{
+	public:
+		virtual const char* ToString() const override { return "BoxCollider2D"; }
+
+		glm::vec2 offset = { 0.0f, 0.0f };
+		glm::vec2 size = { 0.5f, 0.5f };
+
+		float density = 1.0f;
+		float friction = 0.5f;
+		float restitution = 0.0f;
+		float restitutionThreshold = 0.5f;
+
+		void* runtimeFixture = nullptr;
+	};
 
 #ifdef COLLIDER
 	class Collider : public Component

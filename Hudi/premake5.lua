@@ -42,6 +42,7 @@ project "Hudi"
 		"vendor/stb_image",
 		"vendor/yaml-cpp/include",
 		"vendor/ImGuizmo",
+		"vendor/Box2D/include",
 
 		"src",
 		"%{wks.location}/ECS/src"
@@ -63,6 +64,7 @@ project "Hudi"
 		"Glad",
 		"ImGui",
 		"yaml-cpp",
+		"Box2D",
 
 		"ECS"
 	}

@@ -16,7 +16,7 @@ namespace Hudi {
 		struct OrthographicData
 		{
 			float left = -5.0f, right = 5.0f, bottom = -5.0f, top = 5.0f, zNear = -10.0f, zFar = 10.0f;
-			bool operator== (const OrthographicData& other)
+			bool operator== (const OrthographicData& other) const
 			{
 				return left == other.left && right == other.right && bottom == other.bottom && top == other.top && zNear == other.zNear && zFar == other.zFar;
 			}
@@ -25,7 +25,7 @@ namespace Hudi {
 		struct PerspectiveData
 		{
 			float FOV = 45.0f, aspectRatio = 1.2f, zNear = 0.1f, zFar = 1000.0f;
-			bool operator== (const PerspectiveData& other)
+			bool operator== (const PerspectiveData& other) const
 			{
 				return FOV == other.FOV && aspectRatio == other.aspectRatio && zNear == other.zNear && zFar == other.zFar;
 			}
@@ -50,6 +50,8 @@ namespace Hudi {
 		void SetProjectionData(const PerspectiveData& data);
 
 		void RecalculateProjection();
+
+		Camera& operator= (const Camera& other);
 
 	private:
 		Type m_Type;

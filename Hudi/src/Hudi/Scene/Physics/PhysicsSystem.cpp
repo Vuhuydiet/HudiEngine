@@ -2,7 +2,7 @@
 #include "PhysicsSystem.h"
 
 #include "Hudi/Scene/Components/TransformComponent.h"
-#include "Hudi/Scene/Components/RigidBody2DComponent.h"
+#include "Hudi/Scene/Components/Rigidbody2DComponent.h"
 #include "Hudi/Scene/Components/Collider2DComponent.h"
 #include "Hudi/Scene/Components/BehaviourComponent.h"
 
@@ -13,7 +13,7 @@ namespace Hudi {
 	//PhysicsSystem::PhysicsSystem()
 	//{
 	//	m_Signature.set(ECS::GetComponentID<Transform>());
-	//	m_Signature.set(ECS::GetComponentID<RigidBody2D>());
+	//	m_Signature.set(ECS::GetComponentID<Rigidbody2D>());
 	//}
 
 	//void PhysicsSystem::OnUpdate()
@@ -24,7 +24,7 @@ namespace Hudi {
 	//	for (auto entt : m_Entities)
 	//	{
 	//		auto& transform = ECS::Coordinator::GetComponent<Transform>(entt);
-	//		auto& rigidBody = ECS::Coordinator::GetComponent<RigidBody2D>(entt);
+	//		auto& rigidBody = ECS::Coordinator::GetComponent<Rigidbody2D>(entt);
 
 	//		if (rigidBody.IsStatic())
 	//		{

@@ -25,6 +25,7 @@ namespace Hudi {
 		static bool IsMouseUp(MouseCode button);
 
 		static glm::vec2 GetMousePosition();
+		static glm::vec2 GetMouseDeltaPos();
 	};
 
 }

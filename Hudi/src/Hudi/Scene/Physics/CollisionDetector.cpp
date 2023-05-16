@@ -26,8 +26,8 @@ namespace Hudi {
 				if (entt_1 == entt_2)
 					break;
 
-				auto& bd_1 = ECS::Coordinator::GetComponent<RigidBody2D>(entt_1);
-				auto& bd_2 = ECS::Coordinator::GetComponent<RigidBody2D>(entt_2);
+				auto& bd_1 = ECS::Coordinator::GetComponent<Rigidbody2D>(entt_1);
+				auto& bd_2 = ECS::Coordinator::GetComponent<Rigidbody2D>(entt_2);
 				if (bd_1.IsStatic() && bd_2.IsStatic())
 					continue;
 

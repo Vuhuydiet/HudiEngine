@@ -24,23 +24,18 @@ namespace Hudi {
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	}
 
-	OpenGLTexture2D::OpenGLTexture2D(const std::string& filepath)
+	OpenGLTexture2D::OpenGLTexture2D(const std::filesystem::path& filepath)
 		: m_FilePath(filepath), m_Width(0), m_Height(0), m_RendererID(0), m_InternalFormat(0), m_DataFormat(0)
 	{
 		stbi_set_flip_vertically_on_load(1);
 		int width, height, channels;
-		stbi_uc* data = stbi_load(filepath.c_str(), &width, &height, &channels, 0);
+		stbi_uc* data = stbi_load(filepath.string().c_str(), &width, &height, &channels, 0);
 		if (!data)
 		{
 			m_Valid = false;
-			HD_CORE_ERROR("Failed to load image: '{0}'!", filepath);
+			HD_CORE_ERROR("Failed to load image: '{0}'!", filepath.string());
 			return;
 		}
-
-		m_Valid = true;
-
-		m_Width = width;
-		m_Height = height;
 
 		m_InternalFormat = 0;
 		m_DataFormat = 0;
@@ -55,7 +50,17 @@ namespace Hudi {
 			m_DataFormat = GL_RGBA;
 			break;
 		}
-		HD_CORE_ASSERT(!m_InternalFormat || !m_DataFormat, "Format not supported!");
+		if (!m_InternalFormat || !m_DataFormat)
+		{
+			m_Valid = false;
+			HD_CORE_ERROR("Format not supported: '{0}'!", filepath.string());
+			return;
+		}
+
+		m_Valid = true;
+
+		m_Width = width;
+		m_Height = height;
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
 		glTextureStorage2D(m_RendererID, 1, m_InternalFormat, m_Width, m_Height);

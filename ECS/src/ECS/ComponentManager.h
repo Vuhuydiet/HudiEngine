@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <unordered_map>
+#include <type_traits>
 
 #include "EntityManager.h"
 
@@ -38,10 +39,11 @@ namespace ECS {
 		void RemoveComponent(Entity entt);
 
 		void DestroyEntity(Entity entt);
-
+#define OLD_VIEW 1
+#if OLD_VIEW
 		template <typename T>
 		std::vector<Entity> View();
-
+#endif
 		// Function passed in must take a std::shared_ptr<Comp> as an argument
 		template <typename Comp, typename Fn>
 		void EachComponent(Fn&& func);
@@ -80,7 +82,7 @@ namespace ECS {
 				<< "\". Returning nullptr \n";
 			return nullptr;
 		}
-		return std::static_pointer_cast<T>(m_ComponentMaps[id][entt]);
+		return std::static_pointer_cast<T>(m_ComponentMaps[id].at(entt));
 	}
 
 	inline std::vector<std::shared_ptr<BaseComponent>> ComponentManager::GetComponents(Entity entt)
@@ -89,7 +91,7 @@ namespace ECS {
 		for (int id = 0; id < m_Size; id++)
 		{
 			if (m_ComponentMaps[id].find(entt) != m_ComponentMaps[id].end())
-				components.push_back(m_ComponentMaps[id][entt]);
+				components.push_back(m_ComponentMaps[id].at(entt));
 		}
 		return components;
 	}
@@ -110,6 +112,7 @@ namespace ECS {
 		}
 	}
 
+#if OLD_VIEW
 	template <typename T>
 	inline std::vector<Entity> ComponentManager::View()
 	{
@@ -120,6 +123,7 @@ namespace ECS {
 		}
 		return entities;
 	}
+#endif
 
 	template <typename Comp, typename Fn>
 	inline void ComponentManager::EachComponent(Fn&& func)

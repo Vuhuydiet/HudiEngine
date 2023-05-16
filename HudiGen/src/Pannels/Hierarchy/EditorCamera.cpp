@@ -71,18 +71,31 @@ namespace Hudi {
 		UpdateView();
 	}
 
-	void EditorCamera::OnEvent(Event& e)
+	void EditorCamera::OnEvent(Event& e, EventType blockEvent)
 	{
 		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch(MOUSE_WHEEL, HD_BIND_EVENT_FN(EditorCamera::OnMouseScroll));
+		if (blockEvent != MOUSE_WHEEL)
+			dispatcher.Dispatch(MOUSE_WHEEL, HD_BIND_EVENT_FN(EditorCamera::OnMouseScroll));
+		if (blockEvent != MOUSE_MOTION)
+			dispatcher.Dispatch(MOUSE_MOTION, HD_BIND_EVENT_FN(EditorCamera::OnMouseMotion));
 	}
 
-	bool EditorCamera::OnMouseScroll(Event& e)
+	void EditorCamera::OnMouseScroll(Event& e)
 	{
-		float delta = e.GetYOffset() * 0.1f;
+		float delta = e.GetWheelYOffset() * 0.1f;
 		MouseZoom(delta);
 		UpdateView();
-		return false;
+	}
+
+	void EditorCamera::OnMouseMotion(Event& event)
+	{
+		if (Input::IsKeyDown(Key::L_ALT) || !Input::IsMouseDown(Mouse::BUTTON_LEFT))
+			return;
+
+		glm::vec2 delta = Input::GetMouseDeltaPos();
+		delta = (fabs(delta.x) > fabs(delta.y) ? glm::vec2{ delta.x, 0.0f } : glm::vec2{ 0.0f, delta.y }) * 0.002f;
+		MousePan(delta);
+		UpdateView();
 	}
 
 	void EditorCamera::MousePan(const glm::vec2& delta)

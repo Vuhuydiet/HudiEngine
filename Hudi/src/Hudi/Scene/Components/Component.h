@@ -10,26 +10,26 @@ namespace Hudi {
 		virtual ~Component() = default;
 	public:
 		template <typename T>
-		T& AddComponent() { world->AddComponent<T>(m_Entt, std::make_shared<T>()); return GetComponent<T>(); }
+		T& AddComponent() { world->AddComponent<T>(m_Entity, std::make_shared<T>()); return GetComponent<T>(); }
 		template <typename T>
-		T& AddComponent(std::shared_ptr<T> comp) { world->AddComponent<T>(m_Entt, comp); return GetComponent<T>(); }
+		T& AddComponent(std::shared_ptr<T> comp) { world->AddComponent<T>(m_Entity, comp); return GetComponent<T>(); }
 		template <typename T>
-		T& AddComponent(T component) { world->AddComponent<T>(m_Entt, std::make_shared<T>(component)); return GetComponent<T>(); }
+		T& AddComponent(T component) { world->AddComponent<T>(m_Entity, std::make_shared<T>(component)); return GetComponent<T>(); }
 
 		template <typename T>
-		bool HasComponent() { return world->HasComponent<T>(m_Entt); }
+		bool HasComponent() { return world->HasComponent<T>(m_Entity); }
 		template <typename T>
 		bool Is() { return dynamic_cast<T*>(this); }
 
 		template <typename T>
-		T& GetComponent() { return *world->GetComponent<T>(m_Entt); }
+		T& GetComponent() { return *world->GetComponent<T>(m_Entity); }
 		template <typename T>
-		std::shared_ptr<T> GetComponentByRef() { return world->GetComponent<T>(m_Entt); }
+		std::shared_ptr<T> GetComponentByRef() { return world->GetComponent<T>(m_Entity); }
 
-		void DestroyEntity() { world->DestroyEntity(m_Entt); }
+		void DestroyEntity() { world->DestroyEntity(m_Entity); }
 
-		void SetActive(bool active) { world->SetActive(m_Entt, active); }
-		bool IsActive() { return world->IsActive(m_Entt); }
+		void SetActive(bool active) { world->SetActive(m_Entity, active); }
+		bool IsActive() { return world->IsActive(m_Entity); }
 
 	public:
 		virtual void Awake() {}
@@ -40,8 +40,10 @@ namespace Hudi {
 
 #include "TransformComponent.h"
 #include "SpriteRendererComponent.h"
-#include "RigidBody2DComponent.h"
 #include "CameraComponent.h"
+#include "Rigidbody2DComponent.h"
+#include "Collider2DComponent.h"
+
 #include "BehaviourComponent.h"
 #include "AnimatorComponent/AnimationComponent.h"
 #include "AnimatorComponent/AnimatorComponent.h"
