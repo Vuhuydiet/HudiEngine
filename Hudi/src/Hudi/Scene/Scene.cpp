@@ -78,7 +78,7 @@ namespace Hudi {
 			m_DestroyedObjects.pop();
 
 			GameObject go = m_GameObjects.at(id);
-			const std::string& name = m_EntityToName.at(id);
+			std::string name = m_EntityToName.at(id);
 
 			m_GameObjects.erase(id);
 			m_EntityToName.erase(id);
@@ -103,14 +103,18 @@ namespace Hudi {
 
 	Ref<Scene> Scene::Copy() const
 	{
-		Ref<Scene> newScene = NewRef<Scene>(0);
+		Ref<Scene> newScene = NewRef<Scene>(this->m_BuildIndex);
+		newScene->m_Width = this->m_Width;
+		newScene->m_Height = this->m_Height;
 		for (const auto& [id, object] : this->m_GameObjects)
 		{
 			const std::string& objName = this->m_EntityToName.at(id);
-			GameObject newObject = newScene->CreateEmptyObject(objName);
-			newObject.Copy(object);
+			// GameObject::Copy already copy the IDComponent
+			GameObject newObject = newScene->CreateEmptyObjectWithUUID(object.GetUUID(), objName);
+			newScene->RenameGameObject(objName, newObject);
+			newObject.CopyComponents(object);
 		}
-		const std::string primaryCameraName = this->GetGameObjectName(this->m_PrimaryCamera);
+		const std::string& primaryCameraName = this->GetGameObjectName(this->m_PrimaryCamera);
 		newScene->SetPrimaryCamera(primaryCameraName);
 		return newScene;
 	}
@@ -118,19 +122,21 @@ namespace Hudi {
 	GameObject Scene::CreateEmptyObject(const std::string& _name)
 	{
 		if (_name == "##unknown")
-		{
-			HD_CORE_ERROR("Can not create GameObject with the name '##unknown'.");
 			return GameObject();
-		}
+		GameObject obj = CreateEmptyObjectWithUUID(UUID(), _name);
+		return obj;
+	}
 
-		std::string name = _name;
-		static uint32_t ind = 1;
-		if (m_NameToEntity.find(name) != m_NameToEntity.end())
-			name += " (" + std::to_string(ind++) + ")";
+	GameObject Scene::CreateEmptyObjectWithUUID(UUID uuid, const std::string& _name)
+	{
+		if (_name == "##unknown")
+			return GameObject();
 
 		GameObject obj(m_World.get());
+		obj.AddComponent<IDComponent>(uuid);
 
 		uint32_t id = obj.GetEntityID();
+		std::string name = FindValidName(_name);
 		m_GameObjects[id] = obj;
 		m_EntityToName[id] = name;
 		m_NameToEntity[name] = id;
@@ -139,14 +145,46 @@ namespace Hudi {
 
 	GameObject Scene::CreateGameObject(const std::string& _name)
 	{
+		if (_name == "##unknown")
+			return GameObject();
 		GameObject obj = CreateEmptyObject(_name);
 		obj.AddComponent<Transform>();
 		obj.AddComponent<SpriteRenderer>();
 		return obj;
 	}
 
+	GameObject Scene::DuplicateObject(const std::string& _name)
+	{
+		if (_name == "##unknown")
+			return GameObject();
+		if (m_NameToEntity.find(_name) == m_NameToEntity.end())
+		{
+			HD_CORE_ERROR("Cannot find object named '{0}' to duplicate!", _name);
+			return GameObject();
+		}
+
+		GameObject src = GetGameObject(_name);
+		std::string newObjectName = FindValidName(_name);
+		GameObject newObject = CreateEmptyObject(newObjectName);
+		newObject.CopyComponents(src);
+		return src;
+	}
+
+	GameObject Scene::DuplicateObject(const GameObject& src)
+	{
+		if (!HasGameObject(src))
+		{
+			HD_CORE_ERROR("Cannot find object to duplicate! (UUID: {0}", (uint64_t)src.GetUUID());
+			return GameObject();
+		}
+		const std::string& srcName = GetGameObjectName(src);
+		return DuplicateObject(srcName);
+	}
+
 	bool Scene::HasGameObject(const std::string& _name) const
 	{
+		if (_name == "##unknown")
+			return false;
 		return m_NameToEntity.find(_name) != m_NameToEntity.end();
 	}
 
@@ -158,9 +196,11 @@ namespace Hudi {
 
 	GameObject Scene::GetGameObject(const std::string& _name) const
 	{
+		if (_name == "##unknown")
+			return GameObject();
 		if (m_NameToEntity.find(_name) == m_NameToEntity.end())
 		{
-			HD_CORE_ERROR("Game Object named \"{0}\" does not exist!", _name);
+			HD_CORE_ERROR("Game Object named '{0}' does not exist!", _name);
 			return GameObject();
 		}
 
@@ -180,6 +220,8 @@ namespace Hudi {
 
 	void Scene::DestroyGameObject(const std::string& _name)
 	{
+		if (_name == "##unknown")
+			return;
 		if (m_NameToEntity.find(_name) == m_NameToEntity.end())
 		{
 			HD_CORE_ERROR("GameObject named \"{0}\" does not exist in the scene!", _name);
@@ -216,6 +258,8 @@ namespace Hudi {
 
 	void Scene::RenameGameObject(const std::string& _name, GameObject object)
 	{
+		if (_name == "##unknown")
+			return;
 		uint32_t id = object.GetEntityID();
 		if (m_EntityToName.find(id) == m_EntityToName.end())
 		{
@@ -227,6 +271,23 @@ namespace Hudi {
 		m_EntityToName[id] = _name;
 		m_NameToEntity.erase(old_name);
 		m_NameToEntity[_name] = id;
+	}
+
+	std::string Scene::FindValidName(const std::string& _name) const
+	{
+		std::string nonNum = _name;
+		if (nonNum.back() == ')')
+		{
+			nonNum = nonNum.substr(0, nonNum.find_last_of('(') - 1);
+		}
+
+		int ind = 1;
+		std::string name = nonNum;
+		while (m_NameToEntity.find(name) != m_NameToEntity.end())
+		{
+			name = nonNum + " (" + std::to_string(ind++) + ")";
+		}
+		return name;
 	}
 
 	bool Scene::SetPrimaryCamera(GameObject camera)
@@ -242,6 +303,8 @@ namespace Hudi {
 
 	bool Scene::SetPrimaryCamera(const std::string& cameraName)
 	{
+		if (cameraName == "##unknown")
+			return false;
 		GameObject camera = GetGameObject(cameraName);
 		if (!camera.Valid())
 			return false;

@@ -8,7 +8,12 @@ namespace Hudi {
 
 	struct PanelCommand
 	{
-		enum Type { None, OpenScene };
+		enum Type 
+		{
+			None = 0,
+
+			OpenScene
+		};
 
 		PanelCommand() = default;
 		PanelCommand(Type _type, const void* _data, size_t _dataSize);
@@ -34,15 +39,24 @@ namespace Hudi {
 	public:
 		HierarchyPanels();
 
-		void OnEvent(Event& event);
-		void OnUpdate(float dt);
-		void OnImGuiRender(bool& hierarchy, bool& inspector, bool& viewport);
-	public:
 		void SetContext(Ref<Scene> scene);
 		Ref<Scene> GetContext();
 		GameObject GetSelectedObject();
 
+	public:
+		void OnEvent(Event& event);
+		void OnUpdate(float dt);
+		void OnImGuiRender(bool& hierarchy, bool& inspector, bool& viewport);
+	
+	public:
 		bool PollCommand(PanelCommand& command);
+
+		bool IsHierarchyFocused() const;
+		bool IsInspectorFocused() const;
+		bool IsViewportFocused() const;
+		bool IsHierarchyHovered() const;
+		bool IsInspectorHovered() const;
+		bool IsViewportHovered() const;
 
 		ViewportState GetViewportState() const;
 		void SetViewportPlay();

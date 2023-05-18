@@ -16,9 +16,12 @@ namespace Hudi {
 	static void SerializeGameObject(YAML::Emitter& out, GameObject object, const std::string& name)
 	{
 		out << YAML::BeginMap; // GameObject
-		out << YAML::Key << "Entity" << YAML::Value << object.GetEntityID();
-
 		out << YAML::Key << "Name" << YAML::Value << name;
+
+		if (object.HasComponent<IDComponent>())
+		{
+			out << YAML::Key << "UUID" << YAML::Value << (uint64_t)object.GetUUID();
+		}
 
 		if (object.HasComponent<Transform>())
 		{
@@ -117,10 +120,9 @@ namespace Hudi {
 		
 		for (auto object : objects)
 		{
-			uint32_t id = object["Entity"].as<uint32_t>();
 			std::string name = object["Name"].as<std::string>();
-
-			GameObject newobject = m_Scene->CreateEmptyObject(name);
+			UUID uuid = object["UUID"].as<uint64_t>();
+			GameObject newobject = m_Scene->CreateEmptyObjectWithUUID(uuid, name);
 
 			YAML::Node transform = object["Transform"];
 			if (transform)

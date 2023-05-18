@@ -1,0 +1,47 @@
+Scene: Untitled
+Primary Camera: "##unknown"
+Objects:
+  - Name: New GameObject
+    UUID: 10411731699330531559
+    Transform:
+      Position: [-3.43296242, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 1]
+      Image file path: ""
+      Order: 0
+  - Name: New GameObject (1)
+    UUID: 9943049199978163511
+    Transform:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 1]
+      Image file path: ""
+      Order: 0
+  - Name: New GameObject (2)
+    UUID: 16383699116715549808
+    Transform:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 1]
+      Image file path: ""
+      Order: 0
+  - Name: New GameObject (3)
+    UUID: 6757472010233207600
+    Transform:
+      Position: [2.2817893, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 1]
+      Image file path: ""
+      Order: 0

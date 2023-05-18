@@ -1,6 +1,8 @@
 #include "hdpch.h"
 #include "GameObject.h"
 
+#include <type_traits>
+
 namespace Hudi {
 
 	GameObject::GameObject()
@@ -28,7 +30,20 @@ namespace Hudi {
 		world = nullptr;
 	}
 
-	void GameObject::Copy(const GameObject& srcObj)
+	template <typename... Args>
+	typename decltype(std::enable_if<sizeof...(Args)==0>::type()) CopyObjectComponents(const GameObject& dst, const GameObject& src) {}
+
+	template <typename T, typename... Args>
+	void CopyObjectComponents(const GameObject& dst, const GameObject& src)
+	{
+		if (src.HasComponent<T>())
+		{
+			dst.GetOrAddComponent<T>() = src.GetComponent<T>();
+		}
+		CopyObjectComponents<Args...>(dst, src);
+	}
+
+	void GameObject::CopyComponents(const GameObject& srcObj)
 	{
 		if (!this->Valid() || !srcObj.Valid())
 		{
@@ -38,26 +53,11 @@ namespace Hudi {
 
 		this->m_ScriptPaths = srcObj.m_ScriptPaths;
 
-		if (srcObj.HasComponent<Transform>())
-		{
-			this->GetOrAddComponent<Transform>() = srcObj.GetComponent<Transform>();
-		}
-		if (srcObj.HasComponent<SpriteRenderer>())
-		{
-			this->GetOrAddComponent<SpriteRenderer>() = srcObj.GetComponent<SpriteRenderer>();
-		}
-		if (srcObj.HasComponent<Camera>())
-		{
-			this->GetOrAddComponent<Camera>() = srcObj.GetComponent<Camera>();
-		}
-		if (srcObj.HasComponent<Rigidbody2D>())
-		{
-			this->GetOrAddComponent<Rigidbody2D>() = srcObj.GetComponent<Rigidbody2D>();
-		}
-		if (srcObj.HasComponent<BoxCollider2D>())
-		{
-			this->GetOrAddComponent<BoxCollider2D>() = srcObj.GetComponent<BoxCollider2D>();
-		}
+		if (srcObj.HasComponent<IDComponent>() && !this->HasComponent<IDComponent>())
+			this->AddComponent<IDComponent>();
+
+		CopyObjectComponents<Transform, SpriteRenderer, Camera, Rigidbody2D, BoxCollider2D>(*this, srcObj);
+		
 	}
 
 	bool GameObject::operator==(const GameObject& other) const

@@ -164,6 +164,7 @@
     <ClInclude Include="src\Hudi\Core\Layer.h" />
     <ClInclude Include="src\Hudi\Core\LayerStack.h" />
     <ClInclude Include="src\Hudi\Core\Log.h" />
+    <ClInclude Include="src\Hudi\Core\UUID.h" />
     <ClInclude Include="src\Hudi\Core\Window.h" />
     <ClInclude Include="src\Hudi\Debug\Instrumentor.h" />
     <ClInclude Include="src\Hudi\Events\Event.h" />
@@ -192,6 +193,7 @@
     <ClInclude Include="src\Hudi\Scene\Components\CameraComponent.h" />
     <ClInclude Include="src\Hudi\Scene\Components\Collider2DComponent.h" />
     <ClInclude Include="src\Hudi\Scene\Components\Component.h" />
+    <ClInclude Include="src\Hudi\Scene\Components\IDComponent.h" />
     <ClInclude Include="src\Hudi\Scene\Components\Rigidbody2DComponent.h" />
     <ClInclude Include="src\Hudi\Scene\Components\SpriteRendererComponent.h" />
     <ClInclude Include="src\Hudi\Scene\Components\TransformComponent.h" />
@@ -637,6 +639,7 @@
     <ClCompile Include="src\Hudi\Core\Application.cpp" />
     <ClCompile Include="src\Hudi\Core\LayerStack.cpp" />
     <ClCompile Include="src\Hudi\Core\Log.cpp" />
+    <ClCompile Include="src\Hudi\Core\UUID.cpp" />
     <ClCompile Include="src\Hudi\Core\Window.cpp" />
     <ClCompile Include="src\Hudi\Debug\Instrumentor.cpp" />
     <ClCompile Include="src\Hudi\Events\Event.cpp" />

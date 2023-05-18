@@ -4,13 +4,18 @@
 
 int main(int argc, char** argv)
 {
+	if (argc <= 1)
+	{
+		std::cout << "No input file available!";
+		return -1;
+	}
+
 	std::fstream inp;
 	inp.open(argv[1], std::ios::in);
 
 	if (inp.fail())
 	{
 		std::cout << "Fail to open file \"" << argv[0] << "\".";
-		inp.close();
 		return -1;
 	}
 

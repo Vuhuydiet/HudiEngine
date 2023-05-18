@@ -54,6 +54,11 @@ namespace Hudi {
 			float currentTime = m_Clock.GetSeconds();
 			float dt = currentTime - m_LastFrameTime;
 			m_LastFrameTime = currentTime;
+			if (dt > 0.1f)
+			{
+				m_Window->ClearEventQueue();
+				continue;
+			}
 
 			m_Window->OnUpdate(dt);
 
@@ -90,10 +95,9 @@ namespace Hudi {
 		Close();
 	}
 
-	void Application::OnWindowEvent(Event& e)
+	void Application::OnWindowEvent(Event& event)
 	{
-		SDL_Event event = e;
-		switch (event.window.event)
+		switch (event.WindowType())
 		{
 		case WINDOWEVENT_RESIZED:
 		case WINDOWEVENT_SIZE_CHANGED:

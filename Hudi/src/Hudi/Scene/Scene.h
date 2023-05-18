@@ -34,8 +34,12 @@ namespace Hudi {
 		void Invalidate();
 
 		// GameObject relevant
+		GameObject CreateEmptyObjectWithUUID(UUID uuid, const std::string& name);
 		GameObject CreateEmptyObject(const std::string& _name);
 		GameObject CreateGameObject(const std::string& _name);
+
+		GameObject DuplicateObject(const std::string& _name);
+		GameObject DuplicateObject(const GameObject& src);
 
 		bool HasGameObject(const std::string& _name) const;
 		bool HasGameObject(GameObject object) const;
@@ -57,6 +61,9 @@ namespace Hudi {
 		// Loop through all GameObjects
 		template <typename Func>
 		void Each(Func&& func);
+
+	private:
+		std::string FindValidName(const std::string& _name) const;
 
 	private:
 		uint8_t m_BuildIndex = 0;

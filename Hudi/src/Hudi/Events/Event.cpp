@@ -65,6 +65,14 @@ namespace Hudi {
 		m_MouseButtonDownEvent.clear();
 	}
 
+	void EventManager::ClearEventQueue()
+	{
+		SDL_Event e;
+		while (SDL_PollEvent(&e))
+		{
+		}
+	}
+
 	void EventManager::OnUpdate()
 	{
 		//SDL_PumpEvents();

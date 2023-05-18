@@ -11,20 +11,18 @@ namespace Hudi {
 	public:
 		template <typename T>
 		T& AddComponent() { world->AddComponent<T>(m_Entity, std::make_shared<T>()); return GetComponent<T>(); }
-		template <typename T>
-		T& AddComponent(std::shared_ptr<T> comp) { world->AddComponent<T>(m_Entity, comp); return GetComponent<T>(); }
-		template <typename T>
-		T& AddComponent(T component) { world->AddComponent<T>(m_Entity, std::make_shared<T>(component)); return GetComponent<T>(); }
 
 		template <typename T>
 		bool HasComponent() { return world->HasComponent<T>(m_Entity); }
-		template <typename T>
-		bool Is() { return dynamic_cast<T*>(this); }
 
 		template <typename T>
 		T& GetComponent() { return *world->GetComponent<T>(m_Entity); }
+		
 		template <typename T>
 		std::shared_ptr<T> GetComponentByRef() { return world->GetComponent<T>(m_Entity); }
+
+		template <typename T>
+		bool Is() { return dynamic_cast<T*>(this); }
 
 		void DestroyEntity() { world->DestroyEntity(m_Entity); }
 
@@ -38,6 +36,7 @@ namespace Hudi {
 
 }
 
+#include "IDComponent.h"
 #include "TransformComponent.h"
 #include "SpriteRendererComponent.h"
 #include "CameraComponent.h"

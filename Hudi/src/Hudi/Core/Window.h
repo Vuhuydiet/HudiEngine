@@ -28,9 +28,11 @@ namespace Hudi {
 		virtual void OnEvent(Event& e) = 0;
 		virtual void OnUpdate(float dt) = 0;
 		virtual void SwapWindow() = 0;
-		virtual void Resize() = 0;
+		//virtual void Resize() = 0;
 		virtual bool IsMinimized() const = 0;
 		virtual bool IsMaximized() const = 0;
+
+		virtual void ClearEventQueue() const = 0;
 
 		virtual void SetVSync(bool enabled) = 0;
 		virtual bool IsVSync() const = 0;

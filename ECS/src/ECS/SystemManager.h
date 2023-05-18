@@ -20,8 +20,9 @@ namespace ECS {
 		void SetNeededComponent();
 		Signature GetSignature() const { return m_Signature; }
 
-		void AddEntity(Entity entt) { OnEntityAdded(entt);  m_Entities.insert(entt); }
-		void RemoveEntity(Entity entt) { OnEntityRemoved(entt);  m_Entities.erase(entt); }
+		void AddEntity(Entity entt);
+		void RemoveEntity(Entity entt);
+		bool HasEntity(Entity entt) const;
 
 		virtual void OnEntityAdded(Entity entity) {}
 		virtual void OnEntityRemoved(Entity entity) {}
@@ -78,14 +79,31 @@ namespace ECS {
 	// ------------------ Definitions --------------------------------------//
 
 	template <typename T, typename ... Args>
-	void System::SetNeededComponent()
+	inline void System::SetNeededComponent()
 	{
 		m_Signature.set(GetComponentID<T>());
 		SetNeededComponent<Args...>();
 	}
 
+	inline void System::AddEntity(ECS::Entity entity)
+	{
+		OnEntityAdded(entity);
+		m_Entities.insert(entity);
+	}
+
+	inline void System::RemoveEntity(ECS::Entity entity)
+	{
+		OnEntityRemoved(entity);
+		m_Entities.erase(entity);
+	}
+
+	inline bool System::HasEntity(Entity entity) const
+	{
+		return m_Entities.find(entity) != m_Entities.end();
+	}
+
 	//////////////////////////////////////////////////////////////////////////////////
-	/// System Manager ///////////////////////////////////////////////////////////////
+	////////// System Manager ////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////
 
 	template <typename T>
@@ -108,7 +126,7 @@ namespace ECS {
 		System* system = m_Systems.at(id);
 		Signature sysSig = system->GetSignature();
 
-		if ((sig & sysSig) == sysSig)
+		if ((sig & sysSig) == sysSig && !system->HasEntity(entt))
 		{
 			system->AddEntity(entt);
 		}
@@ -119,7 +137,7 @@ namespace ECS {
 		for (auto& [systemID, system] : m_Systems)
 		{
 			const auto& sysSig = system->GetSignature();
-			if ((sysSig & sig) == sysSig)
+			if ((sysSig & sig) == sysSig && !system->HasEntity(entt))
 			{
 				system->AddEntity(entt);
 			}
@@ -131,18 +149,19 @@ namespace ECS {
 		for (auto& [systemID, system] : m_Systems)
 		{
 			const auto& sysSig = system->GetSignature();
-			if ((sysSig & sig) != sysSig)
+			if ((sysSig & sig) != sysSig && system->HasEntity(entt))
 			{
 				system->RemoveEntity(entt);
 			}
 		}
 	}
 
-	inline void SystemManager::DestroyEntity(Entity entt)
+	inline void SystemManager::DestroyEntity(Entity entity)
 	{
 		for (auto& [systemID, system] : m_Systems)
 		{
-			system->RemoveEntity(entt);
+			if (system->HasEntity(entity))
+				system->RemoveEntity(entity);
 		}
 	}
 }

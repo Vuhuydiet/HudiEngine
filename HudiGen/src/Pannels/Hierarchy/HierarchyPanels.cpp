@@ -74,6 +74,28 @@ namespace Hudi {
 
 	void HierarchyPanels::OnEvent(Event& event)
 	{
+		if (event.type() == KEY_DOWN)
+		{
+			bool ctrl = Input::IsKeyDown(Key::L_CTRL) || Input::IsKeyDown(Key::R_CTRL);
+			bool shift = Input::IsKeyDown(Key::L_SHIFT) || Input::IsKeyDown(Key::R_SHIFT);
+			switch (event.GetKeyCode())
+			{
+			case Key::D:
+				if (ctrl && (IsHierarchyFocused() || IsViewportFocused()) && m_SelectedObject.Valid())
+				{
+					m_Context->DuplicateObject(m_SelectedObject);
+				}
+				break;
+			case Key::E:
+				if (ctrl && (IsHierarchyFocused() || IsViewportFocused()) && m_SelectedObject.Valid())
+				{
+					m_Context->DestroyGameObject(m_SelectedObject);
+					m_SelectedObject.Reset();
+				}
+				break;
+			}
+		}
+
 		OnViewportEvent(event);
 	}
 

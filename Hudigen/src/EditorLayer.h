@@ -24,6 +24,7 @@ namespace Hudi {
 		void BeginDockspace();
 		void EndDockspace();
 		void OnImGuiRenderMenuBar();
+
 		void NewScene();
 		void OpenScene(const std::filesystem::path& path);
 		void OpenScene();

@@ -18,10 +18,12 @@ namespace Hudi {
 		void Destroy();
 		void Reset();
 
-		void Copy(const GameObject& srcObj);
+		// WARN: Copy GameObject but does not copy the ID Component
+		void CopyComponents(const GameObject& srcObj);
 		bool Valid() const { return m_Entity > 0 && world != nullptr; }
 
 		ECS::Entity GetEntityID() const { return m_Entity; }
+		UUID GetUUID() const { return GetComponent<IDComponent>().ID; }
 
 		bool operator== (const GameObject& other) const;
 		bool operator!= (const GameObject& other) const;
@@ -30,13 +32,7 @@ namespace Hudi {
 		bool Exist() const { return world->Exists(m_Entity); }
 
 		template <typename T, typename ... Args>
-		T& AddComponent(Args&&... args) const { return *world->AddComponent<T>(m_Entity, args...); }
-
-		template <typename T>
-		T& AddComponent(Ref<Component> comp) const { return *world->AddComponent<T>(m_Entity, comp); }
-
-		template <typename T>
-		T& AddComponent(T component) const { return *world->AddComponent<T>(m_Entity, NewRef<T>(comp)); }
+		T& AddComponent(Args&&... args) const{ return *world->AddComponent<T>(m_Entity, args...); }
 
 		template <typename T>
 		bool HasComponent() const { return world->HasComponent<T>(m_Entity); }

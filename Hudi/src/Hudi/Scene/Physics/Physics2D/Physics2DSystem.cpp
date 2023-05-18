@@ -76,8 +76,8 @@ namespace Hudi {
 
 	void Physics2DSystem::OnUpdate(float dt)
 	{
-		const int velocityIterations = 6;
-		const int positionIterations = 2;
+		const int velocityIterations = 8;
+		const int positionIterations = 3;
 		m_PhysicsWorld->Step(dt, velocityIterations, positionIterations);
 
 		for (auto entity : m_Entities)

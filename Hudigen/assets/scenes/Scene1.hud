@@ -1,25 +1,307 @@
 Scene: Untitled
-Primary Camera: "##unknown"
+Primary Camera: Main Camera
 Objects:
-  - Entity: 1
-    Name: New GameObject
+  - Name: Main Camera
+    UUID: 6574636180221212543
     Transform:
-      Position: [1.35554218, 0, 0]
+      Position: [0, 4.25894928, -8.89999962]
       Rotation: [0, -0, 0]
-      Scale: [1, 1, 1]
-    Sprite Renderer:
-      Size: [1, 1]
-      Color: [1, 1, 1, 1]
-      Image file path: ""
-      Order: 0
-  - Entity: 2
-    Name: New GameObject (2)
+      Scale: [3.5, 3.5, 1]
+    Camera:
+      Type: 1
+      Orthographic Data: [-4.46999979, 4.46999979, -2.31500006, 2.31500006, -10, 10]
+      Perspective Data: [45, 1.93088555, 0.100000001, 1000]
+  - Name: vu dep trai
+    UUID: 12181594933042303694
     Transform:
-      Position: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
+      Position: [-11.6001873, 3.17991543, 0]
+      Rotation: [0, -0, 90]
+      Scale: [29.0298519, 0.999994874, 1]
     Sprite Renderer:
       Size: [1, 1]
       Color: [1, 1, 1, 1]
       Image file path: ""
       Order: 0
+    Rigidbody 2D:
+      Type: 0
+      Fixed Rotation: false
+    Box Collider 2D:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      Restitution Threshold: 0.5
+  - Name: vu dep trai (1)
+    UUID: 903240237057884425
+    Transform:
+      Position: [10.2598705, 3.59434795, 0]
+      Rotation: [0, -0, 90]
+      Scale: [23.9894276, 1.08996379, 1.09000003]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 1]
+      Image file path: ""
+      Order: 0
+    Rigidbody 2D:
+      Type: 0
+      Fixed Rotation: false
+    Box Collider 2D:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      Restitution Threshold: 0.5
+  - Name: New GameObject
+    UUID: 3659256389854981612
+    Transform:
+      Position: [-0.455518782, -2.4479475, 3.81469681e-06]
+      Rotation: [0, -0, 0]
+      Scale: [22.3999996, 1, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 1]
+      Image file path: assets\textures\hz.png
+      Order: 0
+    Rigidbody 2D:
+      Type: 0
+      Fixed Rotation: false
+    Box Collider 2D:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      Restitution Threshold: 0.5
+  - Name: New GameObject (8)
+    UUID: 9434264711886493728
+    Transform:
+      Position: [-3.88652921, 7.00333786, -0.0279827118]
+      Rotation: [0, -0, 0]
+      Scale: [2, 2, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 1]
+      Image file path: assets\textures\3 Objects\Locker2.png
+      Order: 0
+    Rigidbody 2D:
+      Type: 2
+      Fixed Rotation: false
+    Box Collider 2D:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0.689999998
+      Restitution Threshold: 0.5
+  - Name: New GameObject (1)
+    UUID: 12300744071695420388
+    Transform:
+      Position: [-1.84900904, 11.6234083, -0.0134620667]
+      Rotation: [0, -0, 0]
+      Scale: [2, 2, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 1]
+      Image file path: assets\textures\3 Objects\Locker2.png
+      Order: 0
+    Rigidbody 2D:
+      Type: 2
+      Fixed Rotation: false
+    Box Collider 2D:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0.689999998
+      Restitution Threshold: 0.5
+  - Name: New GameObject (2)
+    UUID: 7713702102172255055
+    Transform:
+      Position: [-6.78311014, 5.68333244, -0.0488414764]
+      Rotation: [0, -0, 0]
+      Scale: [2, 2, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 1]
+      Image file path: assets\textures\3 Objects\Locker2.png
+      Order: 0
+    Rigidbody 2D:
+      Type: 2
+      Fixed Rotation: false
+    Box Collider 2D:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0.689999998
+      Restitution Threshold: 0.5
+  - Name: New GameObject (3)
+    UUID: 14788733522830368860
+    Transform:
+      Position: [-0.43997699, 9.0566721, -0.0031661985]
+      Rotation: [0, -0, 0]
+      Scale: [2, 2, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 1]
+      Image file path: assets\textures\3 Objects\Locker2.png
+      Order: 0
+    Rigidbody 2D:
+      Type: 2
+      Fixed Rotation: false
+    Box Collider 2D:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0.689999998
+      Restitution Threshold: 0.5
+  - Name: New GameObject (4)
+    UUID: 11322874928151393753
+    Transform:
+      Position: [-3.95984936, 3.41001749, -0.0285110474]
+      Rotation: [0, -0, 0]
+      Scale: [2, 2, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 1]
+      Image file path: assets\textures\3 Objects\Locker2.png
+      Order: 0
+    Rigidbody 2D:
+      Type: 2
+      Fixed Rotation: false
+    Box Collider 2D:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0.689999998
+      Restitution Threshold: 0.5
+  - Name: New GameObject (5)
+    UUID: 14906627863703548268
+    Transform:
+      Position: [-3.81715822, 5.28001785, -0.00501441956]
+      Rotation: [0, -0, 0]
+      Scale: [2, 2, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 1]
+      Image file path: assets\textures\3 Objects\Locker2.png
+      Order: 0
+    Rigidbody 2D:
+      Type: 2
+      Fixed Rotation: false
+    Box Collider 2D:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0.689999998
+      Restitution Threshold: 0.5
+  - Name: New GameObject (6)
+    UUID: 4691682506477340883
+    Transform:
+      Position: [-4.54650164, 8.83196735, -0.0327320099]
+      Rotation: [0, -0, 0]
+      Scale: [2, 2, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 1]
+      Image file path: assets\textures\3 Objects\Locker2.png
+      Order: 0
+    Rigidbody 2D:
+      Type: 2
+      Fixed Rotation: false
+    Box Collider 2D:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0.689999998
+      Restitution Threshold: 0.5
+  - Name: New GameObject (7)
+    UUID: 6538229252422202244
+    Transform:
+      Position: [1.42994499, 7.55336666, 0.0102977753]
+      Rotation: [0, -0, 0]
+      Scale: [2, 2, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 1]
+      Image file path: assets\textures\3 Objects\Locker2.png
+      Order: 0
+    Rigidbody 2D:
+      Type: 2
+      Fixed Rotation: false
+    Box Collider 2D:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0.689999998
+      Restitution Threshold: 0.5
+  - Name: New GameObject (9)
+    UUID: 13954615853437717419
+    Transform:
+      Position: [-0.879989147, 3.11669397, -0.00633430481]
+      Rotation: [0, -0, 0]
+      Scale: [2, 2, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 1]
+      Image file path: assets\textures\3 Objects\Locker2.png
+      Order: 0
+    Rigidbody 2D:
+      Type: 2
+      Fixed Rotation: false
+    Box Collider 2D:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0.689999998
+      Restitution Threshold: 0.5
+  - Name: New GameObject (10)
+    UUID: 1290807228173670836
+    Transform:
+      Position: [-1.20996773, 6.2133913, -0.00871086121]
+      Rotation: [0, -0, 0]
+      Scale: [2, 2, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 1]
+      Image file path: assets\textures\3 Objects\Locker2.png
+      Order: 0
+    Rigidbody 2D:
+      Type: 2
+      Fixed Rotation: false
+    Box Collider 2D:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0.689999998
+      Restitution Threshold: 0.5
+  - Name: New GameObject (11)
+    UUID: 18232618352503284844
+    Transform:
+      Position: [-1.20996773, 6.2133913, -0.00871086121]
+      Rotation: [0, -0, 0]
+      Scale: [2, 2, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 1]
+      Image file path: assets\textures\3 Objects\Locker2.png
+      Order: 0
+    Rigidbody 2D:
+      Type: 2
+      Fixed Rotation: false
+    Box Collider 2D:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0.689999998
+      Restitution Threshold: 0.5

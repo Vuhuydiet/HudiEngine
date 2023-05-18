@@ -13,7 +13,7 @@
 namespace Hudi {
 
 	static ViewportState s_State = ViewportState::Edit;
-	static bool s_IsFocus = false;
+	static bool s_IsFocused = false;
 	static bool s_IsHovered = false;
 	static glm::vec2 s_ViewportSize(800, 600);
 	static glm::vec2 s_ViewportBounds[2];
@@ -26,6 +26,9 @@ namespace Hudi {
 	static Ref<Framebuffer> s_Framebuffer = nullptr;
 
 	static Ref<Scene> s_SrcContext = nullptr;
+
+	bool HierarchyPanels::IsViewportFocused() const { return s_IsFocused; }
+	bool HierarchyPanels::IsViewportHovered() const { return s_IsHovered; }
 
 	void HierarchyPanels::SetViewportPlay()
 	{
@@ -65,7 +68,7 @@ namespace Hudi {
 
 	void HierarchyPanels::OnViewportEvent(Event& event)
 	{
-		if (!s_IsFocus)
+		if (!s_IsFocused)
 			return;
 
 		if (s_State == ViewportState::Edit)
@@ -118,7 +121,7 @@ namespace Hudi {
 
 	void OnViewportEditUpdate(float dt, Ref<Scene> context, GameObject& selectedObject)
 	{
-		if (s_IsFocus)
+		if (s_IsFocused)
 		{
 			s_EditorCamera.OnUpdate(dt);
 		}
@@ -152,7 +155,7 @@ namespace Hudi {
 			Renderer2D::EndScene();
 		}
 		
-		if (s_IsFocus && Input::IsMousePressed(Mouse::BUTTON_LEFT) && !Input::IsKeyDown(Key::L_ALT))
+		if (s_IsFocused && Input::IsMousePressed(Mouse::BUTTON_LEFT) && !Input::IsKeyDown(Key::L_ALT))
 		{
 			auto [mx, my] = ImGui::GetMousePos();
 			mx -= s_ViewportBounds[0].x;
@@ -197,7 +200,7 @@ namespace Hudi {
 		std::string icon = s_State == ViewportState::Edit ? "play_button" : "stop_button";
 		float iconSize = ImGui::GetWindowHeight() - 4.0f;
 		ImGui::SetCursorPosX(ImGui::GetWindowContentRegionMax().x * 0.5f - iconSize * 0.5f);
-		if (ImGui::ImageButton((ImTextureID)m_Icons.at(icon)->GetRendererID(), { iconSize, iconSize }, { 0, 1 }, { 1, 0 }, 0))
+		if (ImGui::ImageButton((ImTextureID)(size_t)m_Icons.at(icon)->GetRendererID(), { iconSize, iconSize }, { 0, 1 }, { 1, 0 }, 0))
 		{
 			if (s_State == ViewportState::Edit)
 				SetViewportPlay();
@@ -218,8 +221,8 @@ namespace Hudi {
 		ImGui::Begin("Viewport", &open, ImGuiWindowFlags_NoTitleBar);
 		ImGui::PopStyleVar();
 
-		s_IsFocus = ImGui::IsWindowFocused();
-		s_IsHovered = ImGui::IsWindowHovered();
+		s_IsFocused = ImGui::IsWindowFocused();
+		s_IsHovered = ImGui::IsWindowHovered();        
 
 		auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
 		auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();

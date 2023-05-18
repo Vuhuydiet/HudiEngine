@@ -39,10 +39,17 @@ namespace Hudi {
 		{
 			switch (command.type)
 			{
-			case PanelCommand::OpenScene:
-				std::filesystem::path path = (const char*)command.data;
-				OpenScene(path);
-				break;
+				case PanelCommand::OpenScene:
+				{
+					std::filesystem::path path = (const char*)command.data;
+					OpenScene(path);
+					break;
+				}
+				case PanelCommand::None:
+				{
+					HD_WARN("Undefined command being push to the PanelCommand");
+					break;
+				}
 			}
 		}
 
@@ -114,7 +121,6 @@ namespace Hudi {
 			}
 			break;
 		}
-
 	}
 
 	void EditorLayer::BeginDockspace()
@@ -342,6 +348,7 @@ namespace Hudi {
 		}
 		Application::Get().Close();
 	}
+
 }
 
 static void ShowExampleMenuFile()

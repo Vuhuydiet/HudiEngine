@@ -16,9 +16,11 @@ namespace Hudi {
 		virtual void OnEvent(Event& e) override;
 		virtual void OnUpdate(float dt) override;
 		virtual void SwapWindow() override;
-		virtual void Resize() override;
+		//virtual void Resize() override;
 		virtual bool IsMinimized() const override;
 		virtual bool IsMaximized() const override;
+
+		virtual void ClearEventQueue() const override;
 
 		virtual void SetVSync(bool enabled) override;
 		virtual bool IsVSync() const override;

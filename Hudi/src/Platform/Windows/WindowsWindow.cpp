@@ -1,11 +1,10 @@
 #include "hdpch.h"
 #include "WindowsWindow.h"
 
-#include <SDL.h>
-
 #include "Hudi/Core/Application.h"
-
 #include "Platform/OpenGL/OpenGLContext.h"
+
+#include <SDL.h>
 
 namespace Hudi {
 	
@@ -62,6 +61,9 @@ namespace Hudi {
 			case WINDOWEVENT_SIZE_CHANGED:
 				SDL_GetWindowSize(m_Window, &m_Properties.width, &m_Properties.height);
 				break;
+			case WINDOWEVENT_MOVED:
+				SDL_GetWindowPosition(m_Window, &m_Properties.xpos, &m_Properties.ypos);
+				break;
 			}
 			break;
 		}
@@ -71,15 +73,6 @@ namespace Hudi {
 	{
 		EventManager::Clear();
 		EventManager::OnUpdate();
-
-		// TODO: currently defining the window is freezing when dt > 0.05f seconds
-		// Find another way in the future
-		if (dt > 0.05f)
-		{
-			EventManager::Reset();
-		}
-
-		SDL_GetWindowPosition(m_Window, &m_Properties.xpos, &m_Properties.ypos);
 	}
 
 	void WindowsWindow::SwapWindow()
@@ -87,9 +80,15 @@ namespace Hudi {
 		SDL_GL_SwapWindow(m_Window);
 	}
 
-	void WindowsWindow::Resize()
+	/*void WindowsWindow::Resize()
 	{
 		SDL_GetWindowSize(m_Window, &m_Properties.width, &m_Properties.height);
+	}*/
+
+	void WindowsWindow::ClearEventQueue() const
+	{
+		EventManager::ClearEventQueue();
+		EventManager::Reset();
 	}
 
 	bool WindowsWindow::IsMinimized() const

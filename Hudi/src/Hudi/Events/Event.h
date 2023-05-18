@@ -28,7 +28,8 @@ namespace Hudi {
 	enum WindowEvent
 	{
 		WINDOWEVENT_RESIZED = SDL_WINDOWEVENT_RESIZED,
-		WINDOWEVENT_SIZE_CHANGED = SDL_WINDOWEVENT_SIZE_CHANGED
+		WINDOWEVENT_SIZE_CHANGED = SDL_WINDOWEVENT_SIZE_CHANGED,
+		WINDOWEVENT_MOVED = SDL_WINDOWEVENT_MOVED
 	};
 
 	class Event
@@ -40,6 +41,7 @@ namespace Hudi {
 		{}
 
 		EventType type() const { return (EventType)m_Event.type; }
+		WindowEvent WindowType() const { return (WindowEvent)m_Event.window.event; }
 
 		operator SDL_Event() const { return m_Event; }
 
@@ -72,6 +74,7 @@ namespace Hudi {
 		static void Init();
 		static void Clear();
 		static void Reset();
+		static void ClearEventQueue();
 
 		static void SetCallBackFn(std::function<void(Event&)> fn) { m_CallBackFn = fn; }
 		static void SetWindowFn(std::function<void(Event&)> fn) { m_WindowEventFn = fn; }

@@ -21,7 +21,7 @@ namespace ECS {
 
 	public:
 		Entity CreateEntity();
-		void DestroyEntity(Entity entt) { s_DestroyedEntities.push(entt); }
+		void DestroyEntity(Entity entt) { m_DestroyedEntities.push(entt); }
 		bool Exists(Entity entt) { return m_EntityManager->Exists(entt); }
 
 		void SetActive(Entity entt, bool active);
@@ -35,12 +35,6 @@ namespace ECS {
 
 		template <typename T, typename ... Args>
 		std::shared_ptr<T> AddComponent(Entity entt, Args&& ... args);
-
-		template <typename T>
-		std::shared_ptr<T> AddComponent(Entity emtt, std::shared_ptr<BaseComponent> comp);
-
-		template <typename T>
-		void AddSystem(Entity entt);
 
 		template <typename T>
 		bool HasComponent(Entity entt);
@@ -64,12 +58,15 @@ namespace ECS {
 		template <typename ClientComponentType, typename Fn>
 		void EachComponents(Fn&& func) { m_ComponentManager->EachComponents<ClientComponentType>(func); }
 
+		template <typename T>
+		void AddSystem(Entity entt);
+
 	private:
 		std::unique_ptr<EntityManager> m_EntityManager;
 		std::unique_ptr<ComponentManager> m_ComponentManager;
 		std::unique_ptr<SystemManager> m_SystemManager;
 
-		std::queue<Entity> s_DestroyedEntities;
+		std::queue<Entity> m_DestroyedEntities;
 	};
 	// ----------------------------------------------------------------------------------------------------- //
 
@@ -92,14 +89,14 @@ namespace ECS {
 
 	inline void World::Flush()
 	{
-		while (!s_DestroyedEntities.empty())
+		while (!m_DestroyedEntities.empty())
 		{
-			Entity entt = s_DestroyedEntities.front();
-			s_DestroyedEntities.pop();
+			Entity entt = m_DestroyedEntities.front();
+			m_DestroyedEntities.pop();
 
-			m_EntityManager->DestroyEntity(entt);
-			m_ComponentManager->DestroyEntity(entt);
 			m_SystemManager->DestroyEntity(entt);
+			m_ComponentManager->DestroyEntity(entt);
+			m_EntityManager->DestroyEntity(entt);
 		}
 	}
 
@@ -114,6 +111,12 @@ namespace ECS {
 	template <typename T, typename ... Args>
 	inline std::shared_ptr<T> World::AddComponent(Entity entt, Args&&... args)
 	{
+		if (HasComponent<T>(entt))
+		{
+			std::cout << "Entity already has a component of type '" << T(std::forward<Args>(args)...) << "'!\nCannot add 2 component of the same type.\n";
+			return nullptr;
+		}
+
 		std::shared_ptr<BaseComponent> component = CreateComponent<T>(args...);
 		component->m_Entity = entt;
 
@@ -129,6 +132,7 @@ namespace ECS {
 		return std::static_pointer_cast<T>(component);
 	}
 
+#ifdef ECS_ALLOW_ADD_COMPONENT_BY_REF
 	template <typename T>
 	inline std::shared_ptr<T> World::AddComponent(Entity entt, std::shared_ptr<BaseComponent> component)
 	{
@@ -150,6 +154,7 @@ namespace ECS {
 
 		return std::static_pointer_cast<T>(component);
 	}
+#endif
 
 	template <typename T>
 	inline void World::AddSystem(Entity entt)
@@ -179,8 +184,8 @@ namespace ECS {
 		auto& sig = m_EntityManager->GetComponentSignature(entt);
 		ComponentID id = GetComponentID<T>();
 		sig.set(id, false);
-		m_ComponentManager->RemoveComponent<T>(entt);
 		m_SystemManager->Invalidate(entt, sig);
+		m_ComponentManager->RemoveComponent<T>(entt);
 	}
 
 	template <typename... Args>

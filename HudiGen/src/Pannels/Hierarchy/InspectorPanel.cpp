@@ -12,6 +12,12 @@
 
 namespace Hudi {
 
+	static bool s_IsFocused = false;
+	static bool s_IsHovered = false;
+
+	bool HierarchyPanels::IsInspectorFocused() const { return s_IsFocused; }
+	bool HierarchyPanels::IsInspectorHovered() const { return s_IsHovered; }
+
 	static void OnDrawComponents(Ref<Scene> context, GameObject object);
 	static void OnDrawAddComponent(GameObject object);
 	void HierarchyPanels::OnImGuiRenderInspectorPanel(bool& open)
@@ -20,6 +26,10 @@ namespace Hudi {
 			return;
 
 		ImGui::Begin("Inspector", &open);
+
+		s_IsFocused = ImGui::IsWindowFocused();
+		s_IsHovered = ImGui::IsWindowHovered();
+
 		if (m_SelectedObject.Valid())
 		{
 			OnDrawComponents(m_Context, m_SelectedObject);
@@ -42,14 +52,14 @@ namespace Hudi {
 
 		OnDrawComponent<SpriteRenderer>("Sprite Renderer", object, true, [](SpriteRenderer& sprite) {
 			//ImGui::DragFloat2("Size", glm::value_ptr(sprite->size), 0.1f);
-			DrawFloat2Control("Size:", sprite.size, 1.0f, 0.1f);
+			DrawFloat2Control("Size", sprite.size, 1.0f, 0.1f);
 			ImGui::Separator();
 
-			DrawColorEdit4("Color:", sprite.color);
+			DrawColorEdit4("Color", sprite.color);
 
-			DrawInputScalar("Order:", ImGuiDataType_U32, &sprite.order, nullptr, nullptr, "%d", ImGuiInputTextFlags_CharsDecimal);
+			DrawInputScalar("Order", ImGuiDataType_U32, &sprite.order, nullptr, nullptr, "%d", ImGuiInputTextFlags_CharsDecimal);
 
-			ImGui::Text("Image path:"); ImGui::SameLine();
+			ImGui::Text("Image path"); ImGui::SameLine();
 			std::string filename = sprite.filepath.string();
 			if (filename.empty())
 				filename = "null";
@@ -132,9 +142,8 @@ namespace Hudi {
 				
 				ImGui::EndCombo();
 			}
-
-			ImGui::Checkbox("Fixed Rotation", &rb2.fixedRotation);
-
+			if (currentType != Rigidbody2D::BodyType::Static)
+				ImGui::Checkbox("Fixed Rotation", &rb2.fixedRotation);
 		});
 
 		OnDrawComponent<BoxCollider2D>("Box Collider 2D", object, true, [](BoxCollider2D& box2) {

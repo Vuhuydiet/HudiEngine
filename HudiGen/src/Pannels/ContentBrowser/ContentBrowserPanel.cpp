@@ -28,10 +28,10 @@ namespace Hudi {
 		}
 
 		float padding = 16.0f;
-		float iconWidth = 64;
+		float iconWidth = 64.0f;
 		float viewportWidth = ImGui::GetContentRegionAvail().x;
 
-		int n_Columns = (int)viewportWidth / (padding + iconWidth);
+		int n_Columns = (int)(viewportWidth / (padding + iconWidth));
 		if (n_Columns < 1)
 			n_Columns = 1;
 
@@ -57,7 +57,7 @@ namespace Hudi {
 			}
 
 			if (icon)
-				ImGui::ImageButton((ImTextureID)icon->GetRendererID(), { iconWidth, iconWidth }, { 0, 1 }, { 1, 0 });
+				ImGui::ImageButton((ImTextureID)(size_t)icon->GetRendererID(), { iconWidth, iconWidth }, { 0, 1 }, { 1, 0 });
 
 			if (item.is_directory() && isDoubleClick && ImGui::IsItemHovered())
 			{

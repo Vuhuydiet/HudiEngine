@@ -10,7 +10,8 @@ project "HudiGen"
 
 	defines
 	{
-		"HD_APP"
+		"HD_APP",
+		"_CRT_SECURE_NO_WARNINGS"
 	}
 
 	files
