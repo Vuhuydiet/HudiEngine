@@ -4,7 +4,7 @@
 namespace Hudi {
 
 	EventDispatcher::EventDispatcher(Event& event)
-		: m_Event(event) 
+		: m_Event(event)
 	{}
 
 	bool EventDispatcher::Dispatch(EventType type, const std::function<void(Event&)>& fn)
@@ -83,61 +83,61 @@ namespace Hudi {
 			Event event(e);
 			switch (e.type)
 			{
-				case QUIT:
-				{
-					m_QuitEvent = true;
-					break;
-				}
-				case WINDOW_EVENT:
-				{
-					
-				}
-				case KEY_DOWN:
-				{
-					KeyCode code = e.key.keysym.sym;
-					if (KeyUp(code))
-						m_KeyJustDown.insert(code);
-					m_KeyDownEvent.insert(code);
-					break;
-				}
-				case KEY_UP:
-				{
-					KeyCode code = e.key.keysym.sym;
-					if (KeyDown(code))
-						m_KeyJustUp.insert(code);
-					m_KeyDownEvent.erase(code);
-					break;
-				}
-				case MOUSE_BUTTON_DOWN:
-				{
-					MouseCode code = e.button.button;
-					if (MouseUp(code))
-						m_ButtonJustDown.insert(code);
-					m_MouseButtonDownEvent.insert(code);
-					break;
-				}
-				case MOUSE_BUTTON_UP:
-				{
-					MouseCode code = e.button.button;
-					if (MouseDown(code))
-						m_ButtonJustUp.insert(code);
-					m_MouseButtonDownEvent.erase(code);
-					break;
-				}
-				case MOUSE_MOTION:
-				{
-					m_PreviousMousePos = m_CurrentMousePos;
-					m_CurrentMousePos = { e.motion.x, e.motion.y };
-					break;
-				}
-				case MOUSE_WHEEL:
-				{
-					break;
-				}
+			case QUIT:
+			{
+				m_QuitEvent = true;
+				break;
+			}
+			case WINDOW_EVENT:
+			{
+
+			}
+			case KEY_DOWN:
+			{
+				KeyCode code = e.key.keysym.sym;
+				if (KeyUp(code))
+					m_KeyJustDown.insert(code);
+				m_KeyDownEvent.insert(code);
+				break;
+			}
+			case KEY_UP:
+			{
+				KeyCode code = e.key.keysym.sym;
+				if (KeyDown(code))
+					m_KeyJustUp.insert(code);
+				m_KeyDownEvent.erase(code);
+				break;
+			}
+			case MOUSE_BUTTON_DOWN:
+			{
+				MouseCode code = e.button.button;
+				if (MouseUp(code))
+					m_ButtonJustDown.insert(code);
+				m_MouseButtonDownEvent.insert(code);
+				break;
+			}
+			case MOUSE_BUTTON_UP:
+			{
+				MouseCode code = e.button.button;
+				if (MouseDown(code))
+					m_ButtonJustUp.insert(code);
+				m_MouseButtonDownEvent.erase(code);
+				break;
+			}
+			case MOUSE_MOTION:
+			{
+				m_PreviousMousePos = m_CurrentMousePos;
+				m_CurrentMousePos = { e.motion.x, e.motion.y };
+				break;
+			}
+			case MOUSE_WHEEL:
+			{
+				break;
+			}
 			}
 			HD_CORE_ASSERT(!m_WindowEventFn, "No window event function has been set!");
 			m_WindowEventFn(event);
-			
+
 			HD_CORE_ASSERT(!m_CallBackFn, "No call back function has been set!");
 			m_CallBackFn(event);
 		}

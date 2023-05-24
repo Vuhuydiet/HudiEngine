@@ -1,6 +1,4 @@
 #pragma once
-#include "Vec2.h"
-
 #include <glm/glm.hpp>
 
 namespace Hudi {

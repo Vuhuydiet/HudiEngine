@@ -1,2 +1,0 @@
-Sandbox/Design Patterns/Example.txt
-Sandbox/src/Player1.cpp

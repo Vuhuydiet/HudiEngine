@@ -20,6 +20,7 @@ namespace Hudi {
 
 	static void OnDrawComponents(Ref<Scene> context, GameObject object);
 	static void OnDrawAddComponent(GameObject object);
+	static void AddScriptComponent(Ref<ScriptEngine> engine, GameObject object);
 	void HierarchyPanels::OnImGuiRenderInspectorPanel(bool& open)
 	{
 		if (!open)
@@ -30,16 +31,19 @@ namespace Hudi {
 		s_IsFocused = ImGui::IsWindowFocused();
 		s_IsHovered = ImGui::IsWindowHovered();
 
-		if (m_SelectedObject.Valid())
+		if (m_Context && m_SelectedObject.Valid())
 		{
 			OnDrawComponents(m_Context, m_SelectedObject);
 			OnDrawAddComponent(m_SelectedObject);
+
+			AddScriptComponent(m_Context->GetScriptEngine(), m_SelectedObject);
 		}
 		ImGui::End();
 	}
 
 	template <typename T, typename Fn>
 	static void OnDrawComponent(const char* name, GameObject object, bool removable, Fn&& func);
+	static void OnDrawScriptComponents(Ref<ScriptEngine> engine, GameObject object);
 	static void OnDrawComponents(Ref<Scene> context, GameObject object)
 	{
 		OnDrawComponent<Transform>("Transform", object, false, [](Transform& transform) {
@@ -73,7 +77,7 @@ namespace Hudi {
 			}
 			if (ImGui::BeginDragDropTarget())
 			{
-				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_PANEL"))
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_PNG"))
 				{
 					const char* path = (const char*)payload->Data;
 					sprite.SetFilePath(path);
@@ -160,6 +164,8 @@ namespace Hudi {
 			DrawFloatControl("Restitution Threshold", box2.restitutionThreshold, 0.01f);
 		});
 
+		OnDrawScriptComponents(context->GetScriptEngine(), object);
+
 		ImGui::Separator();
 	}
 
@@ -242,5 +248,56 @@ namespace Hudi {
 			object.RemoveComponent<T>();
 		}
 	}
+
+	static void OnDrawScriptComponents(Ref<ScriptEngine> engine, GameObject object)
+	{
+		ECS::Entity entity = object.GetEntityID();
+		for (auto& [scriptName, script] : engine->GetScripts(entity))
+		{
+			ImVec2 contentRegionAvail = ImGui::GetContentRegionAvail();
+			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4,4 });
+			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+			ImGui::Separator();
+
+			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+			bool open = ImGui::TreeNodeEx(scriptName.c_str(), flags);
+			ImGui::PopStyleVar();
+
+			ImGui::SameLine(contentRegionAvail.x - lineHeight * 0.5f);
+			if (ImGui::Button("...", ImVec2{ lineHeight, lineHeight }))
+			{
+				ImGui::OpenPopup("ComponentSettings");
+			}
+
+			bool isRemove = false;
+			if (ImGui::BeginPopup("ComponentSettings"))
+			{
+				isRemove = ImGui::MenuItem("Remove Component");
+				ImGui::EndPopup();
+			}
+
+			if (open)
+				ImGui::TreePop();
+
+			if (isRemove)
+				engine->RemoveScriptComponent(entity, scriptName);
+		}
+	}
+
+	static void AddScriptComponent(Ref<ScriptEngine> engine, GameObject object)
+	{
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_DLL"))
+			{
+				std::filesystem::path libpath = (const char*)payload->Data;
+				std::string scriptName = libpath.filename().stem().string();
+				engine->LoadScript(libpath);
+				engine->AddScriptComponent(object.GetEntityID(), scriptName);
+			}
+			ImGui::EndDragDropTarget();
+		}
+	}
+
 
 }

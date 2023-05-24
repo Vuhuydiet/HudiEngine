@@ -77,7 +77,7 @@
       <PrecompiledHeaderFile>hdpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>HD_LIB;_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;HD_PLATFORM_WINDOWS;HD_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;vendor\SDL2\include;vendor\SDL2_image\include;vendor\Glad\include;vendor\ImGui;vendor\glm;vendor\stb_image;vendor\yaml-cpp\include;vendor\ImGuizmo;vendor\Box2D\include;src;..\ECS\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;vendor\SDL2\include;vendor\SDL2_image\include;vendor\Glad\include;vendor\ImGui;vendor\glm;vendor\stb_image;vendor\yaml-cpp\include;vendor\ImGuizmo;vendor\Box2D\include;src;..\ECS\src;..\HudiAPI\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -93,7 +93,7 @@
       <AdditionalLibraryDirectories>vendor\SDL2\lib\x64;vendor\SDL2_image\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
     <PreBuildEvent>
-      <Command>IF EXIST ..\Dlls\ (xcopy /Q /E /Y /I ..\Dlls ..\bin\Debug-windows-x86_64\$(ProjectName) &gt; nul) ELSE (xcopy /Q /Y /I ..\Dlls ..\bin\Debug-windows-x86_64\$(ProjectName) &gt; nul)</Command>
+      <Command>IF EXIST $(SolutionDir)\Dlls\ (xcopy /Q /E /Y /I $(SolutionDir)\Dlls $(SolutionDir)\bin\Debug-windows-x86_64\$(ProjectName) &gt; nul) ELSE (xcopy /Q /Y /I $(SolutionDir)\Dlls $(SolutionDir)\bin\Debug-windows-x86_64\$(ProjectName) &gt; nul)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -102,7 +102,7 @@
       <PrecompiledHeaderFile>hdpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>HD_LIB;_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;HD_PLATFORM_WINDOWS;HD_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;vendor\SDL2\include;vendor\SDL2_image\include;vendor\Glad\include;vendor\ImGui;vendor\glm;vendor\stb_image;vendor\yaml-cpp\include;vendor\ImGuizmo;vendor\Box2D\include;src;..\ECS\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;vendor\SDL2\include;vendor\SDL2_image\include;vendor\Glad\include;vendor\ImGui;vendor\glm;vendor\stb_image;vendor\yaml-cpp\include;vendor\ImGuizmo;vendor\Box2D\include;src;..\ECS\src;..\HudiAPI\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -122,7 +122,7 @@
       <AdditionalLibraryDirectories>vendor\SDL2\lib\x64;vendor\SDL2_image\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
     <PreBuildEvent>
-      <Command>IF EXIST ..\Dlls\ (xcopy /Q /E /Y /I ..\Dlls ..\bin\Release-windows-x86_64\$(ProjectName) &gt; nul) ELSE (xcopy /Q /Y /I ..\Dlls ..\bin\Release-windows-x86_64\$(ProjectName) &gt; nul)</Command>
+      <Command>IF EXIST $(SolutionDir)\Dlls\ (xcopy /Q /E /Y /I $(SolutionDir)\Dlls $(SolutionDir)\bin\Release-windows-x86_64\$(ProjectName) &gt; nul) ELSE (xcopy /Q /Y /I $(SolutionDir)\Dlls $(SolutionDir)\bin\Release-windows-x86_64\$(ProjectName) &gt; nul)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -131,7 +131,7 @@
       <PrecompiledHeaderFile>hdpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>HD_LIB;_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;HD_PLATFORM_WINDOWS;HD_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;vendor\SDL2\include;vendor\SDL2_image\include;vendor\Glad\include;vendor\ImGui;vendor\glm;vendor\stb_image;vendor\yaml-cpp\include;vendor\ImGuizmo;vendor\Box2D\include;src;..\ECS\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;vendor\SDL2\include;vendor\SDL2_image\include;vendor\Glad\include;vendor\ImGui;vendor\glm;vendor\stb_image;vendor\yaml-cpp\include;vendor\ImGuizmo;vendor\Box2D\include;src;..\ECS\src;..\HudiAPI\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -151,7 +151,7 @@
       <AdditionalLibraryDirectories>vendor\SDL2\lib\x64;vendor\SDL2_image\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
     <PreBuildEvent>
-      <Command>IF EXIST ..\Dlls\ (xcopy /Q /E /Y /I ..\Dlls ..\bin\Dist-windows-x86_64\$(ProjectName) &gt; nul) ELSE (xcopy /Q /Y /I ..\Dlls ..\bin\Dist-windows-x86_64\$(ProjectName) &gt; nul)</Command>
+      <Command>IF EXIST $(SolutionDir)\Dlls\ (xcopy /Q /E /Y /I $(SolutionDir)\Dlls $(SolutionDir)\bin\Dist-windows-x86_64\$(ProjectName) &gt; nul) ELSE (xcopy /Q /Y /I $(SolutionDir)\Dlls $(SolutionDir)\bin\Dist-windows-x86_64\$(ProjectName) &gt; nul)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -176,8 +176,6 @@
     <ClInclude Include="src\Hudi\Renderer\Buffer.h" />
     <ClInclude Include="src\Hudi\Renderer\Framebuffer.h" />
     <ClInclude Include="src\Hudi\Renderer\GraphicsContext.h" />
-    <ClInclude Include="src\Hudi\Renderer\OrthographicCamera.h" />
-    <ClInclude Include="src\Hudi\Renderer\OrthographicCameraController.h" />
     <ClInclude Include="src\Hudi\Renderer\RenderCommand.h" />
     <ClInclude Include="src\Hudi\Renderer\Renderer.h" />
     <ClInclude Include="src\Hudi\Renderer\Renderer2D.h" />
@@ -206,15 +204,14 @@
     <ClInclude Include="src\Hudi\Scene\RenderSystem\RenderSystem.h" />
     <ClInclude Include="src\Hudi\Scene\Scene.h" />
     <ClInclude Include="src\Hudi\Scene\SceneManager.h" />
+    <ClInclude Include="src\Hudi\Scene\ScriptEngine\ScriptEngine.h" />
     <ClInclude Include="src\Hudi\Scene\Serialize\EDHudiTypes.h" />
     <ClInclude Include="src\Hudi\Scene\Serialize\SceneSerializer.h" />
     <ClInclude Include="src\Hudi\Source\KeyCodes.h" />
     <ClInclude Include="src\Hudi\Source\MouseCodes.h" />
     <ClInclude Include="src\Hudi\Source\Time.h" />
-    <ClInclude Include="src\Hudi\Source\Vec2.h" />
     <ClInclude Include="src\Hudi\Source\Vec3.h" />
     <ClInclude Include="src\Hudi\Utils\PlatformUtils.h" />
-    <ClInclude Include="src\HudiEngine.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h" />
@@ -649,8 +646,6 @@
     <ClCompile Include="src\Hudi\Math\Math.cpp" />
     <ClCompile Include="src\Hudi\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Hudi\Renderer\Framebuffer.cpp" />
-    <ClCompile Include="src\Hudi\Renderer\OrthographicCamera.cpp" />
-    <ClCompile Include="src\Hudi\Renderer\OrthographicCameraController.cpp" />
     <ClCompile Include="src\Hudi\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\Hudi\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Hudi\Renderer\Renderer2D.cpp" />
@@ -670,6 +665,7 @@
     <ClCompile Include="src\Hudi\Scene\RenderSystem\RenderSystem.cpp" />
     <ClCompile Include="src\Hudi\Scene\Scene.cpp" />
     <ClCompile Include="src\Hudi\Scene\SceneManager.cpp" />
+    <ClCompile Include="src\Hudi\Scene\ScriptEngine\ScriptEngine.cpp" />
     <ClCompile Include="src\Hudi\Scene\Serialize\SceneSerializer.cpp" />
     <ClCompile Include="src\Hudi\Source\Time.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
@@ -705,6 +701,9 @@
     </ProjectReference>
     <ProjectReference Include="..\ECS\ECS.vcxproj">
       <Project>{60E1870B-CCEA-877C-5566-9E7CC16E937C}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\HudiAPI\HudiAPI.vcxproj">
+      <Project>{898A58C2-F569-D75D-FE81-62346AE03DBF}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

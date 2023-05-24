@@ -10,6 +10,7 @@ namespace Hudi {
 	{
 	public:
 		Physics2DSystem();
+		~Physics2DSystem();
 
 		virtual void OnEntityAdded(ECS::Entity entity) override;
 		virtual void OnEntityRemoved(ECS::Entity entity) override;

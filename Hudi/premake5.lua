@@ -45,7 +45,9 @@ project "Hudi"
 		"vendor/Box2D/include",
 
 		"src",
-		"%{wks.location}/ECS/src"
+		"%{wks.location}/ECS/src",
+		"%{wks.location}/HudiAPI/src",
+
 	}
 
 	libdirs
@@ -66,7 +68,8 @@ project "Hudi"
 		"yaml-cpp",
 		"Box2D",
 
-		"ECS"
+		"ECS",
+		"HudiAPI"
 	}
 
 	filter "files:vendor/ImGuizmo/**.cpp"
@@ -82,7 +85,7 @@ project "Hudi"
 
 		prebuildcommands
 		{
-			"{COPY} ../Dlls/ ../bin/" .. outputdir .. "/%{prj.name}"
+			"{COPY} %{wks.location}/Dlls/ %{wks.location}/bin/" .. outputdir .. "/%{prj.name}"
 		}
 
 	filter "system:not windows"

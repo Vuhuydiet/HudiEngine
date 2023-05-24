@@ -7,6 +7,8 @@
 
 #include "Hudi/Renderer/Renderer2D.h"
 
+#include "ScriptEngine/ScriptEngine.h"
+
 namespace Hudi {
 
 	Scene::Scene(uint8_t index)
@@ -15,10 +17,17 @@ namespace Hudi {
 		m_World = NewRef<ECS::World>();
 		m_RenderSystem = m_World->RegisterSystem<RenderSystem>();
 		m_Physics2DSystem = m_World->RegisterSystem<Physics2DSystem>();
+
+		m_ScriptEngine = NewRef<ScriptEngine>(m_World.get());
 	}
 
 	Scene::~Scene()
 	{
+		m_ScriptEngine->DestroyEntities();
+		if (!m_IsCopy)
+			m_ScriptEngine->FreeLibraries();
+		m_ScriptEngine = nullptr;
+
 		for (auto& [id, object] : m_GameObjects)
 		{
 			object.Destroy();
@@ -49,8 +58,11 @@ namespace Hudi {
 	void Scene::OnUpdate(float dt)
 	{
 		m_World->EachComponents<Component>([](Ref<Component> comp) { comp->Awake(); });
-		m_World->EachComponents<Component>([dt](Ref<Component> comp) { comp->Update(dt); });
+		m_ScriptEngine->AwakeScripts();
 		
+		m_World->EachComponents<Component>([dt](Ref<Component> comp) { comp->Update(dt); });
+		m_ScriptEngine->UpdateScripts(dt);
+
 		m_Physics2DSystem->OnUpdate(dt);
 		m_RenderSystem->OnUpdate(dt, m_PrimaryCamera.GetEntityID());
 
@@ -93,10 +105,10 @@ namespace Hudi {
 	{
 		for (auto& [id, object] : m_GameObjects)
 		{
-			if (!object.Exist())
-			{
-				DestroyGameObject(object);
-			}
+			if (object.Exist())
+				continue;
+			DestroyGameObject(object);
+			m_ScriptEngine->DestroyEntity(object.GetEntityID());
 		}
 		Flush();
 	}
@@ -104,8 +116,12 @@ namespace Hudi {
 	Ref<Scene> Scene::Copy() const
 	{
 		Ref<Scene> newScene = NewRef<Scene>(this->m_BuildIndex);
+		newScene->m_IsCopy = true;
 		newScene->m_Width = this->m_Width;
 		newScene->m_Height = this->m_Height;
+
+		newScene->m_ScriptEngine->m_Libraries = this->m_ScriptEngine->m_Libraries;
+		newScene->m_ScriptEngine->m_InstantiateFns = this->m_ScriptEngine->m_InstantiateFns;
 		for (const auto& [id, object] : this->m_GameObjects)
 		{
 			const std::string& objName = this->m_EntityToName.at(id);
@@ -113,9 +129,16 @@ namespace Hudi {
 			GameObject newObject = newScene->CreateEmptyObjectWithUUID(object.GetUUID(), objName);
 			newScene->RenameGameObject(objName, newObject);
 			newObject.CopyComponents(object);
+
+			auto& scripts = this->m_ScriptEngine->GetScripts(object.GetEntityID());
+			for (auto& [scriptName, sc] : scripts)
+			{
+				newScene->m_ScriptEngine->AddScriptComponent(newObject.GetEntityID(), scriptName);
+			}
 		}
 		const std::string& primaryCameraName = this->GetGameObjectName(this->m_PrimaryCamera);
 		newScene->SetPrimaryCamera(primaryCameraName);
+
 		return newScene;
 	}
 
@@ -167,6 +190,10 @@ namespace Hudi {
 		std::string newObjectName = FindValidName(_name);
 		GameObject newObject = CreateEmptyObject(newObjectName);
 		newObject.CopyComponents(src);
+		for (auto& [scriptName, sc] : m_ScriptEngine->GetScripts(src.GetEntityID()))
+		{
+			m_ScriptEngine->AddScriptComponent(newObject.GetEntityID(), scriptName);
+		}
 		return src;
 	}
 

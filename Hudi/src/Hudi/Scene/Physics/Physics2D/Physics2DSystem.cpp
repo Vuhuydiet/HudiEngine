@@ -29,6 +29,12 @@ namespace Hudi {
 		SetNeededComponent<Transform, Rigidbody2D>();
 	}
 
+	Physics2DSystem::~Physics2DSystem()
+	{
+		delete m_PhysicsWorld;
+		m_PhysicsWorld = nullptr;
+	}
+
 	void Physics2DSystem::OnEntityAdded(ECS::Entity entity)
 	{
 		if (m_OnRuntime && world->IsActive(entity))

@@ -8,7 +8,6 @@
 
 #include "Hudi/Core/Input.h"
 
-#include "Hudi/Source/Vec2.h"
 #include "Hudi/Source/Vec3.h"
 #include "Hudi/Source/Time.h"
 
@@ -21,9 +20,6 @@
 #include "Hudi/Renderer/Framebuffer.h"
 #include "Hudi/Renderer/Shader.h"
 #include "Hudi/Renderer/Texture.h"
-
-#include "Hudi/Renderer/OrthographicCamera.h"
-#include "Hudi/Renderer/OrthographicCameraController.h"
 
 #include "Hudi/Scene/Components/Component.h"
 #include "Hudi/Scene/GameObject.h"

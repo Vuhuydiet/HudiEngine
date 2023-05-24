@@ -8,8 +8,6 @@
 #include "Shader.h"
 #include "VertexArray.h"
 
-#include "OrthographicCamera.h"
-
 namespace Hudi {
 
 	class Renderer
@@ -20,7 +18,7 @@ namespace Hudi {
 
 		static void OnWindowResize(uint32_t width, uint32_t height);
 
-		static void BeginScene(OrthographicCamera& camera);
+		static void BeginScene(const glm::mat4& prj, const glm::mat4& view);
 		static void EndScene();
 
 		static void Submit(Ref<Shader> shader, Ref<VertexArray> vertexArray, const glm::mat4& tranform = glm::mat4(1.0f));

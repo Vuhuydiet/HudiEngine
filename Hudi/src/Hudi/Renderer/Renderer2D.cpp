@@ -6,15 +6,15 @@
 
 namespace Hudi {
 
-	constexpr auto BOT_LEFT = 0;
-	constexpr auto BOT_RIGHT = 1;
-	constexpr auto TOP_RIGHT = 2;
-	constexpr auto TOP_LEFT = 3;
+	static constexpr int BOT_LEFT = 0;
+	static constexpr int BOT_RIGHT = 1;
+	static constexpr int TOP_RIGHT = 2;
+	static constexpr int TOP_LEFT = 3;
 
-	static const uint32_t MAX_QUADS = 20000;
-	static const uint32_t MAX_VERTICES = MAX_QUADS * 4;
-	static const uint32_t MAX_INDICES = MAX_QUADS * 6;
-	static const uint32_t MAX_TEXTURE_SLOT = 32;
+	static constexpr uint32_t MAX_QUADS = 20000;
+	static constexpr uint32_t MAX_VERTICES = MAX_QUADS * 4;
+	static constexpr uint32_t MAX_INDICES = MAX_QUADS * 6;
+	static constexpr uint32_t MAX_TEXTURE_SLOT = 32;
 
 	struct QuadVertex
 	{
@@ -94,13 +94,6 @@ namespace Hudi {
 	void Renderer2D::Shutdown()
 	{
 		delete[] s_Data.vertices;
-	}
-
-	void Renderer2D::BeginScene(OrthographicCamera& camera)
-	{
-		s_Data.shader->Bind();
-		s_Data.shader->SetUniform("u_ProjectionView", camera.GetProjectionViewMatrix());
-		Reset();
 	}
 
 	void Renderer2D::BeginScene(const glm::mat4& cameraProjection, const glm::mat4& cameraTransform)

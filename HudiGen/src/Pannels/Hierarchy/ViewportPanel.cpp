@@ -32,6 +32,8 @@ namespace Hudi {
 
 	void HierarchyPanels::SetViewportPlay()
 	{
+		if (!m_Context)
+			return;
 		if (s_State == ViewportState::Runtime)
 		{
 			HD_WARN("Already on Viewport runtime state!");
@@ -50,6 +52,8 @@ namespace Hudi {
 
 	void HierarchyPanels::SetViewportEdit()
 	{
+		if (!m_Context)
+			return;
 		if (s_State == ViewportState::Edit)
 		{
 			HD_WARN("Already on Viewport runtime state!");
@@ -248,7 +252,7 @@ namespace Hudi {
 		// Drag drop scene
 		if (ImGui::BeginDragDropTarget())
 		{
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_PANEL"))
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_HUD"))
 			{
 				std::filesystem::path path = (const char*)payload->Data;
 				if (path.extension().string() == ".hud")

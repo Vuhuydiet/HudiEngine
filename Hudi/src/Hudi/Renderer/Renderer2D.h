@@ -9,8 +9,6 @@
 #include "VertexArray.h"
 #include "Texture.h"
 
-#include "OrthographicCamera.h"
-
 #include <glm/glm.hpp>
 
 namespace Hudi {
@@ -35,7 +33,6 @@ namespace Hudi {
 		static void Init();
 		static void Shutdown();
 
-		static void BeginScene(OrthographicCamera& camera);
 		static void BeginScene(const glm::mat4& cameraProjection, const glm::mat4& cameraTransform);
 		static void BeginScene(const glm::mat4& projectionView);
 		static void EndScene();

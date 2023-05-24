@@ -31,6 +31,7 @@ project "HudiGen"
 
 		"src",
 		"%{wks.location}/ECS/src",
+		"%{wks.location}/HudiAPI/src",
 		"%{wks.location}/Hudi/src"
 	}
 

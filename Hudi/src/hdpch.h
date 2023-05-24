@@ -27,7 +27,6 @@
 #include "Hudi/Core/Log.h"
 #include "Hudi/Core/Core.h"
 
-#include "Hudi/Source/Vec2.h"
 #include "Hudi/Source/Vec3.h"
 #include "Hudi/Source/Time.h"
 

@@ -288,6 +288,22 @@ namespace Hudi {
 			}
 		}
 	}
+
+
+	class Movement : public MonoBehaviour
+	{
+	public:
+		float v = 10;
+		
+		void Update(float dt) {
+			transform.position.x += v * dt;
+			auto& sprite = GetComponent<SpriteRenderer>();
+			sprite.SetFilePath("")
+			
+		}
+
+	};
+
 #endif
 
 }

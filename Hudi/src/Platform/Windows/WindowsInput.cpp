@@ -3,6 +3,8 @@
 
 #include "Hudi/Events/Event.h"
 
+#include <glm/glm.hpp>
+
 namespace Hudi {
 
 	bool Input::Quit()

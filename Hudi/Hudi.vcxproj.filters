@@ -46,6 +46,9 @@
     <Filter Include="src\Hudi\Scene\RenderSystem">
       <UniqueIdentifier>{174D8FED-835A-BDD3-0C41-B9BE784D898A}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Hudi\Scene\ScriptEngine">
+      <UniqueIdentifier>{1D50B409-895D-E2EF-1244-DEDA7E50AEA6}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Hudi\Scene\Serialize">
       <UniqueIdentifier>{5AF80135-461D-51B5-6F68-36455BEC4FD3}</UniqueIdentifier>
     </Filter>
@@ -120,6 +123,9 @@
     <ClInclude Include="src\Hudi\Core\Log.h">
       <Filter>src\Hudi\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Hudi\Core\UUID.h">
+      <Filter>src\Hudi\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Hudi\Core\Window.h">
       <Filter>src\Hudi\Core</Filter>
     </ClInclude>
@@ -151,12 +157,6 @@
       <Filter>src\Hudi\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Hudi\Renderer\GraphicsContext.h">
-      <Filter>src\Hudi\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hudi\Renderer\OrthographicCamera.h">
-      <Filter>src\Hudi\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hudi\Renderer\OrthographicCameraController.h">
       <Filter>src\Hudi\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Hudi\Renderer\RenderCommand.h">
@@ -204,6 +204,9 @@
     <ClInclude Include="src\Hudi\Scene\Components\Component.h">
       <Filter>src\Hudi\Scene\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\Hudi\Scene\Components\IDComponent.h">
+      <Filter>src\Hudi\Scene\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\Hudi\Scene\Components\Rigidbody2DComponent.h">
       <Filter>src\Hudi\Scene\Components</Filter>
     </ClInclude>
@@ -240,6 +243,12 @@
     <ClInclude Include="src\Hudi\Scene\SceneManager.h">
       <Filter>src\Hudi\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="src\Hudi\Scene\ScriptEngine\ScriptEngine.h">
+      <Filter>src\Hudi\Scene\ScriptEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hudi\Scene\Serialize\EDHudiTypes.h">
+      <Filter>src\Hudi\Scene\Serialize</Filter>
+    </ClInclude>
     <ClInclude Include="src\Hudi\Scene\Serialize\SceneSerializer.h">
       <Filter>src\Hudi\Scene\Serialize</Filter>
     </ClInclude>
@@ -252,17 +261,11 @@
     <ClInclude Include="src\Hudi\Source\Time.h">
       <Filter>src\Hudi\Source</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hudi\Source\Vec2.h">
-      <Filter>src\Hudi\Source</Filter>
-    </ClInclude>
     <ClInclude Include="src\Hudi\Source\Vec3.h">
       <Filter>src\Hudi\Source</Filter>
     </ClInclude>
     <ClInclude Include="src\Hudi\Utils\PlatformUtils.h">
       <Filter>src\Hudi\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="src\HudiEngine.h">
-      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h">
       <Filter>src\Platform\OpenGL</Filter>
@@ -1521,9 +1524,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hudi\Scene\Serialize\EDHudiTypes.h" />
-    <ClInclude Include="src\Hudi\Core\UUID.h" />
-    <ClInclude Include="src\Hudi\Scene\Components\IDComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Hudi\Core\Application.cpp">
@@ -1533,6 +1533,9 @@
       <Filter>src\Hudi\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Hudi\Core\Log.cpp">
+      <Filter>src\Hudi\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hudi\Core\UUID.cpp">
       <Filter>src\Hudi\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Hudi\Core\Window.cpp">
@@ -1560,12 +1563,6 @@
       <Filter>src\Hudi\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Hudi\Renderer\Framebuffer.cpp">
-      <Filter>src\Hudi\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Hudi\Renderer\OrthographicCamera.cpp">
-      <Filter>src\Hudi\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Hudi\Renderer\OrthographicCameraController.cpp">
       <Filter>src\Hudi\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Hudi\Renderer\RenderCommand.cpp">
@@ -1625,6 +1622,9 @@
     <ClCompile Include="src\Hudi\Scene\SceneManager.cpp">
       <Filter>src\Hudi\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="src\Hudi\Scene\ScriptEngine\ScriptEngine.cpp">
+      <Filter>src\Hudi\Scene\ScriptEngine</Filter>
+    </ClCompile>
     <ClCompile Include="src\Hudi\Scene\Serialize\SceneSerializer.cpp">
       <Filter>src\Hudi\Scene\Serialize</Filter>
     </ClCompile>
@@ -1670,6 +1670,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Hudi\Core\UUID.cpp" />
   </ItemGroup>
 </Project>

@@ -24,9 +24,9 @@ namespace Hudi {
 		RenderCommand::SetViewport(0, 0, width, height);
 	}
 
-	void Renderer::BeginScene(OrthographicCamera& camera)
+	void Renderer::BeginScene(const glm::mat4& prj, const glm::mat4& view)
 	{
-		m_Data.projectionViewMatrix = camera.GetProjectionViewMatrix();
+		m_Data.projectionViewMatrix = prj * view;
 	}
 
 	void Renderer::EndScene()

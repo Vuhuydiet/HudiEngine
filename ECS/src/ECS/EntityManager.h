@@ -3,6 +3,7 @@
 #include <queue>
 #include <array>
 #include <bitset>
+#include <iostream>
 
 namespace ECS {
 

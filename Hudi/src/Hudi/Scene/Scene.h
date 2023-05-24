@@ -5,6 +5,8 @@
 #include "RenderSystem/RenderSystem.h"
 #include "Physics/Physics2D/Physics2DSystem.h"
 
+#include "ScriptEngine/ScriptEngine.h"
+
 #include <map>
 #include <string>
 #include <queue>
@@ -58,6 +60,8 @@ namespace Hudi {
 		void ResetPrimaryCamera();
 		GameObject GetPrimaryCamera() const;
 
+		Ref<ScriptEngine> GetScriptEngine() const { return m_ScriptEngine; }
+
 		// Loop through all GameObjects
 		template <typename Func>
 		void Each(Func&& func);
@@ -69,6 +73,8 @@ namespace Hudi {
 		uint8_t m_BuildIndex = 0;
 		int m_Width = 0;
 		int m_Height = 0;
+
+		bool m_IsCopy = false;
 		
 	private:
 		std::map<uint32_t, GameObject> m_GameObjects;
@@ -83,6 +89,8 @@ namespace Hudi {
 		Ref<ECS::World> m_World;
 		Ref<RenderSystem> m_RenderSystem;
 		Ref<Physics2DSystem> m_Physics2DSystem;
+
+		Ref<ScriptEngine> m_ScriptEngine;
 	private:
 		friend class SceneSerializer;
 	};
