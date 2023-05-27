@@ -8,6 +8,8 @@
 #include "LayerStack.h"
 #include "Hudi/ImGui/ImGuiLayer.h"
 
+int main(int argc, char** argv);
+
 namespace Hudi {
 
 	class HUDI_API Application

@@ -34,10 +34,6 @@ project "HudiAPI"
 		"%{wks.location}/ECS/src"
 	}
 
-	libdirs
-	{
-	}
-
 	links
 	{
 		"ECS"

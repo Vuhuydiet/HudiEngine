@@ -6,53 +6,45 @@
 #include "Hudi/Source/KeyCodes.h"
 #include "Hudi/Source/MouseCodes.h"
 
-#include <SDL.h>
-
 #include <glm/glm.hpp>
 
 namespace Hudi {
 
 	enum EventType 
 	{
-		FIRST_EVENT				= SDL_FIRSTEVENT,
-		QUIT				= SDL_QUIT,
-		WINDOW_EVENT		= SDL_WINDOWEVENT,
-		KEY_DOWN			= SDL_KEYDOWN,
-		KEY_UP				= SDL_KEYUP,
-		MOUSE_BUTTON_DOWN	= SDL_MOUSEBUTTONDOWN,
-		MOUSE_BUTTON_UP		= SDL_MOUSEBUTTONUP,
-		MOUSE_MOTION		= SDL_MOUSEMOTION,
-		MOUSE_WHEEL			= SDL_MOUSEWHEEL
+		FIRST_EVENT			= 0, //SDL_FIRSTEVENT,
+		QUIT				= 256, //SDL_QUIT,
+		WINDOW_EVENT		= 512, //SDL_WINDOWEVENT,
+		KEY_DOWN			= 768, //SDL_KEYDOWN,
+		KEY_UP				= 769, //SDL_KEYUP,
+		MOUSE_BUTTON_DOWN	= 1025, //SDL_MOUSEBUTTONDOWN,
+		MOUSE_BUTTON_UP		= 1026, //SDL_MOUSEBUTTONUP,
+		MOUSE_MOTION		= 1024, //SDL_MOUSEMOTION,
+		MOUSE_WHEEL			= 1027 //SDL_MOUSEWHEEL
 	};
 
 	enum WindowEvent
 	{
-		WINDOWEVENT_RESIZED = SDL_WINDOWEVENT_RESIZED,
-		WINDOWEVENT_SIZE_CHANGED = SDL_WINDOWEVENT_SIZE_CHANGED,
-		WINDOWEVENT_MOVED = SDL_WINDOWEVENT_MOVED
+		WINDOWEVENT_RESIZED = 5, //SDL_WINDOWEVENT_RESIZED,
+		WINDOWEVENT_SIZE_CHANGED = 6, //SDL_WINDOWEVENT_SIZE_CHANGED,
+		WINDOWEVENT_MOVED = 4 //SDL_WINDOWEVENT_MOVED
 	};
 
 	class Event
 	{
 	public:
-		Event() : m_Event(SDL_Event()) {}
-		Event(SDL_Event e)
-			: m_Event(e)
-		{}
-
-		EventType type() const { return (EventType)m_Event.type; }
-		WindowEvent WindowType() const { return (WindowEvent)m_Event.window.event; }
-
-		operator SDL_Event() const { return m_Event; }
+		EventType type() const;// { return (EventType)m_Event.type; }
+		WindowEvent WindowType() const;// { return (WindowEvent)m_Event.window.event; }
 
 	public:
-		KeyCode GetKeyCode() const { return m_Event.key.keysym.sym; }
-		int GetWheelYOffset() const { return m_Event.wheel.y; }
+		KeyCode GetKeyCode() const;// { return m_Event.key.keysym.sym; }
+		int GetWheelYOffset() const;// { return m_Event.wheel.y; }
 
+		const void* GetEventHandle() const { return m_Event; }
 	public:
 		bool handled = false;
 	private:
-		SDL_Event m_Event;
+		void* m_Event = nullptr;
 		friend class EventManager;
 	};
 
@@ -67,7 +59,9 @@ namespace Hudi {
 		Event& m_Event;
 	};
 
-
+#ifndef HD__MEMBER_VARS_DEFINE
+	
+#endif
 	class EventManager
 	{
 	public:
@@ -76,8 +70,7 @@ namespace Hudi {
 		static void Reset();
 		static void ClearEventQueue();
 
-		static void SetCallBackFn(std::function<void(Event&)> fn) { m_CallBackFn = fn; }
-		static void SetWindowFn(std::function<void(Event&)> fn) { m_WindowEventFn = fn; }
+		static void SetCallBackFn(std::function<void(Event&)> fn);
 
 		static void OnUpdate();
 		
@@ -94,24 +87,7 @@ namespace Hudi {
 		static bool MouseUp(MouseCode button);
 
 		static glm::vec2 MousePosition();
-		static glm::vec2 MouseDeltaPos() { return m_CurrentMousePos - m_PreviousMousePos; }
-	
-	private:
-		static std::function<void(Event&)> m_CallBackFn;
-		static std::function<void(Event& e)> m_WindowEventFn;
-
-		static bool m_QuitEvent;
-		
-		static std::unordered_set<KeyCode> m_KeyJustDown;
-		static std::unordered_set<KeyCode> m_KeyJustUp;
-		static std::unordered_set<KeyCode> m_KeyDownEvent;
-
-		static std::unordered_set<MouseCode> m_ButtonJustDown;
-		static std::unordered_set<MouseCode> m_ButtonJustUp;
-		static std::unordered_set<MouseCode> m_MouseButtonDownEvent;
-
-		static glm::vec2 m_CurrentMousePos;
-		static glm::vec2 m_PreviousMousePos;
+		static glm::vec2 MouseDeltaPos();// { return m_CurrentMousePos - m_PreviousMousePos; }
 	};
 
 	/*class HUDI_API Event
@@ -131,7 +107,7 @@ namespace Hudi {
 		friend int PollEvent(Event* e);
 	};
 
-	inline std::ostream& operator<< (std::ostream& os, const Event& e)
+	 std::ostream& operator<< (std::ostream& os, const Event& e)
 	{
 		os << e.ToString();
 	}*/

@@ -24,3 +24,7 @@ group "Core"
 	include "HudiGen"
 	include "HudiAPI"
 group ""
+
+group "Test"
+	include "ScriptTest"
+group ""

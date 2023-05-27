@@ -3,15 +3,13 @@
 
 #include "Platform/Windows/WindowsWindow.h"
 
-#include <SDL.h>
-
 namespace Hudi {
 
 	WindowProps::WindowProps()
 		: title("unknown"),
-		xpos(SDL_WINDOWPOS_CENTERED), ypos(SDL_WINDOWPOS_CENTERED),
+		xpos(0), ypos(0),
 		width(800), height(600),
-		flags(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI),
+		flags(0),
 		VSync(false)
 	{}
 

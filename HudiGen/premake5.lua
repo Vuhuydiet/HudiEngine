@@ -23,8 +23,6 @@ project "HudiGen"
 	includedirs
 	{
 		"%{wks.location}/Hudi/vendor/spdlog/include",
-		"%{wks.location}/Hudi/vendor/SDL2/include",
-		"%{wks.location}/Hudi/vendor/SDL2_image/include",
 		"%{wks.location}/Hudi/vendor/ImGui",
 		"%{wks.location}/Hudi/vendor/ImGuizmo",
 		"%{wks.location}/Hudi/vendor/glm",

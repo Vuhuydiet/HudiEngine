@@ -72,7 +72,7 @@ namespace Hudi {
 
 	void ImGuiLayer::OnEvent(Event& event)
 	{
-		ImGui_ImplSDL2_ProcessEvent(&(SDL_Event)event);
+		ImGui_ImplSDL2_ProcessEvent((SDL_Event*)event.GetEventHandle());
 	}
 
 	void ImGuiLayer::Begin()

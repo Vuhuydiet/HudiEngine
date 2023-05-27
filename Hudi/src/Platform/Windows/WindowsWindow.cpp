@@ -13,8 +13,6 @@ namespace Hudi {
 		SDL_Init(SDL_INIT_EVERYTHING);
 		OpenGLContext::SetAttributes();
 		Init(props);
-
-		EventManager::SetWindowFn(HD_BIND_EVENT_FN(WindowsWindow::OnEvent));
 	}
 
 	WindowsWindow::~WindowsWindow()
@@ -51,11 +49,10 @@ namespace Hudi {
 
 	void WindowsWindow::OnEvent(Event& e)
 	{
-		SDL_Event event = e;
-		switch (event.type)
+		switch (e.type())
 		{
 		case WINDOW_EVENT:
-			switch (event.window.event)
+			switch (e.WindowType())
 			{
 			case WINDOWEVENT_RESIZED:
 			case WINDOWEVENT_SIZE_CHANGED:

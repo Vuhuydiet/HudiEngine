@@ -27,4 +27,9 @@ namespace Hudi {
 		static glm::vec2 GetMouseDeltaPos();
 	};
 
+	inline void Print()
+	{
+		std::cout << 69;
+	}
+
 }

@@ -35,6 +35,8 @@ namespace Hudi {
 
 	void Application::OnEvent(Event& e)
 	{
+		m_Window->OnEvent(e);
+
 		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); it++)
 		{
 			if (e.handled)

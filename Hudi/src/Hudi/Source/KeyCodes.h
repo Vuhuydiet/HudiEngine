@@ -3,8 +3,6 @@
 
 namespace Hudi {
 
-	//Source: https://github.com/TheCherno/Hazel/blob/master/Hazel-ScriptCore/Source/Hazel/KeyCode.cs
-
 	using KeyCode = int;
 	
 	namespace Key

@@ -1,11 +1,22 @@
 #include "hdpch.h"
+
+#define HD_EXTERN_MEMBER_VARS_DEFINE
 #include "Event.h"
+
+#include <SDL.h>
 
 namespace Hudi {
 
+	EventType Event::type() const { return (EventType)((SDL_Event*)m_Event)->type; }
+	WindowEvent Event::WindowType() const { return (WindowEvent)((SDL_Event*)m_Event)->window.event; }
+
+	KeyCode Event::GetKeyCode() const { return ((SDL_Event*)m_Event)->key.keysym.sym; }
+	int Event::GetWheelYOffset() const { return ((SDL_Event*)m_Event)->wheel.y; }
+
 	EventDispatcher::EventDispatcher(Event& event)
 		: m_Event(event)
-	{}
+	{
+	}
 
 	bool EventDispatcher::Dispatch(EventType type, const std::function<void(Event&)>& fn)
 	{
@@ -22,21 +33,20 @@ namespace Hudi {
 	///// Event Manager /////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////
 
-	std::function<void(Event&)> EventManager::m_CallBackFn = nullptr;
-	std::function<void(Event&)> EventManager::m_WindowEventFn = nullptr;
+	static std::function<void(Event&)> s_CallBackFn = nullptr;
 
-	bool EventManager::m_QuitEvent = false;
+	static bool s_QuitEvent = false;
 
-	std::unordered_set<KeyCode> EventManager::m_KeyJustDown;
-	std::unordered_set<KeyCode> EventManager::m_KeyJustUp;
-	std::unordered_set<KeyCode> EventManager::m_KeyDownEvent;
+	static std::unordered_set<KeyCode> s_KeyJustDown;
+	static std::unordered_set<KeyCode> s_KeyJustUp;
+	static std::unordered_set<KeyCode> s_KeyDownEvent;
 
-	std::unordered_set<MouseCode> EventManager::m_ButtonJustDown;
-	std::unordered_set<MouseCode> EventManager::m_ButtonJustUp;
-	std::unordered_set<MouseCode> EventManager::m_MouseButtonDownEvent;
+	static std::unordered_set<MouseCode> s_ButtonJustDown;
+	static std::unordered_set<MouseCode> s_ButtonJustUp;
+	static std::unordered_set<MouseCode> s_MouseButtonDownEvent;
 
-	glm::vec2 EventManager::m_CurrentMousePos = { 0, 0 };
-	glm::vec2 EventManager::m_PreviousMousePos = { 0, 0 };
+	static glm::vec2 s_CurrentMousePos = { 0, 0 };
+	static glm::vec2 s_PreviousMousePos = { 0, 0 };
 
 	void EventManager::Init()
 	{
@@ -45,24 +55,24 @@ namespace Hudi {
 
 	void EventManager::Clear()
 	{
-		m_QuitEvent = false;
+		s_QuitEvent = false;
 
-		m_KeyJustDown.clear();
-		m_KeyJustUp.clear();
+		s_KeyJustDown.clear();
+		s_KeyJustUp.clear();
 
-		m_ButtonJustDown.clear();
-		m_ButtonJustUp.clear();
+		s_ButtonJustDown.clear();
+		s_ButtonJustUp.clear();
 	}
 
 	void EventManager::Reset()
 	{
-		m_QuitEvent = false;
-		m_KeyJustDown.clear();
-		m_KeyJustUp.clear();
-		m_KeyDownEvent.clear();
-		m_ButtonJustDown.clear();
-		m_ButtonJustUp.clear();
-		m_MouseButtonDownEvent.clear();
+		s_QuitEvent = false;
+		s_KeyJustDown.clear();
+		s_KeyJustUp.clear();
+		s_KeyDownEvent.clear();
+		s_ButtonJustDown.clear();
+		s_ButtonJustUp.clear();
+		s_MouseButtonDownEvent.clear();
 	}
 
 	void EventManager::ClearEventQueue()
@@ -73,6 +83,11 @@ namespace Hudi {
 		}
 	}
 
+	void EventManager::SetCallBackFn(std::function<void(Event&)> fn)
+	{
+		s_CallBackFn = fn;
+	}
+
 	void EventManager::OnUpdate()
 	{
 		//SDL_PumpEvents();
@@ -80,12 +95,13 @@ namespace Hudi {
 		SDL_Event e;
 		while (SDL_PollEvent(&e))
 		{
-			Event event(e);
+			Event event;
+			event.m_Event = &e;
 			switch (e.type)
 			{
 			case QUIT:
 			{
-				m_QuitEvent = true;
+				s_QuitEvent = true;
 				break;
 			}
 			case WINDOW_EVENT:
@@ -96,38 +112,38 @@ namespace Hudi {
 			{
 				KeyCode code = e.key.keysym.sym;
 				if (KeyUp(code))
-					m_KeyJustDown.insert(code);
-				m_KeyDownEvent.insert(code);
+					s_KeyJustDown.insert(code);
+				s_KeyDownEvent.insert(code);
 				break;
 			}
 			case KEY_UP:
 			{
 				KeyCode code = e.key.keysym.sym;
 				if (KeyDown(code))
-					m_KeyJustUp.insert(code);
-				m_KeyDownEvent.erase(code);
+					s_KeyJustUp.insert(code);
+				s_KeyDownEvent.erase(code);
 				break;
 			}
 			case MOUSE_BUTTON_DOWN:
 			{
 				MouseCode code = e.button.button;
 				if (MouseUp(code))
-					m_ButtonJustDown.insert(code);
-				m_MouseButtonDownEvent.insert(code);
+					s_ButtonJustDown.insert(code);
+				s_MouseButtonDownEvent.insert(code);
 				break;
 			}
 			case MOUSE_BUTTON_UP:
 			{
 				MouseCode code = e.button.button;
 				if (MouseDown(code))
-					m_ButtonJustUp.insert(code);
-				m_MouseButtonDownEvent.erase(code);
+					s_ButtonJustUp.insert(code);
+				s_MouseButtonDownEvent.erase(code);
 				break;
 			}
 			case MOUSE_MOTION:
 			{
-				m_PreviousMousePos = m_CurrentMousePos;
-				m_CurrentMousePos = { e.motion.x, e.motion.y };
+				s_PreviousMousePos = s_CurrentMousePos;
+				s_CurrentMousePos = { e.motion.x, e.motion.y };
 				break;
 			}
 			case MOUSE_WHEEL:
@@ -135,32 +151,29 @@ namespace Hudi {
 				break;
 			}
 			}
-			HD_CORE_ASSERT(!m_WindowEventFn, "No window event function has been set!");
-			m_WindowEventFn(event);
-
-			HD_CORE_ASSERT(!m_CallBackFn, "No call back function has been set!");
-			m_CallBackFn(event);
+			HD_CORE_ASSERT(!s_CallBackFn, "No call back function has been set!");
+			s_CallBackFn(event);
 		}
 	}
 
 	bool EventManager::Quit()
 	{
-		return m_QuitEvent;
+		return s_QuitEvent;
 	}
 
 	bool EventManager::KeyJustDown(KeyCode key)
 	{
-		return m_KeyJustDown.find(key) != m_KeyJustDown.end();
+		return s_KeyJustDown.find(key) != s_KeyJustDown.end();
 	}
 
 	bool EventManager::KeyJustUp(KeyCode keycode)
 	{
-		return m_KeyJustUp.find(keycode) != m_KeyJustUp.end();
+		return s_KeyJustUp.find(keycode) != s_KeyJustUp.end();
 	}
 
 	bool EventManager::KeyDown(KeyCode keycode)
 	{
-		return m_KeyDownEvent.find(keycode) != m_KeyDownEvent.end();
+		return s_KeyDownEvent.find(keycode) != s_KeyDownEvent.end();
 	}
 
 	bool EventManager::KeyUp(KeyCode keycode)
@@ -170,17 +183,17 @@ namespace Hudi {
 
 	bool EventManager::MouseJustDown(MouseCode button)
 	{
-		return m_ButtonJustDown.find(button) != m_ButtonJustDown.end();
+		return s_ButtonJustDown.find(button) != s_ButtonJustDown.end();
 	}
 
 	bool EventManager::MouseJustUp(MouseCode button)
 	{
-		return m_ButtonJustUp.find(button) != m_ButtonJustUp.end();
+		return s_ButtonJustUp.find(button) != s_ButtonJustUp.end();
 	}
 
 	bool EventManager::MouseDown(MouseCode mousebuttoncode)
 	{
-		return m_MouseButtonDownEvent.find(mousebuttoncode) != m_MouseButtonDownEvent.end();
+		return s_MouseButtonDownEvent.find(mousebuttoncode) != s_MouseButtonDownEvent.end();
 	}
 
 	bool EventManager::MouseUp(MouseCode mousebuttoncode)
@@ -195,6 +208,9 @@ namespace Hudi {
 
 		return { xpos, ypos };
 	}
+
+	glm::vec2 EventManager::MouseDeltaPos() { return s_CurrentMousePos - s_PreviousMousePos; }
+
 
 
 }
