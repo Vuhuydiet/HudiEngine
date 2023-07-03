@@ -31,7 +31,7 @@ namespace Hudi {
 		s_IsFocused = ImGui::IsWindowFocused();
 		s_IsHovered = ImGui::IsWindowHovered();
 
-		if (m_Context && m_SelectedObject.Valid())
+		if (m_Context && m_SelectedObject.IsValid())
 		{
 			OnDrawComponents(m_Context, m_SelectedObject);
 			OnDrawAddComponent(m_SelectedObject);

@@ -4,13 +4,20 @@
 
 namespace Hudi {
 
-	class Component : public ECS::BaseComponent
+	template <typename T>
+	inline bool IsPointerType(void* ptr)
+	{
+		T* castPtr = dynamic_cast<T*>(static_cast<T*>(ptr));
+		return (castPtr != nullptr);
+	}
+
+	class Component
 	{
 	public:
 		virtual ~Component() = default;
 	public:
-		template <typename T>
-		T& AddComponent() { world->AddComponent<T>(m_Entity, std::make_shared<T>()); return GetComponent<T>(); }
+		template <typename T, typename... Args>
+		T& AddComponent(Args&&... args) { world->AddComponent<T>(m_Entity, args...); return GetComponent<T>(); }
 
 		template <typename T>
 		bool HasComponent() { return world->HasComponent<T>(m_Entity); }
@@ -19,19 +26,23 @@ namespace Hudi {
 		T& GetComponent() { return *world->GetComponent<T>(m_Entity); }
 		
 		template <typename T>
-		std::shared_ptr<T> GetComponentByRef() { return world->GetComponent<T>(m_Entity); }
-
-		template <typename T>
-		bool Is() { return dynamic_cast<T*>(this); }
+		bool Is() { return IsPointerType<T>(this); }
 
 		void DestroyEntity() { world->DestroyEntity(m_Entity); }
 
 		void SetActive(bool active) { world->SetActive(m_Entity, active); }
 		bool IsActive() { return world->IsActive(m_Entity); }
 
+		Component& operator= (const Component& other) { return *this; }
+
 	public:
 		virtual void Awake() {}
 		virtual void Update(float dt) {}
+
+	private:
+		ECS::Entity m_Entity = 0;
+		ECS::World* world = nullptr;
+		friend class GameObject;
 	};
 
 }

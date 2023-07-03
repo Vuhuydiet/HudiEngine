@@ -1,11 +1,11 @@
 #pragma once
 
+#include "EntityManager.h"
+#include "ComponentManager.h"
+
 #include <unordered_set>
 #include <map>
 #include <type_traits>
-
-#include "EntityManager.h"
-#include "ComponentManager.h"
 
 namespace ECS {
 
@@ -115,7 +115,6 @@ namespace ECS {
 			m_Systems[id] = std::make_shared<T>();
 			//m_Size++;
 		}
-
 		return m_Systems.at(id);
 	}
 

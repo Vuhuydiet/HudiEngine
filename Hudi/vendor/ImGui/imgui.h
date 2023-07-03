@@ -2743,7 +2743,7 @@ struct ImDrawList
 // as this is one of the oldest structure exposed by the library! Basically, ImDrawList == CmdList)
 struct ImDrawData
 {
-    bool            Valid;                  // Only valid after Render() is called and before the next NewFrame() is called.
+    bool            IsValid;                  // Only valid after Render() is called and before the next NewFrame() is called.
     int             CmdListsCount;          // Number of ImDrawList* to render
     int             TotalIdxCount;          // For convenience, sum of all ImDrawList's IdxBuffer.Size
     int             TotalVtxCount;          // For convenience, sum of all ImDrawList's VtxBuffer.Size
@@ -3054,7 +3054,7 @@ struct ImGuiViewport
     ImVec2              WorkSize;               // Work Area: Size of the viewport minus task bars, menu bars, status bars (<= Size)
     float               DpiScale;               // 1.0f = 96 DPI = No extra scale.
     ImGuiID             ParentViewportId;       // (Advanced) 0: no parent. Instruct the platform backend to setup a parent/child relationship between platform windows.
-    ImDrawData*         DrawData;               // The ImDrawData corresponding to this viewport. Valid after Render() and until the next call to NewFrame().
+    ImDrawData*         DrawData;               // The ImDrawData corresponding to this viewport. IsValid after Render() and until the next call to NewFrame().
 
     // Platform/Backend Dependent Data
     // Our design separate the Renderer and Platform backends to facilitate combining default backends with each others.

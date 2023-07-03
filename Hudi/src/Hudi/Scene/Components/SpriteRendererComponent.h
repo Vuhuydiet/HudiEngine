@@ -9,14 +9,14 @@
 
 namespace Hudi {
 
-	class SpriteRenderer : public Component
+	class SpriteRenderer
 	{
 	public:
 		SpriteRenderer()
 			: filepath(""), texture(nullptr), color(1.0f), size(1.0f), order(0)
 		{
 		}
-		const char* ToString() const override { return "SpriteRenderer"; }
+		virtual ~SpriteRenderer() = default;
 
 		void SetFilePath(const std::filesystem::path& _filepath)
 		{
@@ -24,7 +24,7 @@ namespace Hudi {
 				return;
 
 			Ref<Texture2D> tex = Texture2D::Create(_filepath.string());
-			if (tex->Valid())
+			if (tex->IsValid())
 			{
 				texture = tex;
 				filepath = _filepath;

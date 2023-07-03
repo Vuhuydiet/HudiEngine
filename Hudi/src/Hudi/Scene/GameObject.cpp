@@ -45,7 +45,7 @@ namespace Hudi {
 
 	void GameObject::CopyComponents(const GameObject& srcObj)
 	{
-		if (!this->Valid() || !srcObj.Valid())
+		if (!this->IsValid() || !srcObj.IsValid())
 		{
 			HD_CORE_ERROR("Invalid object being copied!");
 			return;
@@ -57,7 +57,6 @@ namespace Hudi {
 			this->AddComponent<IDComponent>();
 
 		CopyObjectComponents<Transform, SpriteRenderer, Camera, Rigidbody2D, BoxCollider2D>(*this, srcObj);
-		
 	}
 
 	bool GameObject::operator==(const GameObject& other) const
@@ -70,14 +69,22 @@ namespace Hudi {
 		return m_Entity != other.m_Entity || world != other.world;
 	}
 
-	std::vector<Ref<Component>> GameObject::GetComponents() const
+	template <typename T, typename... Args>
+	T& GameObject::AddComponent(Args&&... args) const
 	{
-		std::vector<Ref<Component>> res;
-		for (auto& comp : world->GetComponents(m_Entity))
+		T* component = world->AddComponent<T>(m_Entity, args...);
+		if (dynamic_cast<Component*>(component))
 		{
-			res.push_back(std::static_pointer_cast<Component>(comp));
+			Component* base = dynamic_cast<Component*>(component);
+			base->m_Entity = this->m_Entity;
+			base->world = this->world;
 		}
-		return res;
+		return *component;
+	}
+
+	std::vector<void*> GameObject::GetComponents() const
+	{
+		return world->GetComponents(m_Entity);
 	}
 
 }

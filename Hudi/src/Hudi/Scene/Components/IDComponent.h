@@ -5,12 +5,12 @@
 
 namespace Hudi {
 
-	class IDComponent : public Component
+	class IDComponent
 	{
 	public:
 		IDComponent() : ID(UUID()) {}
 		IDComponent(const UUID& ID) : ID(ID) {}
-		virtual const char* ToString() const override { return "UUID"; }
+		virtual ~IDComponent() = default;
 
 		UUID ID;
 	};

@@ -33,7 +33,6 @@ namespace Hudi {
 
 	public:
 		Camera() : m_Projection(glm::ortho(-5.0f, 5.0f, -5.0f, 5.0f, -10.0f, 10.0f)), m_Type(Type::Orthographic) {}
-		virtual const char* ToString() const override { return "Camera"; }
 
 		Type GetType() const { return m_Type; }
 		void Switch(Type _type) { m_Type = _type; }

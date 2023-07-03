@@ -7,9 +7,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ECS.h" />
-    <ClInclude Include="src\ECS\BaseComponent.h">
-      <Filter>ECS</Filter>
-    </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager.h">
       <Filter>ECS</Filter>
     </ClInclude>

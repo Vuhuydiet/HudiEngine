@@ -11,7 +11,6 @@ namespace Hudi {
 	{
 	public:
 		virtual ~Behaviour() = default;
-		virtual const char* ToString() const override { return "Behaviour"; }
 
 	};
 
@@ -20,7 +19,6 @@ namespace Hudi {
 	{
 	public:
 		virtual ~MonoBehaviour() = default;
-		virtual const char* ToString() const override { return "MonoBehaviour"; }
 
 		//virtual void OnCollisionEnter2D(Collision2D collision) {}
 	};

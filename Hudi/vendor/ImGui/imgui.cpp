@@ -4164,12 +4164,12 @@ ImGuiPlatformIO& ImGui::GetPlatformIO()
     return GImGui->PlatformIO;
 }
 
-// Pass this to your backend rendering function! Valid after Render() and until the next call to NewFrame()
+// Pass this to your backend rendering function! IsValid after Render() and until the next call to NewFrame()
 ImDrawData* ImGui::GetDrawData()
 {
     ImGuiContext& g = *GImGui;
     ImGuiViewportP* viewport = g.Viewports[0];
-    return viewport->DrawDataP.Valid ? &viewport->DrawDataP : NULL;
+    return viewport->DrawDataP.IsValid ? &viewport->DrawDataP : NULL;
 }
 
 double ImGui::GetTime()
@@ -4892,7 +4892,7 @@ static void SetupViewportDrawData(ImGuiViewportP* viewport, ImVector<ImDrawList*
     ImGuiIO& io = ImGui::GetIO();
     ImDrawData* draw_data = &viewport->DrawDataP;
     viewport->DrawData = draw_data; // Make publicly accessible
-    draw_data->Valid = true;
+    draw_data->IsValid = true;
     draw_data->CmdLists = (draw_lists->Size > 0) ? draw_lists->Data : NULL;
     draw_data->CmdListsCount = draw_lists->Size;
     draw_data->TotalVtxCount = draw_data->TotalIdxCount = 0;
@@ -8720,7 +8720,7 @@ bool ImGui::IsMouseHoveringRect(const ImVec2& r_min, const ImVec2& r_max, bool c
     return true;
 }
 
-// Return if a mouse click/drag went past the given threshold. Valid to call during the MouseReleased frame.
+// Return if a mouse click/drag went past the given threshold. IsValid to call during the MouseReleased frame.
 // [Internal] This doesn't test if the button is pressed
 bool ImGui::IsMouseDragPastThreshold(ImGuiMouseButton button, float lock_threshold)
 {

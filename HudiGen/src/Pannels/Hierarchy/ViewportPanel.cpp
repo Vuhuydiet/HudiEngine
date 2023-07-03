@@ -44,7 +44,7 @@ namespace Hudi {
 		
 		s_SrcContext = m_Context;
 		m_Context = m_Context->Copy();
-		if (m_SelectedObject.Valid())
+		if (m_SelectedObject.IsValid())
 			m_SelectedObject = m_Context->GetGameObject(s_SrcContext->GetGameObjectName(m_SelectedObject));
 
 		m_Context->BeginScene();
@@ -64,7 +64,7 @@ namespace Hudi {
 
 		m_Context->EndScene();
 		
-		if (m_SelectedObject.Valid())
+		if (m_SelectedObject.IsValid())
 			m_SelectedObject = s_SrcContext->GetGameObject(m_Context->GetGameObjectName(m_SelectedObject));
 		m_Context = s_SrcContext;
 		s_SrcContext = nullptr;
@@ -265,8 +265,8 @@ namespace Hudi {
 		s_IsUsingGizmos = false;
 		s_IsOverGizmos = false;
 		static uint32_t wait = 0;
-		wait = m_SelectedObject.Valid() ? wait + 1 : 0;
-		if (s_GizmosMod != -1 && m_SelectedObject.Valid() && wait > 1) 
+		wait = m_SelectedObject.IsValid() ? wait + 1 : 0;
+		if (s_GizmosMod != -1 && m_SelectedObject.IsValid() && wait > 1) 
 		{
 			ImGuizmo::SetOrthographic(false);
 			ImGuizmo::SetDrawlist();

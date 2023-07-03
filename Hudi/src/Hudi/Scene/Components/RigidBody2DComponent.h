@@ -5,13 +5,12 @@
 
 namespace Hudi {
 
-	class Rigidbody2D : public Component
+	class Rigidbody2D
 	{
 	public:
-		const char* ToString() const override { return "Rigidbody2D"; }
-	public:
-		enum class BodyType { Static, Kinematic, Dynamic };
+		virtual ~Rigidbody2D() = default;
 
+		enum class BodyType { Static, Kinematic, Dynamic };
 	public:
 		BodyType type = BodyType::Static;
 		bool fixedRotation = false;

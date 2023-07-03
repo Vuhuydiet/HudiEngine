@@ -5,11 +5,11 @@
 
 namespace Hudi {
 
-	class Transform : public Component
+	class Transform
 	{
 	public:
 		Transform();
-		const char* ToString() const override { return "Transform"; }
+		virtual ~Transform() = default;
 
 		void Translate(float x, float y, float z);
 		void Translate(Vec3 v);

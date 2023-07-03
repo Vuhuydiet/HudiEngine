@@ -6,10 +6,10 @@
 
 namespace Hudi {
 
-	class BoxCollider2D : public Component
+	class BoxCollider2D
 	{
 	public:
-		virtual const char* ToString() const override { return "BoxCollider2D"; }
+		virtual ~BoxCollider2D() = default;
 
 		glm::vec2 offset = { 0.0f, 0.0f };
 		glm::vec2 size = { 0.5f, 0.5f };

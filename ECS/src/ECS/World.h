@@ -31,32 +31,26 @@ namespace ECS {
 
 	public:
 		template <typename T, typename ... Args>
-		std::shared_ptr<T> CreateComponent(Args&&... args);
-
-		template <typename T, typename ... Args>
-		std::shared_ptr<T> AddComponent(Entity entt, Args&& ... args);
+		T* AddComponent(Entity entt, Args&& ... args);
 
 		template <typename T>
 		bool HasComponent(Entity entt);
 
 		template <typename T>
-		std::shared_ptr<T> GetComponent(Entity entt) { return m_ComponentManager->GetComponent<T>(entt); }
+		T* GetComponent(Entity entt) { return m_ComponentManager->GetComponent<T>(entt); }
 
-		std::vector<std::shared_ptr<BaseComponent>> GetComponents(Entity entt) { return m_ComponentManager->GetComponents(entt); }
+		std::vector<void*> GetComponents(Entity entt) { return m_ComponentManager->GetComponents(entt); }
 
 		template <typename T>
 		void RemoveComponent(Entity entt);
 
-		template <typename T, typename ... Args>
+		template <typename T, typename... Args>
 		std::vector<Entity> View();
 
-		// Function passed in must take a std::shared_ptr<Comp> as an argument
-		template <typename Comp, typename Fn>
-		void EachComponent(Fn&& func) { m_ComponentManager->EachComponent<Comp>(func); }
-
-		// Function passed in must take a std::shared_ptr<ClientComponentType> as an argument
-		template <typename ClientComponentType, typename Fn>
-		void EachComponents(Fn&& func) { m_ComponentManager->EachComponents<ClientComponentType>(func); }
+		// Loop through all component which derived from Base and call 'func' on it
+		// 'func' must take a T* as the only argument
+		template <typename T, typename Fn>
+		void EachComponent(Fn&& func) { m_ComponentManager->EachComponent<T>(func); }
 
 		template <typename T>
 		void AddSystem(Entity entt);
@@ -101,27 +95,19 @@ namespace ECS {
 	}
 
 	template <typename T, typename ... Args>
-	std::shared_ptr<T> World::CreateComponent(Args&&... args)
-	{
-		std::shared_ptr<BaseComponent> component = std::make_shared<T>(std::forward<Args>(args)...);
-		component->world = this;
-		return std::static_pointer_cast<T>(component);
-	}
-
-	template <typename T, typename ... Args>
-	inline std::shared_ptr<T> World::AddComponent(Entity entt, Args&&... args)
+	inline T* World::AddComponent(Entity entt, Args&&... args)
 	{
 		if (HasComponent<T>(entt))
 		{
-			std::cout << "Entity already has a component of type '" << T(std::forward<Args>(args)...) << "'!\nCannot add 2 component of the same type.\n";
+			std::cout << "Entity already has a component of type '" << typeid(T).name() << "'!\nCannot add 2 component of the same type.\n";
 			return nullptr;
 		}
 
-		std::shared_ptr<BaseComponent> component = CreateComponent<T>(args...);
-		component->m_Entity = entt;
+		T* data = new T(std::forward<Args>(args)...);
+		std::function<void(void*)> deleter = [](void* data) { delete (T*)data; };
+		Component component = { data, deleter };
 
 		m_ComponentManager->AddComponent<T>(entt, component);
-		component->Init();
 
 		ComponentID id = GetComponentID<T>();
 		Signature& sig = m_EntityManager->GetComponentSignature(entt);
@@ -129,7 +115,7 @@ namespace ECS {
 
 		m_SystemManager->AddEntity(entt, sig);
 
-		return std::static_pointer_cast<T>(component);
+		return (T*)component.data;
 	}
 
 #ifdef ECS_ALLOW_ADD_COMPONENT_BY_REF
@@ -174,8 +160,7 @@ namespace ECS {
 	{
 		Signature CompSig;
 		CompSig.set(GetComponentID<T>());
-
-		return (CompSig & (m_EntityManager->GetComponentSignature(entt))) != 0;
+		return (CompSig & m_EntityManager->GetComponentSignature(entt)) != 0;
 	}
 
 	template <typename T>
@@ -190,17 +175,17 @@ namespace ECS {
 
 	template <typename... Args>
 	typename decltype(std::enable_if<sizeof...(Args) == 0>::type()) ViewHelper(World* world, std::vector<Entity>& entities) {}
-	template <typename T, typename ... Args>
+	template <typename T, typename... Args>
 	void ViewHelper(World* world, std::vector<Entity>& entities)
 	{
 		for (auto& entity : entities)
 		{
-			if (entity && !world->HasComponent<T>())
+			if (entity != 0 && !world->HasComponent<T>())
 				entity = 0;
 		}
 		ViewHelper<Args...>();
 	}
-	template <typename T, typename ... Args>
+	template <typename T, typename... Args>
 	std::vector<Entity> World::View()
 	{
 		std::vector<Entity> temp = m_ComponentManager->View<T>();

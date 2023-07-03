@@ -64,7 +64,7 @@ inline const RegEx& Hex() {
   static const RegEx e = Digit() | RegEx('A', 'F') | RegEx('a', 'f');
   return e;
 }
-// Valid Unicode code points that are not part of c-printable (YAML 1.2, sec.
+// IsValid Unicode code points that are not part of c-printable (YAML 1.2, sec.
 // 5.1)
 inline const RegEx& NotPrintable() {
   static const RegEx e =

@@ -3,10 +3,11 @@
 #include <vector>
 #include <unordered_map>
 #include <type_traits>
+#include <utility>
+#include <functional>
+#include <typeinfo>
 
 #include "EntityManager.h"
-
-#include "BaseComponent.h"
 
 namespace ECS {
 
@@ -23,17 +24,41 @@ namespace ECS {
 		return id;
 	}
 
+	//struct BaseComponent 
+	//{
+	//	virtual void Delete() = 0;
+	//};
+
+	//template <typename T>
+	//struct ComponentT : public BaseComponent
+	//{
+	//	T* data;
+	//	virtual void Delete() override { delete data; }
+	//};
+
+	struct Component
+	{
+		void* data = nullptr;
+		std::function<void(void*)> deleter = nullptr;
+
+		void Delete()
+		{
+			deleter(data);
+			data = nullptr;
+		}
+	};
+
 	//----------Component Manager-----------------//
 	class ComponentManager
 	{
 	public:
 		template <typename T>
-		void AddComponent(Entity entt, std::shared_ptr<BaseComponent> component);
+		T* AddComponent(Entity entt, Component component);
 
 		template <typename T>
-		std::shared_ptr<T> GetComponent(Entity entt);
+		T* GetComponent(Entity entt);
 
-		std::vector<std::shared_ptr<BaseComponent>> GetComponents(Entity entt);
+		std::vector<void*> GetComponents(Entity entt);
 
 		template <typename T>
 		void RemoveComponent(Entity entt);
@@ -44,16 +69,12 @@ namespace ECS {
 		template <typename T>
 		std::vector<Entity> View();
 #endif
-		// Function passed in must take a std::shared_ptr<Comp> as an argument
+		// Function passed in must take a Base* as an argument
 		template <typename Comp, typename Fn>
 		void EachComponent(Fn&& func);
 
-		// Function passed in must take a std::shared_ptr<ClientComponnetType> as an argument
-		template <typename ClientComponentType, typename Fn>
-		void EachComponents(Fn&& func);
-
 	private:
-		std::unordered_map<Entity, std::shared_ptr<BaseComponent>> m_ComponentMaps[MAX_COMPONENTS];
+		std::unordered_map<Entity, Component> m_ComponentMaps[MAX_COMPONENTS];
 		size_t m_Size = 0;
 
 	};
@@ -62,36 +83,33 @@ namespace ECS {
 	// --------------- Definitions -------------------------------- //
 
 	template <typename T>
-	inline void ComponentManager::AddComponent(Entity entt, std::shared_ptr<BaseComponent> component)
+	inline T* ComponentManager::AddComponent(Entity entt, Component p)
 	{
 		ComponentID id = GetComponentID<T>();
-
 		m_Size = std::max(m_Size, (size_t)id + 1);
-
-		m_ComponentMaps[id][entt] = component;
+		m_ComponentMaps[id][entt] = p;
+		return (T*)p.data;
 	}
 
 	template <typename T>
-	inline std::shared_ptr<T> ComponentManager::GetComponent(Entity entt)
+	inline T* ComponentManager::GetComponent(Entity entt)
 	{
 		ComponentID id = GetComponentID<T>();
-
 		if (m_ComponentMaps[id].find(entt) == m_ComponentMaps[id].end())
 		{
-			std::cout << "This entity " << entt << " has no component of type \"" << T()
-				<< "\". Returning nullptr \n";
+			std::cout << "This entity " << entt << " has no component of type '" << typeid(T).name() << "'. Returning nullptr \n";
 			return nullptr;
 		}
-		return std::static_pointer_cast<T>(m_ComponentMaps[id].at(entt));
+		return (T*)m_ComponentMaps[id].at(entt).data;
 	}
 
-	inline std::vector<std::shared_ptr<BaseComponent>> ComponentManager::GetComponents(Entity entt)
+	inline std::vector<void*> ComponentManager::GetComponents(Entity entt)
 	{
-		std::vector<std::shared_ptr<BaseComponent>> components;
+		std::vector<void*> components;
 		for (int id = 0; id < m_Size; id++)
 		{
 			if (m_ComponentMaps[id].find(entt) != m_ComponentMaps[id].end())
-				components.push_back(m_ComponentMaps[id].at(entt));
+				components.push_back(m_ComponentMaps[id].at(entt).data);
 		}
 		return components;
 	}
@@ -100,6 +118,7 @@ namespace ECS {
 	inline void ComponentManager::RemoveComponent(Entity entt)
 	{
 		ComponentID id = GetComponentID<T>();
+		m_ComponentMaps[id].at(entt).Delete();
 		m_ComponentMaps[id].erase(entt);
 	}
 
@@ -107,8 +126,10 @@ namespace ECS {
 	{
 		for (ComponentID id = 0; id < m_Size; id++)
 		{
-			if (m_ComponentMaps[id].find(entt) != m_ComponentMaps[id].end())
-				m_ComponentMaps[id].erase(entt);
+			if (m_ComponentMaps[id].find(entt) == m_ComponentMaps[id].end())
+				continue;
+			m_ComponentMaps[id].at(entt).Delete();
+			m_ComponentMaps[id].erase(entt);
 		}
 	}
 
@@ -117,7 +138,8 @@ namespace ECS {
 	inline std::vector<Entity> ComponentManager::View()
 	{
 		std::vector<Entity> entities;
-		for (const auto& [entt, comp] : m_ComponentMaps[GetComponentID<T>()])
+		ComponentID id = GetComponentID<T>();
+		for (const auto& [entt, comp] : m_ComponentMaps[id])
 		{
 			entities.push_back(entt);
 		}
@@ -128,28 +150,11 @@ namespace ECS {
 	template <typename Comp, typename Fn>
 	inline void ComponentManager::EachComponent(Fn&& func)
 	{
-		ComponentID id = GetComponentID<Comp>();
+		ComponentID id = GetCompnentID<Comp>();
 		for (auto& [entt, comp] : m_ComponentMaps[id])
 		{
-			if (!comp->enabled)
-				continue;
-			//std::bind(std::forward(func), (T*)(comp.get()))();
-			std::forward<Fn>(func)(std::static_pointer_cast<Comp>(comp));
-		}
-	}
-
-	template <typename ClientComponentType, typename Fn>
-	inline void ComponentManager::EachComponents(Fn&& func)
-	{
-		for (int i = 0; i < m_Size; i++)
-		{
-			for (auto& [entt, comp] : m_ComponentMaps[i])
-			{
-				if (!comp->enabled)
-					continue;
-				//std::bind(td::forward(func), (ClientComponentType*)comp.get())();
-				std::forward<Fn>(func)(std::static_pointer_cast<ClientComponentType>(comp));
-			}
+			//std::bind(td::forward(func), (ClientComponentType*)comp.get())();
+			std::forward<Fn>(func)((Comp*)comp.data);
 		}
 	}
 }

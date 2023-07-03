@@ -10,7 +10,7 @@ namespace Hudi {
 	{
 		UpdateView();
 	}
-
+	
 	void EditorCamera::UpdateProjection()
 	{
 		m_AspectRatio = m_ViewportWidth / m_ViewportHeight;

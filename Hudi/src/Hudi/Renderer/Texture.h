@@ -16,7 +16,7 @@ namespace Hudi {
 		virtual void SetData(void* data, size_t size) = 0;
 
 		virtual void Bind(uint32_t slot = 0) const = 0;
-		virtual bool Valid() const = 0;
+		virtual bool IsValid() const = 0;
 		virtual bool operator== (const Texture& other) const = 0;
 	};
 

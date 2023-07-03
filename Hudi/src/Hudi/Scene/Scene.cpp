@@ -57,10 +57,10 @@ namespace Hudi {
 
 	void Scene::OnUpdate(float dt)
 	{
-		m_World->EachComponents<Component>([](Ref<Component> comp) { comp->Awake(); });
+		m_World->EachComponents<Component>([](Component* comp) { comp->Awake(); });
 		m_ScriptEngine->AwakeScripts();
 		
-		m_World->EachComponents<Component>([dt](Ref<Component> comp) { comp->Update(dt); });
+		m_World->EachComponents<Component>([dt](Component* comp) { comp->Update(dt); });
 		m_ScriptEngine->UpdateScripts(dt);
 
 		m_Physics2DSystem->OnUpdate(dt);
@@ -77,7 +77,7 @@ namespace Hudi {
 		m_Width = width, m_Height = height;
 		for (const auto& entt : m_World->View<Camera>())
 		{
-			auto& camera = m_World->GetComponent<Camera>(entt);
+			Camera* camera = m_World->GetComponent<Camera>(entt);
 			camera->Resize((float)width, (float)height);
 		}
 	}
@@ -156,7 +156,7 @@ namespace Hudi {
 			return GameObject();
 
 		GameObject obj(m_World.get());
-		obj.AddComponent<IDComponent>(uuid);
+		//obj.AddComponent<IDComponent>(uuid);
 
 		uint32_t id = obj.GetEntityID();
 		std::string name = FindValidName(_name);
@@ -333,7 +333,7 @@ namespace Hudi {
 		if (cameraName == "##unknown")
 			return false;
 		GameObject camera = GetGameObject(cameraName);
-		if (!camera.Valid())
+		if (!camera.IsValid())
 			return false;
 		return SetPrimaryCamera(camera);
 	}

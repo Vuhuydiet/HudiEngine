@@ -81,13 +81,13 @@ namespace Hudi {
 			switch (event.GetKeyCode())
 			{
 			case Key::D:
-				if (ctrl && (IsHierarchyFocused() || IsViewportFocused()) && m_SelectedObject.Valid())
+				if (ctrl && (IsHierarchyFocused() || IsViewportFocused()) && m_SelectedObject.IsValid())
 				{
 					m_Context->DuplicateObject(m_SelectedObject);
 				}
 				break;
 			case Key::E:
-				if (ctrl && (IsHierarchyFocused() || IsViewportFocused()) && m_SelectedObject.Valid())
+				if (ctrl && (IsHierarchyFocused() || IsViewportFocused()) && m_SelectedObject.IsValid())
 				{
 					m_Context->DestroyGameObject(m_SelectedObject);
 					m_SelectedObject.Reset();

@@ -22,7 +22,7 @@ namespace Hudi {
 		virtual void Bind(uint32_t slot = 0) const override;
 		
 		virtual void SetData(void* data, size_t size) override;
-		virtual bool Valid() const override { return m_Valid; }
+		virtual bool IsValid() const override { return m_Valid; }
 		virtual bool operator== (const Texture& other) const override;
 			
 	private:
