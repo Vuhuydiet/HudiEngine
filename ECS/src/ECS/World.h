@@ -31,24 +31,24 @@ namespace ECS {
 
 	public:
 		template <typename T, typename ... Args>
-		T* AddComponent(Entity entt, Args&& ... args);
+		T* AddComponent(Entity entt, Args&&... args);
 
 		template <typename T>
 		bool HasComponent(Entity entt);
 
 		template <typename T>
 		T* GetComponent(Entity entt) { return m_ComponentManager->GetComponent<T>(entt); }
-
+#ifdef SUPPORTED
 		std::vector<void*> GetComponents(Entity entt) { return m_ComponentManager->GetComponents(entt); }
-
+#endif
 		template <typename T>
 		void RemoveComponent(Entity entt);
 
 		template <typename T, typename... Args>
 		std::vector<Entity> View();
 
-		// Loop through all component which derived from Base and call 'func' on it
-		// 'func' must take a T* as the only argument
+		// Loop through all components and call 'func' on it
+		// 'func' must take a T* as its only argument
 		template <typename T, typename Fn>
 		void EachComponent(Fn&& func) { m_ComponentManager->EachComponent<T>(func); }
 
@@ -102,12 +102,8 @@ namespace ECS {
 			std::cout << "Entity already has a component of type '" << typeid(T).name() << "'!\nCannot add 2 component of the same type.\n";
 			return nullptr;
 		}
-
-		T* data = new T(std::forward<Args>(args)...);
-		std::function<void(void*)> deleter = [](void* data) { delete (T*)data; };
-		Component component = { data, deleter };
-
-		m_ComponentManager->AddComponent<T>(entt, component);
+		
+		T* component = m_ComponentManager->AddComponent<T>(entt, std::forward<Args>(args)...);
 
 		ComponentID id = GetComponentID<T>();
 		Signature& sig = m_EntityManager->GetComponentSignature(entt);
@@ -115,7 +111,7 @@ namespace ECS {
 
 		m_SystemManager->AddEntity(entt, sig);
 
-		return (T*)component.data;
+		return component;
 	}
 
 #ifdef ECS_ALLOW_ADD_COMPONENT_BY_REF
@@ -180,8 +176,8 @@ namespace ECS {
 	{
 		for (auto& entity : entities)
 		{
-			if (entity != 0 && !world->HasComponent<T>())
-				entity = 0;
+			if (entity != null && !world->HasComponent<T>())
+				entity = null;
 		}
 		ViewHelper<Args...>();
 	}

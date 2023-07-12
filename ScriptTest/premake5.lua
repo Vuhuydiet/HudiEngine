@@ -1,4 +1,3 @@
-
 project "ScriptTest"
 	kind "SharedLib"
 	language "C++"
@@ -11,7 +10,6 @@ project "ScriptTest"
 	defines
 	{
 		"_CRT_SECURE_NO_WARNINGS",
-
 		"SCRIPTTEST_EXPORTS"
 	}
 

@@ -8,10 +8,10 @@ namespace Hudi {
 	class IDComponent
 	{
 	public:
-		IDComponent() : ID(UUID()) {}
-		IDComponent(const UUID& ID) : ID(ID) {}
-		virtual ~IDComponent() = default;
+		IDComponent();
+		IDComponent(UUID ID);
 
 		UUID ID;
 	};
+
 }

@@ -8,7 +8,7 @@
 
 namespace Hudi {
 
-	class Camera : public Component
+	class Camera
 	{
 	public:
 		enum Type { Perspective = 0, Orthographic = 1 };

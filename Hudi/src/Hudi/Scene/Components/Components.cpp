@@ -11,6 +11,9 @@
 
 namespace Hudi {
 
+	IDComponent::IDComponent() : ID(UUID()) {}
+	IDComponent::IDComponent(UUID ID) : ID(ID) {}
+
 	Transform::Transform() : scale(1.0f), localScale(1.0f) {}
 
 	void Transform::Translate(float x, float y, float z) { position += Vec3(x, y, z); }
@@ -52,9 +55,9 @@ namespace Hudi {
 	{
 		if (m_Type == Orthographic)
 		{
-			const auto& tc = GetComponent<Transform>();
-			float Near = tc.position.z;
-			float Far = tc.position.z + (m_OrthographicData.zFar - m_OrthographicData.zNear);
+			//const auto& tc = GetComponent<Transform>();
+			//float Near = tc.position.z;
+			//float Far = tc.position.z + (m_OrthographicData.zFar - m_OrthographicData.zNear);
 			//m_Projection = glm::ortho(m_OrthographicData.left, m_OrthographicData.right, 
 			//	m_OrthographicData.bottom, m_OrthographicData.top, Near, Far);
 			m_Projection = glm::ortho(m_OrthographicData.left, m_OrthographicData.right,

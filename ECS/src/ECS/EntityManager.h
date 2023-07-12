@@ -18,6 +18,8 @@ namespace ECS {
 
 	using Signature = std::bitset<MAX_COMPONENTS>;
 
+	const Entity null = 0;
+
 
 	//----------------- ENTITY ----------------------//
 	class EntityManager

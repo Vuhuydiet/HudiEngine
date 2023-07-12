@@ -4,8 +4,8 @@
 
 namespace hd_api {
 
-	HD_API ScriptComponent* Instantiat() {
-		return new ScriptComponent();
+	HD_API Behaviour* Instantiate() {
+		return new Behaviour();
 	}
 
 }

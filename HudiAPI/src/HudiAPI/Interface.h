@@ -15,8 +15,6 @@
 
 	namespace hd_api {
 
-		class ScriptComponent;
-	
 		class HD_API Component
 		{
 		public:
@@ -36,11 +34,11 @@
 			void SetActive(bool active) { world->SetActive(m_Entity, active); }
 			bool IsActive() { return world->IsActive(m_Entity); }
 		protected:
-			ECS::Entity m_Entity = 0;
+			ECS::Entity m_Entity = ECS::null;
 			ECS::World* world = nullptr;
 		};
 
-		class HD_API ScriptComponent : public Component
+		class HD_API Behaviour : public Component
 		{
 		public:
 			void Init(ECS::Entity entity, ECS::World* _world) { m_Entity = entity, world = _world; }

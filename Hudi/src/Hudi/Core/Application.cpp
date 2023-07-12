@@ -19,6 +19,7 @@ namespace Hudi {
 		s_Instance = this;
 
 		m_Window = Scope<Window>(Window::Create(props));
+		EventManager::Init();
 		EventManager::SetCallBackFn(HD_BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::Init();
@@ -29,6 +30,7 @@ namespace Hudi {
 
 	Application::~Application()
 	{
+		EventManager::ShutDown();
 		Renderer::Shutdown();
 		s_Instance = nullptr;
 	}

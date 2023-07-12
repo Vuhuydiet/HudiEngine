@@ -35,8 +35,6 @@ namespace Hudi {
 		m_GraphicsContext->Init();
 
 		SetVSync(m_Properties.VSync);
-
-		EventManager::Init();
 	}
 
 	void WindowsWindow::ShutDown()

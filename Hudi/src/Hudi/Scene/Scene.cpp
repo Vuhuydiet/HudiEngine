@@ -11,6 +11,8 @@
 
 namespace Hudi {
 
+#define __unknown_keyword "##unknown"
+
 	Scene::Scene(uint8_t index)
 		: m_BuildIndex(index)
 	{
@@ -46,6 +48,7 @@ namespace Hudi {
 	void Scene::BeginScene()
 	{
 		HD_CORE_INFO("Start scene {0}.", m_BuildIndex);
+		m_ScriptEngine->AssimilateInput();
 		m_Physics2DSystem->Begin();
 	}
 
@@ -57,10 +60,10 @@ namespace Hudi {
 
 	void Scene::OnUpdate(float dt)
 	{
-		m_World->EachComponents<Component>([](Component* comp) { comp->Awake(); });
-		m_ScriptEngine->AwakeScripts();
-		
+		/*m_World->EachComponents<Component>([](Component* comp) { comp->Awake(); });
 		m_World->EachComponents<Component>([dt](Component* comp) { comp->Update(dt); });
+		*/
+		m_ScriptEngine->AwakeScripts();
 		m_ScriptEngine->UpdateScripts(dt);
 
 		m_Physics2DSystem->OnUpdate(dt);
@@ -144,7 +147,7 @@ namespace Hudi {
 
 	GameObject Scene::CreateEmptyObject(const std::string& _name)
 	{
-		if (_name == "##unknown")
+		if (_name == __unknown_keyword)
 			return GameObject();
 		GameObject obj = CreateEmptyObjectWithUUID(UUID(), _name);
 		return obj;
@@ -152,11 +155,11 @@ namespace Hudi {
 
 	GameObject Scene::CreateEmptyObjectWithUUID(UUID uuid, const std::string& _name)
 	{
-		if (_name == "##unknown")
+		if (_name == __unknown_keyword)
 			return GameObject();
 
 		GameObject obj(m_World.get());
-		//obj.AddComponent<IDComponent>(uuid);
+		obj.AddComponent<IDComponent>(uuid);
 
 		uint32_t id = obj.GetEntityID();
 		std::string name = FindValidName(_name);
@@ -168,7 +171,7 @@ namespace Hudi {
 
 	GameObject Scene::CreateGameObject(const std::string& _name)
 	{
-		if (_name == "##unknown")
+		if (_name == __unknown_keyword)
 			return GameObject();
 		GameObject obj = CreateEmptyObject(_name);
 		obj.AddComponent<Transform>();
@@ -178,7 +181,7 @@ namespace Hudi {
 
 	GameObject Scene::DuplicateObject(const std::string& _name)
 	{
-		if (_name == "##unknown")
+		if (_name == __unknown_keyword)
 			return GameObject();
 		if (m_NameToEntity.find(_name) == m_NameToEntity.end())
 		{
@@ -210,7 +213,7 @@ namespace Hudi {
 
 	bool Scene::HasGameObject(const std::string& _name) const
 	{
-		if (_name == "##unknown")
+		if (_name == __unknown_keyword)
 			return false;
 		return m_NameToEntity.find(_name) != m_NameToEntity.end();
 	}
@@ -223,7 +226,7 @@ namespace Hudi {
 
 	GameObject Scene::GetGameObject(const std::string& _name) const
 	{
-		if (_name == "##unknown")
+		if (_name == __unknown_keyword)
 			return GameObject();
 		if (m_NameToEntity.find(_name) == m_NameToEntity.end())
 		{
@@ -247,7 +250,7 @@ namespace Hudi {
 
 	void Scene::DestroyGameObject(const std::string& _name)
 	{
-		if (_name == "##unknown")
+		if (_name == __unknown_keyword)
 			return;
 		if (m_NameToEntity.find(_name) == m_NameToEntity.end())
 		{
@@ -277,7 +280,7 @@ namespace Hudi {
 		if (m_EntityToName.find(id) == m_EntityToName.end())
 		{
 			HD_CORE_ERROR("Get the name of a GameObject that does not exist!");
-			return "##unknown";
+			return __unknown_keyword;
 		}
 
 		return m_EntityToName.at(id);
@@ -285,7 +288,7 @@ namespace Hudi {
 
 	void Scene::RenameGameObject(const std::string& _name, GameObject object)
 	{
-		if (_name == "##unknown")
+		if (_name == __unknown_keyword)
 			return;
 		uint32_t id = object.GetEntityID();
 		if (m_EntityToName.find(id) == m_EntityToName.end())
@@ -330,7 +333,7 @@ namespace Hudi {
 
 	bool Scene::SetPrimaryCamera(const std::string& cameraName)
 	{
-		if (cameraName == "##unknown")
+		if (cameraName == __unknown_keyword)
 			return false;
 		GameObject camera = GetGameObject(cameraName);
 		if (!camera.IsValid())

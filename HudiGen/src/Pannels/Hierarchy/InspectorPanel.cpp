@@ -90,10 +90,11 @@ namespace Hudi {
 			bool isChosen = context->GetPrimaryCamera() == object;
 			if (ImGui::Checkbox("Primary", &isChosen))
 			{
-				if (isChosen)
+				/*if (isChosen)
 					context->SetPrimaryCamera(object);
 				else
-					context->ResetPrimaryCamera();
+					context->ResetPrimaryCamera();*/
+				isChosen ? context->SetPrimaryCamera(object) : context->ResetPrimaryCamera();
 			}
 
 			Camera::Type currentType = camera.GetType();
@@ -164,7 +165,12 @@ namespace Hudi {
 			DrawFloatControl("Restitution Threshold", box2.restitutionThreshold, 0.01f);
 		});
 
-		OnDrawScriptComponents(context->GetScriptEngine(), object);
+		//OnDrawScriptComponents(context->GetScriptEngine(), object);
+		for (auto& [scriptName, script] : context->GetScriptEngine()->GetScripts(object.GetEntityID()))
+		{
+			OnDrawComponent<
+		}
+
 
 		ImGui::Separator();
 	}
@@ -244,9 +250,7 @@ namespace Hudi {
 		}
 
 		if (isRemove)
-		{
 			object.RemoveComponent<T>();
-		}
 	}
 
 	static void OnDrawScriptComponents(Ref<ScriptEngine> engine, GameObject object)

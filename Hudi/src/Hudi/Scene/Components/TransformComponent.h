@@ -24,7 +24,6 @@ namespace Hudi {
 		Vec3 localPosition;
 		Vec3 localRotation;
 		Vec3 localScale;
-
 	};
 
 }

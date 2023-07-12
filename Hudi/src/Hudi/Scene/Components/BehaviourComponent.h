@@ -7,7 +7,7 @@
 
 namespace Hudi {
 
-	class Behaviour : public Component
+	class Behaviour
 	{
 	public:
 		virtual ~Behaviour() = default;

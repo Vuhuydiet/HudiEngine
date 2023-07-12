@@ -6,12 +6,12 @@
 namespace Hudi {
 
 	GameObject::GameObject()
-		: m_Entity(0), world(nullptr)
+		: m_Entity(ECS::null), world(nullptr)
 	{
 	}
 
 	GameObject::GameObject(ECS::World* _world)
-		: world(_world), m_Entity(0)
+		: world(_world), m_Entity(ECS::null)
 	{
 		if (world)
 			m_Entity = world->CreateEntity();
@@ -20,13 +20,13 @@ namespace Hudi {
 	void GameObject::Destroy()
 	{
 		world->DestroyEntity(m_Entity);
-		m_Entity = 0;
+		m_Entity = ECS::null;
 		world = nullptr;
 	}
 
 	void GameObject::Reset()
 	{
-		m_Entity = 0;
+		m_Entity = ECS::null;
 		world = nullptr;
 	}
 
@@ -69,22 +69,11 @@ namespace Hudi {
 		return m_Entity != other.m_Entity || world != other.world;
 	}
 
-	template <typename T, typename... Args>
-	T& GameObject::AddComponent(Args&&... args) const
-	{
-		T* component = world->AddComponent<T>(m_Entity, args...);
-		if (dynamic_cast<Component*>(component))
-		{
-			Component* base = dynamic_cast<Component*>(component);
-			base->m_Entity = this->m_Entity;
-			base->world = this->world;
-		}
-		return *component;
-	}
-
+#ifdef ECS_ALLOW_ADD_COMPONENT_BY_REF
 	std::vector<void*> GameObject::GetComponents() const
 	{
 		return world->GetComponents(m_Entity);
 	}
+#endif
 
 }

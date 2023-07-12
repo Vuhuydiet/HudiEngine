@@ -56,14 +56,29 @@ namespace Hudi {
 			return;
 		}
 		m_Libraries.push_back(library);
-		InstantiateScriptComponentFunc func = reinterpret_cast<InstantiateScriptComponentFunc>(GetProcAddress(library, "InstantiateScript"));
-		if (!func)
+
+		int count = 1;
+		while (true)
 		{
-			HD_CORE_ERROR("Cannot find 'InstantiateScript' function!");
+			std::string func_name = "InstantiateScript" + std::to_string(count++);
+			InstantiateScriptComponentFunc func = reinterpret_cast<InstantiateScriptComponentFunc>(GetProcAddress(library, func_name.c_str()));
+			if (!func)
+				break;
+			m_InstantiateFns[libpath.filename().stem().string()].push_back(func);
 		}
-		else 
+	}
+
+	void ScriptEngine::AssimilateInput() const
+	{
+		for (auto& library : m_Libraries)
 		{
-			m_InstantiateFns[libpath.filename().stem().string()] = func;
+			AssimilateInputFunc func = reinterpret_cast<AssimilateInputFunc>(GetProcAddress(library, "SetInputSource"));
+			if (!func)
+			{
+				HD_CORE_ERROR("Cannot find 'SetInputSource' function!");
+				continue;
+			}
+			func(EventManager::GetInstance());
 		}
 	}
 
@@ -88,10 +103,13 @@ namespace Hudi {
 			}
 		}
 
-		hd_api::ScriptComponent* sc = m_InstantiateFns.at(script)();
-		sc->Init(entity, world);
+		for (auto& func : m_InstantiateFns.at(script))
+		{
+			hd_api::Behaviour* sc = func();
+			sc->Init(entity, world);
+			m_ObjectScripts[entity].push_back({ script, sc });
+		}
 		
-		m_ObjectScripts[entity].push_back({ script, sc });
 	}
 	
 	void ScriptEngine::RemoveScriptComponent(ECS::Entity entity, const std::string& script)
@@ -109,10 +127,11 @@ namespace Hudi {
 
 		for (auto& p : m_ObjectScripts.at(entity))
 		{
-			if (p.first != script)
+			auto& [name, comp] = p;
+			if (name != script)
 				continue;
 
-			delete p.second;
+			delete comp;
 			std::swap(p, m_ObjectScripts[entity].back());
 			m_ObjectScripts[entity].pop_back();
 			break;
@@ -142,11 +161,11 @@ namespace Hudi {
 		}
 	}
 
-	std::vector<std::pair<std::string, hd_api::ScriptComponent*>> ScriptEngine::GetScripts(ECS::Entity entity)
+	std::vector<std::pair<std::string, hd_api::Behaviour*>> ScriptEngine::GetScripts(ECS::Entity entity)
 	{
 		if (m_ObjectScripts.find(entity) == m_ObjectScripts.end())
 		{
-			return std::vector<std::pair<std::string, hd_api::ScriptComponent*>>();
+			return std::vector<std::pair<std::string, hd_api::Behaviour*>>();
 		}
 		return m_ObjectScripts.at(entity);
 	}
