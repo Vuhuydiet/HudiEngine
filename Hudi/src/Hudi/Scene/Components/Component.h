@@ -4,6 +4,7 @@
 
 namespace Hudi {
 
+#ifdef OLD_ECS
 	template <typename T>
 	inline bool IsPointerType(void* ptr)
 	{
@@ -44,6 +45,7 @@ namespace Hudi {
 		ECS::World* world = nullptr;
 		friend class GameObject;
 	};
+#endif
 
 }
 
@@ -57,3 +59,16 @@ namespace Hudi {
 #include "BehaviourComponent.h"
 #include "AnimatorComponent/AnimationComponent.h"
 #include "AnimatorComponent/AnimatorComponent.h"
+
+namespace Hudi {
+
+	//template <typename... Args>
+	//struct ComponentGroup {};
+
+	//using AllComponents = ComponentGroup<Transform,
+	//									IDComponent, 
+	//									SpriteRenderer, 
+	//									Camera, Rigidbody2D,
+	//									BoxCollider2D>;
+
+}

@@ -219,20 +219,8 @@
     <ClInclude Include="src\Hudi\Scene\GameObject.h">
       <Filter>src\Hudi\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hudi\Scene\Physics\Collision2D.h">
-      <Filter>src\Hudi\Scene\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hudi\Scene\Physics\CollisionDetector.h">
-      <Filter>src\Hudi\Scene\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="src\Hudi\Scene\Physics\Physics2D\Physics2DSystem.h">
       <Filter>src\Hudi\Scene\Physics\Physics2D</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hudi\Scene\Physics\PhysicsSystem.h">
-      <Filter>src\Hudi\Scene\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hudi\Scene\Physics\Solver.h">
-      <Filter>src\Hudi\Scene\Physics</Filter>
     </ClInclude>
     <ClInclude Include="src\Hudi\Scene\RenderSystem\RenderSystem.h">
       <Filter>src\Hudi\Scene\RenderSystem</Filter>
@@ -1598,20 +1586,8 @@
     <ClCompile Include="src\Hudi\Scene\GameObject.cpp">
       <Filter>src\Hudi\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="src\Hudi\Scene\Physics\CollisionDetector.cpp">
-      <Filter>src\Hudi\Scene\Physics</Filter>
-    </ClCompile>
     <ClCompile Include="src\Hudi\Scene\Physics\Physics2D\Physics2DSystem.cpp">
       <Filter>src\Hudi\Scene\Physics\Physics2D</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Hudi\Scene\Physics\PhysicsSystem.cpp">
-      <Filter>src\Hudi\Scene\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Hudi\Scene\Physics\Solver.cpp">
-      <Filter>src\Hudi\Scene\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Hudi\Scene\Physics\algo.cpp">
-      <Filter>src\Hudi\Scene\Physics</Filter>
     </ClCompile>
     <ClCompile Include="src\Hudi\Scene\RenderSystem\RenderSystem.cpp">
       <Filter>src\Hudi\Scene\RenderSystem</Filter>

@@ -2,7 +2,6 @@
 
 #include "ImGuiExtension/ImGuiFunctions.h"
 
-#include <imgui.h>
 #include <ECS.h>
 
 #include <glm/gtc/type_ptr.hpp>
@@ -19,8 +18,7 @@ namespace Hudi {
 	bool HierarchyPanels::IsInspectorHovered() const { return s_IsHovered; }
 
 	static void OnDrawComponents(Ref<Scene> context, GameObject object);
-	static void OnDrawAddComponent(GameObject object);
-	static void AddScriptComponent(Ref<ScriptEngine> engine, GameObject object);
+	static void OnDrawAddComponent(Ref<Scene> context, GameObject object);
 	void HierarchyPanels::OnImGuiRenderInspectorPanel(bool& open)
 	{
 		if (!open)
@@ -34,16 +32,14 @@ namespace Hudi {
 		if (m_Context && m_SelectedObject.IsValid())
 		{
 			OnDrawComponents(m_Context, m_SelectedObject);
-			OnDrawAddComponent(m_SelectedObject);
-
-			AddScriptComponent(m_Context->GetScriptEngine(), m_SelectedObject);
+			OnDrawAddComponent(m_Context, m_SelectedObject);
 		}
 		ImGui::End();
 	}
 
 	template <typename T, typename Fn>
 	static void OnDrawComponent(const char* name, GameObject object, bool removable, Fn&& func);
-	static void OnDrawScriptComponents(Ref<ScriptEngine> engine, GameObject object);
+	static void OnDrawScriptComponent(Ref<ScriptEngine> engine, GameObject object, const std::string& script);
 	static void OnDrawComponents(Ref<Scene> context, GameObject object)
 	{
 		OnDrawComponent<Transform>("Transform", object, false, [](Transform& transform) {
@@ -165,24 +161,100 @@ namespace Hudi {
 			DrawFloatControl("Restitution Threshold", box2.restitutionThreshold, 0.01f);
 		});
 
-		//OnDrawScriptComponents(context->GetScriptEngine(), object);
-		for (auto& [scriptName, script] : context->GetScriptEngine()->GetScripts(object.GetEntityID()))
+		// Behaviours components
+		auto engine = context->GetScriptEngine();
+		auto behaviours = engine->GetBehaviours(object.GetEntityID());
+		for (auto& [scriptName, script] : behaviours)
 		{
-			OnDrawComponent<
+			OnDrawScriptComponent(engine, object, scriptName);
 		}
-
 
 		ImGui::Separator();
 	}
 
-	static void OnDrawAddComponent(GameObject object)
+	template <typename T, typename Fn>
+	static void OnDrawComponent(const char* name, GameObject object, bool removable, Fn&& func)
+	{
+		if (!object.HasComponent<T>())
+			return;
+
+		ImVec2 contentRegionAvail = ImGui::GetContentRegionAvail();
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4,4 });
+		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+		ImGui::Separator();
+
+		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+		bool open = ImGui::TreeNodeEx(name, flags);
+		ImGui::PopStyleVar();
+
+		ImGui::SameLine(contentRegionAvail.x - lineHeight * 0.5f);
+		if (ImGui::Button("...", ImVec2{ lineHeight, lineHeight }))
+		{
+			ImGui::OpenPopup("ComponentSettings");
+		}
+
+		bool isRemoved = false;
+		if (ImGui::BeginPopup("ComponentSettings"))
+		{
+			isRemoved = removable && ImGui::MenuItem("Remove Component");
+			ImGui::EndPopup();
+		}
+
+		if (open)
+		{
+			T& component = object.GetComponent<T>();
+			std::forward<Fn>(func)(component);
+			ImGui::TreePop();
+		}
+
+		if (isRemoved)
+			object.RemoveComponent<T>();
+	}
+	
+	static void OnDrawScriptComponent(Ref<ScriptEngine> engine, GameObject object, const std::string& script)
+	{
+		ECS::Entity entity = object.GetEntityID();
+
+		ImVec2 contentRegionAvail = ImGui::GetContentRegionAvail();
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4,4 });
+		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+		ImGui::Separator();
+
+		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+		bool open = ImGui::TreeNodeEx(script.c_str(), flags, "Script Component (%s)", script.c_str());
+		ImGui::PopStyleVar();
+
+		ImGui::SameLine(contentRegionAvail.x - lineHeight * 0.5f);
+		if (ImGui::Button("...", ImVec2{ lineHeight, lineHeight }))
+		{
+			ImGui::OpenPopup("ComponentSettings");
+		}
+
+		bool isRemoved = false;
+		if (ImGui::BeginPopup("ComponentSettings"))
+		{
+			if (ImGui::MenuItem("Remove Component"))
+				isRemoved = true;
+			ImGui::EndPopup();
+		}
+
+		if (open)
+			ImGui::TreePop();
+
+		if (isRemoved)
+			engine->RemoveBehaviourComponent(object, script);
+
+	}
+
+	static void OnDrawAddComponent(Ref<Scene> context, GameObject object)
 	{
 		float buttonWidth = 100.0f;
 		float windowWidth = ImGui::GetWindowContentRegionMax().x;
 		ImGui::SetCursorPosX(windowWidth * 0.5f - buttonWidth * 0.5f);
 		if (ImGui::Button("Add Component", { buttonWidth, 0.0f }))
-			ImGui::OpenPopup("Add Component");
-		if (ImGui::BeginPopup("Add Component"))
+			ImGui::OpenPopup("AddComponent");
+
+		if (ImGui::BeginPopup("AddComponent"))
 		{
 			if (!object.HasComponent<Transform>() && ImGui::MenuItem("Transform"))
 			{
@@ -211,97 +283,18 @@ namespace Hudi {
 			}
 			ImGui::EndPopup();
 		}
-	}
 
-	template <typename T, typename Fn>
-	static void OnDrawComponent(const char* name, GameObject object, bool removable, Fn&& func)
-	{
-		if (!object.HasComponent<T>())
-			return;
-
-		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
-
-		ImVec2 contentRegionAvail = ImGui::GetContentRegionAvail();
-		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4,4 });
-		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
-		ImGui::Separator();
-
-		bool open = ImGui::TreeNodeEx(name, flags);
-		ImGui::PopStyleVar();
-
-		ImGui::SameLine(contentRegionAvail.x - lineHeight * 0.5f);
-		if (ImGui::Button("...", ImVec2{ lineHeight, lineHeight }))
-		{
-			ImGui::OpenPopup("ComponentSettings");
-		}
-
-		bool isRemove = false;
-		if (ImGui::BeginPopup("ComponentSettings"))
-		{
-			isRemove = removable && ImGui::MenuItem("Remove Component");
-			ImGui::EndPopup();
-		}
-
-		if (open)
-		{
-			T& component = object.GetComponent<T>();
-			std::forward<Fn>(func)(component);
-			ImGui::TreePop();
-		}
-
-		if (isRemove)
-			object.RemoveComponent<T>();
-	}
-
-	static void OnDrawScriptComponents(Ref<ScriptEngine> engine, GameObject object)
-	{
-		ECS::Entity entity = object.GetEntityID();
-		for (auto& [scriptName, script] : engine->GetScripts(entity))
-		{
-			ImVec2 contentRegionAvail = ImGui::GetContentRegionAvail();
-			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4,4 });
-			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
-			ImGui::Separator();
-
-			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
-			bool open = ImGui::TreeNodeEx(scriptName.c_str(), flags);
-			ImGui::PopStyleVar();
-
-			ImGui::SameLine(contentRegionAvail.x - lineHeight * 0.5f);
-			if (ImGui::Button("...", ImVec2{ lineHeight, lineHeight }))
-			{
-				ImGui::OpenPopup("ComponentSettings");
-			}
-
-			bool isRemove = false;
-			if (ImGui::BeginPopup("ComponentSettings"))
-			{
-				isRemove = ImGui::MenuItem("Remove Component");
-				ImGui::EndPopup();
-			}
-
-			if (open)
-				ImGui::TreePop();
-
-			if (isRemove)
-				engine->RemoveScriptComponent(entity, scriptName);
-		}
-	}
-
-	static void AddScriptComponent(Ref<ScriptEngine> engine, GameObject object)
-	{
+		// Add ScriptComponent
+		auto engine = context->GetScriptEngine();
 		if (ImGui::BeginDragDropTarget())
 		{
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_DLL"))
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("BEHAVIOUR_LIBRARY_PANEL"))
 			{
-				std::filesystem::path libpath = (const char*)payload->Data;
-				std::string scriptName = libpath.filename().stem().string();
-				engine->LoadScript(libpath);
-				engine->AddScriptComponent(object.GetEntityID(), scriptName);
+				std::string scriptName = (const char*)payload->Data;
+				engine->AddBehaviourComponent(object, scriptName);
 			}
 			ImGui::EndDragDropTarget();
 		}
 	}
-
 
 }

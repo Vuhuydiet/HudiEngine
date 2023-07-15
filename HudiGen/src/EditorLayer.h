@@ -41,6 +41,7 @@ namespace Hudi {
 		bool m_OpenedHierarchy = true;
 		bool m_OpenedInspector = true;
 		bool m_OpenedViewport = true;
+		bool m_OpenedLib = true;
 		HierarchyPanels m_HierarchyPanels;
 
 		ContentBrowserPanel m_ContentBrowserPanel;

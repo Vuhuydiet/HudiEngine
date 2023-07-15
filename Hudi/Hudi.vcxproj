@@ -81,7 +81,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
@@ -196,11 +196,7 @@
     <ClInclude Include="src\Hudi\Scene\Components\SpriteRendererComponent.h" />
     <ClInclude Include="src\Hudi\Scene\Components\TransformComponent.h" />
     <ClInclude Include="src\Hudi\Scene\GameObject.h" />
-    <ClInclude Include="src\Hudi\Scene\Physics\Collision2D.h" />
-    <ClInclude Include="src\Hudi\Scene\Physics\CollisionDetector.h" />
     <ClInclude Include="src\Hudi\Scene\Physics\Physics2D\Physics2DSystem.h" />
-    <ClInclude Include="src\Hudi\Scene\Physics\PhysicsSystem.h" />
-    <ClInclude Include="src\Hudi\Scene\Physics\Solver.h" />
     <ClInclude Include="src\Hudi\Scene\RenderSystem\RenderSystem.h" />
     <ClInclude Include="src\Hudi\Scene\Scene.h" />
     <ClInclude Include="src\Hudi\Scene\SceneManager.h" />
@@ -657,11 +653,7 @@
     <ClCompile Include="src\Hudi\Scene\Components\AnimatorComponent\AnimatorComponent.cpp" />
     <ClCompile Include="src\Hudi\Scene\Components\Components.cpp" />
     <ClCompile Include="src\Hudi\Scene\GameObject.cpp" />
-    <ClCompile Include="src\Hudi\Scene\Physics\CollisionDetector.cpp" />
     <ClCompile Include="src\Hudi\Scene\Physics\Physics2D\Physics2DSystem.cpp" />
-    <ClCompile Include="src\Hudi\Scene\Physics\PhysicsSystem.cpp" />
-    <ClCompile Include="src\Hudi\Scene\Physics\Solver.cpp" />
-    <ClCompile Include="src\Hudi\Scene\Physics\algo.cpp" />
     <ClCompile Include="src\Hudi\Scene\RenderSystem\RenderSystem.cpp" />
     <ClCompile Include="src\Hudi\Scene\Scene.cpp" />
     <ClCompile Include="src\Hudi\Scene\SceneManager.cpp" />

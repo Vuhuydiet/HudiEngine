@@ -97,10 +97,13 @@ namespace ECS {
 	template <typename T, typename ... Args>
 	inline T* World::AddComponent(Entity entt, Args&&... args)
 	{
+		//printf("Added %s, id: %llu\n", typeid(T).name(), GetComponentID<T>());
 		if (HasComponent<T>(entt))
 		{
-			std::cout << "Entity already has a component of type '" << typeid(T).name() << "'!\nCannot add 2 component of the same type.\n";
-			return nullptr;
+			printf("Entity already has a component of type '%s'!\nCannot add 2 component of the same type.\nReturning old '%s' component.\n", typeid(T).name(), typeid(T).name());
+			//fflush(stdin);
+			//std::cout << "Entity already has a component of type '" << typeid(T).name() << "'!\nCannot add 2 component of the same type.\nReturning old '";
+			return m_ComponentManager->GetComponent<T>(entt);
 		}
 		
 		T* component = m_ComponentManager->AddComponent<T>(entt, std::forward<Args>(args)...);
@@ -156,7 +159,7 @@ namespace ECS {
 	{
 		Signature CompSig;
 		CompSig.set(GetComponentID<T>());
-		return (CompSig & m_EntityManager->GetComponentSignature(entt)) != 0;
+		return (CompSig & m_EntityManager->GetComponentSignature(entt)) != Signature::null();
 	}
 
 	template <typename T>

@@ -6,6 +6,10 @@ namespace Hudi {
 
 	EditorLayer::EditorLayer()
 	{
+	}
+
+	void EditorLayer::OnAttach()
+	{
 #if 1
 		Ref<Scene> scene = NewRef<Scene>(0);
 		m_HierarchyPanels.SetContext(scene);
@@ -21,10 +25,6 @@ namespace Hudi {
 		//vudeptrai->AddChild(trai);
 		//trai->SetParent(vudeptrai);
 #endif
-	}
-
-	void EditorLayer::OnAttach()
-	{
 	}
 
 	void EditorLayer::OnDetach()
@@ -62,7 +62,7 @@ namespace Hudi {
 		BeginDockspace();
 
 		OnImGuiRenderMenuBar();
-		m_HierarchyPanels.OnImGuiRender(m_OpenedHierarchy, m_OpenedInspector, m_OpenedViewport);
+		m_HierarchyPanels.OnImGuiRender(m_OpenedHierarchy, m_OpenedInspector, m_OpenedViewport, m_OpenedLib);
 		m_ContentBrowserPanel.OnImGuiRender();
 
 		EndDockspace();
@@ -216,6 +216,7 @@ namespace Hudi {
 	{
 		ImGui::End();
 	}
+
 	static void ShowExampleMenuFile();
 	void EditorLayer::OnImGuiRenderMenuBar()
 	{
@@ -244,9 +245,10 @@ namespace Hudi {
 
 			if (ImGui::BeginMenu("Options"))
 			{
-				ImGui::MenuItem("Hierarchy", NULL, &m_OpenedHierarchy, true);
-				ImGui::MenuItem("Inspector", NULL, &m_OpenedInspector, true);
-				ImGui::MenuItem("Viewport", NULL, &m_OpenedViewport, true);
+				ImGui::MenuItem("Hierarchy", nullptr, &m_OpenedHierarchy, true);
+				ImGui::MenuItem("Inspector", nullptr, &m_OpenedInspector, true);
+				ImGui::MenuItem("Viewport", nullptr, &m_OpenedViewport, true);
+				ImGui::MenuItem("Libraries", nullptr, &m_OpenedLib, true);
 
 				ShowExampleMenuFile();
 				ImGui::EndMenu();

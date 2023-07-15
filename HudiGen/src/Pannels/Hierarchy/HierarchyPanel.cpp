@@ -55,7 +55,7 @@ namespace Hudi {
 	static void DrawGameObjectNode(Ref<Scene> context, GameObject& selectedObject, GameObject object, std::queue<PanelCommand>& commands)
 	{
 		ImGuiTreeNodeFlags flags =	(selectedObject == object ? ImGuiTreeNodeFlags_Selected : 0) |
-									ImGuiTreeNodeFlags_Leaf | //(gameObject.GetChildren().size() != 0? ImGuiTreeNodeFlags_OpenOnArrow : ImGuiTreeNodeFlags_Leaf) |
+									ImGuiTreeNodeFlags_Leaf | //(gameObject.GetChildren().empty()? ImGuiTreeNodeFlags_None : ImGuiTreeNodeFlags_Leaf) |
 									ImGuiTreeNodeFlags_SpanAvailWidth;
 		std::string name = context->GetGameObjectName(object);
 		bool opened = ImGui::TreeNodeEx((void*)(uint64_t)object.GetEntityID(), flags, name.c_str());

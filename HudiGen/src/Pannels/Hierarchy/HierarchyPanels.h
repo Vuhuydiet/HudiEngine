@@ -8,12 +8,7 @@ namespace Hudi {
 
 	struct PanelCommand
 	{
-		enum Type 
-		{
-			None = 0,
-
-			OpenScene
-		};
+		enum Type { None = 0, OpenScene };
 
 		PanelCommand() = default;
 		PanelCommand(Type _type, const void* _data, size_t _dataSize);
@@ -26,16 +21,10 @@ namespace Hudi {
 		size_t dataSize = 0;
 	};
 
-	enum ViewportState 
-	{ 
-		None = 0,
-		Edit,
-		Runtime
-	};
+	enum ViewportState { None = 0, Edit, Runtime };
 
 	class HierarchyPanels
 	{
-	public:
 	public:
 		HierarchyPanels();
 
@@ -46,7 +35,7 @@ namespace Hudi {
 	public:
 		void OnEvent(Event& event);
 		void OnUpdate(float dt);
-		void OnImGuiRender(bool& hierarchy, bool& inspector, bool& viewport);
+		void OnImGuiRender(bool& hierarchy, bool& inspector, bool& viewport, bool& lib);
 	
 	public:
 		bool PollCommand(PanelCommand& command);
@@ -66,6 +55,7 @@ namespace Hudi {
 		void OnImGuiRenderHierarchyPanel(bool& open);
 		void OnImGuiRenderInspectorPanel(bool& open);
 		void OnImGuiRenderViewportPanel(bool& open);
+		void OnImGuiRenderLibraryPanel(bool& open);
 	private:
 		void OnViewportEvent(Event& event);
 		void OnViewportUpdate(float dt);

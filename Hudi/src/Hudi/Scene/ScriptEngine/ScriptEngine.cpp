@@ -17,15 +17,22 @@ namespace Hudi {
 		
 	}
 
+	void ScriptEngine::CopyLibraries(const ScriptEngine& src)
+	{
+		this->m_Libraries = src.m_Libraries;
+		this->m_LibraryBehaviours = src.m_LibraryBehaviours;
+		this->m_CreationFns = src.m_CreationFns;
+	}
+
 	void ScriptEngine::FreeLibraries()
 	{
-		for (const auto& library : m_Libraries)
+		for (const auto& [name, library] : m_Libraries)
 		{
 			FreeLibrary(library);
 		}
 	}
 
-	void ScriptEngine::AwakeScripts()
+	void ScriptEngine::AwakeBehaviours()
 	{
 		for (auto& [entity, scripts] : m_ObjectScripts)
 		{
@@ -36,7 +43,7 @@ namespace Hudi {
 		}
 	}
 
-	void ScriptEngine::UpdateScripts(float dt)
+	void ScriptEngine::UpdateBehaviours(float dt)
 	{
 		for (auto& [entity, scripts] : m_ObjectScripts)
 		{
@@ -47,30 +54,53 @@ namespace Hudi {
 		}
 	}
 
-	void ScriptEngine::LoadScript(std::filesystem::path libpath)
+	void ScriptEngine::LoadScriptLibrary(std::filesystem::path libpath)
 	{
+		std::string libname = libpath.stem().string();
+		if (m_Libraries.find(libname) != m_Libraries.end())
+			return;
+
 		HMODULE library = LoadLibrary((wchar_t*)libpath.c_str());
 		if (!library)
 		{
 			HD_CORE_ERROR("Cannot load '{0}'!", libpath.string());
 			return;
 		}
-		m_Libraries.push_back(library);
+		m_Libraries[libname] = library;
 
-		int count = 1;
-		while (true)
+		GetBehaviourComponentNamesFunc GetNamesFn = reinterpret_cast<GetBehaviourComponentNamesFunc>(GetProcAddress(library, "GetBehaviourComponentNames"));
+		if (!GetNamesFn)
 		{
-			std::string func_name = "InstantiateScript" + std::to_string(count++);
-			InstantiateScriptComponentFunc func = reinterpret_cast<InstantiateScriptComponentFunc>(GetProcAddress(library, func_name.c_str()));
-			if (!func)
-				break;
-			m_InstantiateFns[libpath.filename().stem().string()].push_back(func);
+			HD_CORE_ERROR("Cannot find function 'GetBehaviourComponentNames' in library {0}!", libname);
+			return;
 		}
+		const char** buffers = (const char**)malloc(MAX_BEHAVIOUR_COMP * sizeof(const char*));
+		if (!buffers)
+		{
+			HD_CORE_ERROR("Cannot allocate memory for 'buffers'!");
+			return;
+		}
+		memset(buffers, 0, MAX_BEHAVIOUR_COMP);
+		size_t size = 0;
+		GetNamesFn(buffers, &size);
+		for (int i = 0; i < std::min(size, MAX_BEHAVIOUR_COMP); i++)
+		{
+			std::string behav_name = buffers[i];
+			std::string ins_func_name = "Instantiate" + behav_name;
+			std::string des_func_name = "Destroy" + behav_name;
+			InstantiateScriptComponentFunc instantiate = reinterpret_cast<InstantiateScriptComponentFunc>(GetProcAddress(library, ins_func_name.c_str()));
+			DestroyScriptComponentFunc destroy = reinterpret_cast<DestroyScriptComponentFunc>(GetProcAddress(library, des_func_name.c_str()));
+			if (!instantiate|| !destroy)
+				continue;
+			m_LibraryBehaviours[libname].push_back(behav_name);
+			m_CreationFns[behav_name] = { instantiate, destroy };
+		}
+		free(buffers);
 	}
 
 	void ScriptEngine::AssimilateInput() const
 	{
-		for (auto& library : m_Libraries)
+		for (auto& [name, library] : m_Libraries)
 		{
 			AssimilateInputFunc func = reinterpret_cast<AssimilateInputFunc>(GetProcAddress(library, "SetInputSource"));
 			if (!func)
@@ -82,92 +112,84 @@ namespace Hudi {
 		}
 	}
 
-	void ScriptEngine::AddScriptComponent(ECS::Entity entity, const std::string& script)
+	void ScriptEngine::AddBehaviourComponent(GameObject object, const std::string& script)
 	{
+		ECS::Entity entity = object.GetEntityID();
 		if (!world->Exists(entity))
 		{
 			HD_CORE_ERROR("Entity {0} does not exists in world!", entity);
 			return;
 		}
-		if (m_InstantiateFns.find(script) == m_InstantiateFns.end())
+		if (m_CreationFns.find(script) == m_CreationFns.end())
 		{
-			HD_CORE_ERROR("Cannot find '{0}' script!", script);
+			HD_CORE_ERROR("Cannot find '{0}' component!", script);
 			return;
-		}
-		if (m_ObjectScripts.find(entity) != m_ObjectScripts.end())
-		{
-			for (auto& [scriptName, sc] : m_ObjectScripts.at(entity))
-			{
-				if (scriptName == script)
-					return;
-			}
 		}
 
-		for (auto& func : m_InstantiateFns.at(script))
-		{
-			hd_api::Behaviour* sc = func();
-			sc->Init(entity, world);
-			m_ObjectScripts[entity].push_back({ script, sc });
-		}
-		
+		hd_api::Behaviour* bc = m_CreationFns.at(script).Instantiate(object);
+		bc->Init(entity, world);
+		m_ObjectScripts[entity].insert({ script, bc });
 	}
 	
-	void ScriptEngine::RemoveScriptComponent(ECS::Entity entity, const std::string& script)
+	void ScriptEngine::RemoveBehaviourComponent(GameObject object, const std::string& script)
 	{
+		ECS::Entity entity = object.GetEntityID();
 		if (!world->Exists(entity))
 		{
 			HD_CORE_ERROR("Entity {0} does not exists in world!", entity);
 			return;
 		}
-		if (m_InstantiateFns.find(script) == m_InstantiateFns.end())
+		if (m_CreationFns.find(script) == m_CreationFns.end())
 		{
 			HD_CORE_ERROR("Cannot find '{0} script!", script);
 			return;
 		}
 
-		for (auto& p : m_ObjectScripts.at(entity))
-		{
-			auto& [name, comp] = p;
-			if (name != script)
-				continue;
-
-			delete comp;
-			std::swap(p, m_ObjectScripts[entity].back());
-			m_ObjectScripts[entity].pop_back();
-			break;
-		}
+		m_CreationFns.at(script).Destroy(object);
+		m_ObjectScripts[entity].erase({ script, nullptr });
 	}
 
 	void ScriptEngine::DestroyEntity(ECS::Entity entity)
 	{
-		if (m_ObjectScripts.find(entity) == m_ObjectScripts.end())
+		/*if (m_ObjectScripts.find(entity) == m_ObjectScripts.end())
 		{
 			HD_CORE_ERROR("Entity {0} does not have any script component!", entity);
 			return;
-		}
-		for (auto& [scriptName, sc] : m_ObjectScripts.at(entity))
+		}*/
+		/*for (auto& [scriptName, sc] : m_ObjectScripts.at(entity))
 		{
 			delete sc;
-		}
+			sc = nullptr;
+		}*/
 		m_ObjectScripts.erase(entity);
 	}
 
 	void ScriptEngine::DestroyEntities()
 	{
-		while (!m_ObjectScripts.empty())
+		/*for (auto& [entity, comp_infos] : m_ObjectScripts)
 		{
-			auto it = m_ObjectScripts.begin();
-			DestroyEntity(it->first);
-		}
+			for (auto& [name, comp] : comp_infos)
+			{
+				delete comp;
+				comp = nullptr;
+			}
+		}*/
+		m_ObjectScripts.clear();
 	}
 
-	std::vector<std::pair<std::string, hd_api::Behaviour*>> ScriptEngine::GetScripts(ECS::Entity entity)
+	std::vector<std::string> ScriptEngine::GetLibraryBehaviours(const std::string& libname)
 	{
-		if (m_ObjectScripts.find(entity) == m_ObjectScripts.end())
+		if (m_LibraryBehaviours.find(libname) == m_LibraryBehaviours.end())
 		{
-			return std::vector<std::pair<std::string, hd_api::Behaviour*>>();
+			HD_CORE_ERROR("Cannot find library '{0}'!", libname);
+			return std::vector<std::string>();
 		}
-		return m_ObjectScripts.at(entity);
+		return m_LibraryBehaviours.at(libname);
+	}
+
+	const std::unordered_set<ComponentInfo>& ScriptEngine::GetBehaviours(ECS::Entity entity)
+	{
+		return m_ObjectScripts[entity];
 	}
 
 }

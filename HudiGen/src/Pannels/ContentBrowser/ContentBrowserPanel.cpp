@@ -96,7 +96,7 @@ namespace Hudi {
 			{
 				if (ImGui::BeginDragDropSource())
 				{
-					ImGui::SetDragDropPayload("CONTENT_BROWSER_DLL", itemPath.string().c_str(), itemPath.string().size() * sizeof(char) + 1);
+					ImGui::SetDragDropPayload("LIBRARY_CONTENT_BROWSER_PANEL", itemPath.string().c_str(), itemPath.string().size() * sizeof(char) + 1);
 					ImGui::EndDragDropSource();
 				}
 			}

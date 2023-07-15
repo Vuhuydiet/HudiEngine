@@ -6,20 +6,20 @@
 #define SCRIPT_API __declspec(dllimport
 #endif
 
-#include <HudiAPI/Interface.h>
-#include <Hudi/Core/Input.h>
+#include <HudiAPI/HudiAPI.h>
 #include <Hudi.h>
 
 using namespace Hudi;
+using namespace hd_api;
 
-class SCRIPT_API Movement : public hd_api::Behaviour
+class SCRIPT_API Movement : public Behaviour
 {
 public:
 	void Awake() override
 	{
 	}
 
-	void Update(float dt) override
+	void Update(float dt)
 	{
 		auto& transform = GetComponent<Transform>();
 		glm::vec3 dir = { 0, 0, 0 };
@@ -38,7 +38,7 @@ public:
 		transform.position += dir * v * dt;
 	}
 
-	float v = 1.0f;
+	SERIALIZE_FIELD float v = 1.0f;
 };
 
 class SCRIPT_API Attack : public hd_api::Behaviour

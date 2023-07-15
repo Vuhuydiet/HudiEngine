@@ -1,17 +1,12 @@
 #pragma once
-#include "pch.h"
 
-#include "HudiAPI.h"
+#include <ECS.h>
+
+#include "Config.h"
 
 #ifdef __cplusplus
 //extern "C" {
 #endif
-
-#include <ECS.h>
-
-	namespace Hudi {
-		class ScriptEngine;
-	}
 
 	namespace hd_api {
 

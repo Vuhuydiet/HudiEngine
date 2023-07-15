@@ -26,9 +26,6 @@ namespace Hudi {
 	Scene::~Scene()
 	{
 		m_ScriptEngine->DestroyEntities();
-		if (!m_IsCopy)
-			m_ScriptEngine->FreeLibraries();
-		m_ScriptEngine = nullptr;
 
 		for (auto& [id, object] : m_GameObjects)
 		{
@@ -36,13 +33,12 @@ namespace Hudi {
 		}
 		m_World->Flush();
 
+		if (!m_IsCopy)
+			m_ScriptEngine->FreeLibraries();
+
 		m_GameObjects.clear();
 		m_EntityToName.clear();
 		m_NameToEntity.clear();
-
-		m_RenderSystem = nullptr;
-		m_Physics2DSystem = nullptr;
-		m_World = nullptr;
 	}
 
 	void Scene::BeginScene()
@@ -63,8 +59,8 @@ namespace Hudi {
 		/*m_World->EachComponents<Component>([](Component* comp) { comp->Awake(); });
 		m_World->EachComponents<Component>([dt](Component* comp) { comp->Update(dt); });
 		*/
-		m_ScriptEngine->AwakeScripts();
-		m_ScriptEngine->UpdateScripts(dt);
+		m_ScriptEngine->AwakeBehaviours();
+		m_ScriptEngine->UpdateBehaviours(dt);
 
 		m_Physics2DSystem->OnUpdate(dt);
 		m_RenderSystem->OnUpdate(dt, m_PrimaryCamera.GetEntityID());
@@ -123,8 +119,7 @@ namespace Hudi {
 		newScene->m_Width = this->m_Width;
 		newScene->m_Height = this->m_Height;
 
-		newScene->m_ScriptEngine->m_Libraries = this->m_ScriptEngine->m_Libraries;
-		newScene->m_ScriptEngine->m_InstantiateFns = this->m_ScriptEngine->m_InstantiateFns;
+		newScene->m_ScriptEngine->CopyLibraries(*this->m_ScriptEngine);
 		for (const auto& [id, object] : this->m_GameObjects)
 		{
 			const std::string& objName = this->m_EntityToName.at(id);
@@ -133,10 +128,10 @@ namespace Hudi {
 			newScene->RenameGameObject(objName, newObject);
 			newObject.CopyComponents(object);
 
-			auto& scripts = this->m_ScriptEngine->GetScripts(object.GetEntityID());
-			for (auto& [scriptName, sc] : scripts)
+			const auto& scripts = this->m_ScriptEngine->GetBehaviours(object.GetEntityID());
+			for (const auto& [scriptName, sc] : scripts)
 			{
-				newScene->m_ScriptEngine->AddScriptComponent(newObject.GetEntityID(), scriptName);
+				newScene->m_ScriptEngine->AddBehaviourComponent(newObject, scriptName);
 			}
 		}
 		const std::string& primaryCameraName = this->GetGameObjectName(this->m_PrimaryCamera);
@@ -193,9 +188,9 @@ namespace Hudi {
 		std::string newObjectName = FindValidName(_name);
 		GameObject newObject = CreateEmptyObject(newObjectName);
 		newObject.CopyComponents(src);
-		for (auto& [scriptName, sc] : m_ScriptEngine->GetScripts(src.GetEntityID()))
+		for (auto& [scriptName, sc] : m_ScriptEngine->GetBehaviours(src.GetEntityID()))
 		{
-			m_ScriptEngine->AddScriptComponent(newObject.GetEntityID(), scriptName);
+			m_ScriptEngine->AddBehaviourComponent(newObject, scriptName);
 		}
 		return src;
 	}

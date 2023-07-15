@@ -4,19 +4,70 @@
 #include <array>
 #include <bitset>
 #include <iostream>
+#include <unordered_set>
 
 namespace ECS {
 
 	using Entity = uint32_t;
-	const uint32_t MAX_ENTITIES = 20000;
+	const size_t MAX_ENTITIES = 20000;
 
-	using ComponentID = uint32_t;
-	const uint32_t MAX_COMPONENTS = 1000;
+	using ComponentID = size_t;
+	const size_t MAX_COMPONENTS = 1000;
 
 	using SystemID = uint8_t;
-	const uint32_t MAX_SYSTEMS = 32;
+	const size_t MAX_SYSTEMS = 32;
 
+#ifdef OLD_SIGNATURE
 	using Signature = std::bitset<MAX_COMPONENTS>;
+#else
+	class Signature
+	{
+	public:
+		void set(size_t bit, bool val = true) 
+		{
+			if (val)
+				m_Set.insert(bit);
+			else
+				m_Set.erase(bit);
+		}
+
+		void reset() { m_Set.clear(); }
+
+		Signature operator& (const Signature& other) const
+		{
+			Signature res;
+			for (const auto& bit : this->m_Set)
+			{
+				auto it = other.m_Set.find(bit);
+				if (it != other.m_Set.end())
+					res.m_Set.insert(*it);
+			}
+			return res;
+		}
+
+		bool operator== (const Signature& other) const
+		{
+			if (this->m_Set.size() != other.m_Set.size())
+				return false;
+
+			for (const auto& bit : this->m_Set)
+			{
+				auto it = other.m_Set.find(bit);
+				if (it == other.m_Set.end())
+					return false;
+			}
+			return true;
+		}
+
+		static Signature null() { return Signature(); }
+
+		bool operator!= (const Signature& other) const { return !(*this == other); }
+
+	private:
+		std::unordered_set<ComponentID> m_Set;
+	};
+#endif
+
 
 	const Entity null = 0;
 

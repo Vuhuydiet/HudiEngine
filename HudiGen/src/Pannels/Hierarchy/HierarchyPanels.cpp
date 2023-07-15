@@ -104,11 +104,12 @@ namespace Hudi {
 		OnViewportUpdate(dt);
 	}
 
-	void HierarchyPanels::OnImGuiRender(bool& hierarchy, bool& inspector, bool& viewport)
+	void HierarchyPanels::OnImGuiRender(bool& hierarchy, bool& inspector, bool& viewport, bool& lib)
 	{
 		OnImGuiRenderHierarchyPanel(hierarchy);
 		OnImGuiRenderInspectorPanel(inspector);
 		OnImGuiRenderViewportPanel(viewport);
+		OnImGuiRenderLibraryPanel(lib);
 	}
 
 	void HierarchyPanels::SetContext(Ref<Scene> scene)

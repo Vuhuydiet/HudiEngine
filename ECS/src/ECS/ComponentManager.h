@@ -5,11 +5,13 @@
 #include <utility>
 #include <functional>
 #include <typeinfo>
+#include <limits>
 
 #include "EntityManager.h"
 
 namespace ECS {
 
+#ifdef OLD_GETCOMPONENTID
 	inline ComponentID GetComponentID()
 	{
 		static ComponentID ID = 0;
@@ -21,6 +23,13 @@ namespace ECS {
 	{
 		static ComponentID id = GetComponentID();
 		return id;
+	}
+#endif
+
+	template <typename T>
+	inline ComponentID GetComponentID() noexcept
+	{
+		return typeid(T).hash_code();
 	}
 
 	struct Component
@@ -67,8 +76,8 @@ namespace ECS {
 		void EachComponent(Fn&& func);
 
 	private:
-		std::unordered_map<Entity, Component*> m_ComponentMaps[MAX_COMPONENTS];
-		size_t m_Size = 0;
+		std::unordered_map<ComponentID, std::unordered_map<Entity, Component*>> m_ComponentMaps;
+		//size_t m_Size = 0;
 
 	};
 
@@ -79,7 +88,11 @@ namespace ECS {
 	inline T* ComponentManager::AddComponent(Entity entt, Args&&... args)
 	{
 		ComponentID id = GetComponentID<T>();
-		m_Size = std::max(m_Size, (size_t)id + 1);
+		//m_Size = std::max(m_Size, (size_t)(id + 1));
+		//m_Size = (m_Size > (size_t)(id + 1) ? m_Size : (size_t)(id + 1));
+		/*auto it = m_ComponentMaps.find(id);
+		if (it == m_ComponentMaps.end() || m_ComponentMaps.size())
+			m_Size++;*/
 
 		TComponent<T>* comp = new TComponent<T>(std::forward<Args>(args)...);
 		m_ComponentMaps[id][entt] = comp;
@@ -92,7 +105,8 @@ namespace ECS {
 		ComponentID id = GetComponentID<T>();
 		if (m_ComponentMaps[id].find(entt) == m_ComponentMaps[id].end())
 		{
-			std::cout << "This entity " << entt << " has no component of type '" << typeid(T).name() << "'. Returning nullptr \n";
+			//printf("Entity already has a component of type '%s'!\nCannot add 2 component of the same type.\nReturning old '%s' component.", typeid(T).name(), typeid(T).name());
+			std::cout << "This entity " << entt << " has no component of type '" << typeid(T).name() << "'. Returning nullptr.\n";
 			return nullptr;
 		}
 		return (T*)m_ComponentMaps[id].at(entt)->GetData();
@@ -115,18 +129,25 @@ namespace ECS {
 	inline void ComponentManager::RemoveComponent(Entity entt)
 	{
 		ComponentID id = GetComponentID<T>();
+		auto map_it = m_ComponentMaps.find(id);
+		if (map_it == m_ComponentMaps.end())
+			return;
+		auto comp_it = map_it->second.find(entt);
+		if (comp_it == map_it->second.end())
+			return;
 		delete m_ComponentMaps[id].at(entt);
 		m_ComponentMaps[id].erase(entt);
 	}
 
 	inline void ComponentManager::DestroyEntity(Entity entt)
 	{
-		for (ComponentID id = 0; id < m_Size; id++)
+		for (auto& [id, comps] : m_ComponentMaps)
 		{
-			if (m_ComponentMaps[id].find(entt) == m_ComponentMaps[id].end())
+			auto it = comps.find(entt);
+			if (it == comps.end())
 				continue;
-			delete m_ComponentMaps[id].at(entt);
-			m_ComponentMaps[id].erase(entt);
+			delete comps.at(entt);
+			comps.erase(it);
 		}
 	}
 
