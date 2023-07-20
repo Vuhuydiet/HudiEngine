@@ -1,6 +1,8 @@
 #include "hdpch.h"
 #include "GameObject.h"
 
+#include "Components/AllComponents.h"
+
 #include <type_traits>
 
 namespace Hudi {

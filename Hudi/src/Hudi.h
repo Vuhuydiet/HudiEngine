@@ -21,7 +21,7 @@
 #include "Hudi/Renderer/Shader.h"
 #include "Hudi/Renderer/Texture.h"
 
-#include "Hudi/Scene/Components/Component.h"
+#include "Hudi/Scene/Components/AllComponents.h"
 #include "Hudi/Scene/GameObject.h"
 #include "Hudi/Scene/Scene.h"
 #include "Hudi/Scene/SceneManager.h"

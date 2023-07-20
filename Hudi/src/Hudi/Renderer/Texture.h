@@ -27,5 +27,9 @@ namespace Hudi {
 
 		static Ref<Texture2D> Create(uint32_t width, uint32_t height);
 		static Ref<Texture2D> Create(const std::filesystem::path& filePath);
+
+	public:
+		glm::vec2 lowerBound = { 0.0f, 0.0f };
+		glm::vec2 upperBound = { 1.0f, 1.0f };
 	};
 }

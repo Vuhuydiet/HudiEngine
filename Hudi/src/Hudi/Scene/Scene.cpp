@@ -1,7 +1,7 @@
 #include "hdpch.h"
 #include "Scene.h"
 
-#include "Components/Component.h"
+#include "Components/AllComponents.h"
 #include "Components/CameraComponent.h"
 #include "Components/SpriteRendererComponent.h"
 
@@ -59,10 +59,15 @@ namespace Hudi {
 		/*m_World->EachComponents<Component>([](Component* comp) { comp->Awake(); });
 		m_World->EachComponents<Component>([dt](Component* comp) { comp->Update(dt); });
 		*/
+
+		// Sctipts
 		m_ScriptEngine->AwakeBehaviours();
 		m_ScriptEngine->UpdateBehaviours(dt);
 
+		// Physics
 		m_Physics2DSystem->OnUpdate(dt);
+
+		// Rendering
 		m_RenderSystem->OnUpdate(dt, m_PrimaryCamera.GetEntityID());
 
 		Invalidate();

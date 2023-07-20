@@ -186,14 +186,8 @@
     <ClInclude Include="src\Hudi\Scene\Components\AnimatorComponent\AnimatorComponent.h">
       <Filter>src\Hudi\Scene\Components\AnimatorComponent</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hudi\Scene\Components\AnimatorComponent\Condition.h">
-      <Filter>src\Hudi\Scene\Components\AnimatorComponent</Filter>
-    </ClInclude>
     <ClInclude Include="src\Hudi\Scene\Components\AnimatorComponent\Transition.h">
       <Filter>src\Hudi\Scene\Components\AnimatorComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hudi\Scene\Components\BehaviourComponent.h">
-      <Filter>src\Hudi\Scene\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\Hudi\Scene\Components\CameraComponent.h">
       <Filter>src\Hudi\Scene\Components</Filter>
@@ -1512,6 +1506,7 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
+    <ClInclude Include="src\Hudi\Scene\Components\AllComponents.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Hudi\Core\Application.cpp">

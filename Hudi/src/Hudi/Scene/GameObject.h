@@ -3,7 +3,7 @@
 #include <vector>
 #include <filesystem>
 
-#include "Components/Component.h"
+#include "Components/AllComponents.h"
 
 namespace Hudi {
 
@@ -13,7 +13,7 @@ namespace Hudi {
 	{
 	public:
 		GameObject();
-		GameObject(ECS::World* _world);
+		explicit GameObject(ECS::World* _world);
 
 		void Destroy();
 		void Reset();

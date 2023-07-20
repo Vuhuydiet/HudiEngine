@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Hudi/Core/UUID.h"
-#include "Component.h"
 
 namespace Hudi {
 

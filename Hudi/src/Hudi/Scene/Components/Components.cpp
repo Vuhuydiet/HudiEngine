@@ -2,12 +2,15 @@
 
 #include "TransformComponent.h"
 #include "CameraComponent.h"
+#include "Rigidbody2DComponent.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
+
+#include <box2d/box2d.h>
 
 namespace Hudi {
 
@@ -17,7 +20,7 @@ namespace Hudi {
 	Transform::Transform() : scale(1.0f), localScale(1.0f) {}
 
 	void Transform::Translate(float x, float y, float z) { position += Vec3(x, y, z); }
-	void Transform::Translate(Vec3 v) { position += v; }
+	void Transform::Translate(const Vec3& v) { position += v; }
 
 	glm::mat4 Transform::Transformation() const
 	{
@@ -77,5 +80,12 @@ namespace Hudi {
 		this->m_Perspective = other.m_Perspective;
 
 		return *this;
+	}
+
+	void Rigidbody2D::AddForce(const Vec3& force)
+	{
+		b2Body* body = (b2Body*)runtimeBody;
+		body->ApplyForce({ force.x, force.y }, body->GetPosition(), true);
+		//body->ApplyLinearImpulse({ force.x, force.y }, body->GetPosition(), true);
 	}
 }

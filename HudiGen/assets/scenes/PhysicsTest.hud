@@ -1,0 +1,55 @@
+Scene: Untitled
+Primary Camera: Main Camera
+Objects:
+  - Name: Main Camera
+    UUID: 13719305749842913936
+    Transform:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Camera:
+      Type: 1
+      Orthographic Data: [-3.17499995, 3.17499995, -2.30500007, 2.30500007, -10, 10]
+      Perspective Data: [45, 1.37744033, 0.100000001, 1000]
+  - Name: vu dep trai
+    UUID: 2107981332074768939
+    Transform:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 1]
+      Image file path: ""
+      Order: 0
+    Rigidbody 2D:
+      Type: 2
+      Fixed Rotation: true
+    Box Collider 2D:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      Restitution Threshold: 0.5
+  - Name: New GameObject
+    UUID: 2842736709665042248
+    Transform:
+      Position: [-0.0799999982, -1.41964924, 0]
+      Rotation: [0, -0, 0]
+      Scale: [11.3999996, 1.10000002, 1]
+    Sprite Renderer:
+      Size: [1, 1]
+      Color: [1, 1, 1, 1]
+      Image file path: ""
+      Order: 0
+    Rigidbody 2D:
+      Type: 0
+      Fixed Rotation: false
+    Box Collider 2D:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      Restitution Threshold: 0.5

@@ -24,6 +24,8 @@ namespace Hudi {
 		return b2_staticBody;
 	}
 
+	// -------------- Physics 2D class ------------------------------------------ //
+
 	Physics2DSystem::Physics2DSystem()
 	{
 		SetNeededComponent<Transform, Rigidbody2D>();
@@ -82,9 +84,12 @@ namespace Hudi {
 
 	void Physics2DSystem::OnUpdate(float dt)
 	{
+		AssimulateUserData();
+
 		const int velocityIterations = 8;
 		const int positionIterations = 3;
 		m_PhysicsWorld->Step(dt, velocityIterations, positionIterations);
+		m_PhysicsWorld->ClearForces();
 
 		for (auto entity : m_Entities)
 		{
@@ -102,6 +107,21 @@ namespace Hudi {
 		}
 	}
 
+	void Physics2DSystem::AssimulateUserData()
+	{
+		for (auto entity : m_Entities)
+		{
+			if (!world->IsActive(entity))
+				continue;
+			const auto& transform = *world->GetComponent<Transform>(entity);
+			const auto& rb2 = *world->GetComponent<Rigidbody2D>(entity);
+
+			b2Body* body = (b2Body*)rb2.runtimeBody;
+			//body->SetTransform({ transform.position.x, transform.position.y }, body->GetAngle());
+			//body->SetLinearVelocity({ rb2.velocity.x, rb2.velocity.y });
+		}
+	}
+
 	void Physics2DSystem::AddEntityPhysicsDef(ECS::Entity entity)
 	{
 		auto& transform = *world->GetComponent<Transform>(entity);
@@ -112,8 +132,10 @@ namespace Hudi {
 		auto [xpos, ypos, zpos] = transform.position;
 		bodyDef.position.Set(xpos, ypos);
 		bodyDef.angle = glm::radians(transform.rotation.z);
+
 		b2Body* body = m_PhysicsWorld->CreateBody(&bodyDef);
 		body->SetFixedRotation(rb2.fixedRotation);
+
 		rb2.runtimeBody = body;
 
 		if (world->HasComponent<BoxCollider2D>(entity))
@@ -129,6 +151,7 @@ namespace Hudi {
 			fixtureDef.friction = box2.friction;
 			fixtureDef.restitution = box2.restitution;
 			fixtureDef.restitutionThreshold = box2.restitutionThreshold;
+
 			body->CreateFixture(&fixtureDef);
 		}
 	}

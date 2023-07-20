@@ -18,6 +18,8 @@ namespace Hudi {
 		void Begin();
 		void End();
 		void OnUpdate(float dt);
+
+		void AssimulateUserData();
 		
 	private:
 		void AddEntityPhysicsDef(ECS::Entity entity);
