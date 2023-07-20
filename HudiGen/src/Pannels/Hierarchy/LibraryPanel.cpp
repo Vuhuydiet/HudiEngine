@@ -20,6 +20,7 @@ namespace Hudi {
 		}
 
 		Ref<ScriptEngine> engine = m_Context->GetScriptEngine();
+		auto libraries = engine->GetLibraries();
 		for (const auto& [libname, behaviours] : engine->GetLibraries())
 		{
 			ImGuiTreeNodeFlags flags = (behaviours.empty() ? ImGuiTreeNodeFlags_Leaf : ImGuiTreeNodeFlags_None) |
@@ -47,7 +48,8 @@ namespace Hudi {
 
 			ImGui::TreePop();
 		}
-		ImGui::Separator();
+		if (!libraries.empty())
+			ImGui::Separator();
 
 		float buttonWidth = 100.0f;
 		float windowWidth = ImGui::GetWindowContentRegionMax().x;

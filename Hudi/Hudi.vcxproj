@@ -183,11 +183,10 @@
     <ClInclude Include="src\Hudi\Renderer\Shader.h" />
     <ClInclude Include="src\Hudi\Renderer\Texture.h" />
     <ClInclude Include="src\Hudi\Renderer\VertexArray.h" />
+    <ClInclude Include="src\Hudi\Scene\Components\AllComponents.h" />
     <ClInclude Include="src\Hudi\Scene\Components\AnimatorComponent\AnimationComponent.h" />
     <ClInclude Include="src\Hudi\Scene\Components\AnimatorComponent\AnimatorComponent.h" />
-    <ClInclude Include="src\Hudi\Scene\Components\AnimatorComponent\Condition.h" />
     <ClInclude Include="src\Hudi\Scene\Components\AnimatorComponent\Transition.h" />
-    <ClInclude Include="src\Hudi\Scene\Components\BehaviourComponent.h" />
     <ClInclude Include="src\Hudi\Scene\Components\CameraComponent.h" />
     <ClInclude Include="src\Hudi\Scene\Components\Collider2DComponent.h" />
     <ClInclude Include="src\Hudi\Scene\Components\Component.h" />

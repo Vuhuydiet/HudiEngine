@@ -1,11 +1,10 @@
 #pragma once
 
-#include <filesystem>
-
-#include "Component.h"
-
 #include "Hudi/Renderer/Texture.h"
+
 #include <glm/glm.hpp>
+
+#include <filesystem>
 
 namespace Hudi {
 
@@ -16,7 +15,6 @@ namespace Hudi {
 			: filepath(""), texture(nullptr), color(1.0f), size(1.0f), order(0)
 		{
 		}
-		virtual ~SpriteRenderer() = default;
 
 		void SetFilePath(const std::filesystem::path& _filepath)
 		{
@@ -31,9 +29,7 @@ namespace Hudi {
 			}
 		}
 
-		void SetSourceRect(int x, int y, int w, int h)
-		{
-		}
+		void SetSourceRect(int x, int y, int w, int h) {}
 
 	public:
 		std::filesystem::path filepath;

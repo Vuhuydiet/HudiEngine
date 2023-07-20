@@ -23,6 +23,8 @@ namespace ECS {
 	class Signature
 	{
 	public:
+		static Signature null() { return Signature(); }
+
 		void set(size_t bit, bool val = true) 
 		{
 			if (val)
@@ -58,8 +60,6 @@ namespace ECS {
 			}
 			return true;
 		}
-
-		static Signature null() { return Signature(); }
 
 		bool operator!= (const Signature& other) const { return !(*this == other); }
 

@@ -61,5 +61,17 @@ namespace Hudi {
 		return std::make_shared<T>(std::forward<Args>(args)...);
 	}
 
+	template <typename T>
+	T hd_max(T a, T b)
+	{
+		return a > b ? a : b;
+	}
+
+	template <typename T>
+	T hd_min(T a, T b)
+	{
+		return a < b ? a : b;
+	}
+
 }
 

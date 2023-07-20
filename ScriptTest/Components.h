@@ -22,18 +22,21 @@ public:
 	void Update(float dt)
 	{
 		auto& transform = GetComponent<Transform>();
+		auto& rb2 = GetComponent<Rigidbody2D>();
 		glm::vec3 dir = { 0, 0, 0 };
 		if (Input::IsKeyDown(Key::D)) {
-			dir.x += 1;
+			//rb2.velocity.x = 1;
+			rb2.AddForce({ 50, 0, 0 });
 		}
 		if (Input::IsKeyDown(Key::A)) {
-			dir.x -= 1;
+			//rb2.velocity.x = -1;
+			rb2.AddForce({ -50, 0, 0 });
 		}
 		if (Input::IsKeyDown(Key::W)) {
-			dir.y += 1;
+			rb2.velocity.y = 1;
 		}
 		if (Input::IsKeyDown(Key::S)) {
-			dir.y -= 1;
+			rb2.velocity.y = -1;
 		}
 		transform.position += dir * v * dt;
 	}

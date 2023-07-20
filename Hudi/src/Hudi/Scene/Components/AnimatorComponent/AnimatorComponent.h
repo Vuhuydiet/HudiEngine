@@ -1,30 +1,29 @@
 #pragma once
+#include "Hudi/Core/Core.h"
+
+#include "Transition.h"
+#include "Hudi/Scene/Components/Component.h"
+#include "AnimationComponent.h"
+
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
 
-#include "Hudi/Core/Core.h"
-
-#include "Condition.h"
-#include "Transition.h"
-#include "AnimationComponent.h"
-
 namespace Hudi {
-#ifdef ANIMATION
+
 	class Animator : public Component
 	{
 	public:
 		Animator();
-		void Init() override;
-		const char* ToString() const override { return "Animator"; }
 
-		virtual void Awake() override;
-		virtual void Update(float dt) override;
+		void Init();
+		void Awake();
+		void Update(float dt);
 
-		void AddAnimation(Ref<Animation> anim);
+		void AddAnimation(const Animation& anim);
 
 		void MakeTransition(const std::string& anim_1, const std::string& anim_2);
-		Transition& GetTransition(const std::string& anim_1, const std::string& anim_2);
+		Transition* GetTransition(const std::string& anim_1, const std::string& anim_2);
 
 		void Add_Int_Parameter(const std::string& name);
 		void Add_Float_Parameter(const std::string& name);
@@ -39,16 +38,16 @@ namespace Hudi {
 		int GetInt(const std::string& name);
 		float GetFloat(const std::string& name);
 		bool GetBool(const std::string& name);
-		bool GetTrigger(const std::string& name);
 
 	private:
 		void TransferAnimation(const std::string& cur_anim);
 
 	private:
-		std::unordered_map<std::string, Ref<Animation>> m_Animations;
+		std::unordered_map<std::string, Ref<Animation>> m_AnimationTemplates;
 		std::string m_CurrentAnimation = nullptr;
 
-		std::unordered_map<std::string, Ref<Condition>> m_Parameters;
+		std::unordered_map<std::string, Condition::Type> m_Parameters;
+
 		std::unordered_map<std::string, int> m_Ints;
 		std::unordered_map<std::string, float> m_Floats;
 		std::unordered_map<std::string, bool> m_Bools;
@@ -56,5 +55,5 @@ namespace Hudi {
 
 		std::unordered_map<std::string, std::vector<Transition>> m_AnimationTransitions;
 	};
-#endif
+
 }

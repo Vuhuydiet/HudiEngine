@@ -1,18 +1,15 @@
 #pragma once
 #include "hdpch.h"
 
-#include "Component.h"
-
 namespace Hudi {
 
 	class Transform
 	{
 	public:
 		Transform();
-		virtual ~Transform() = default;
 
 		void Translate(float x, float y, float z);
-		void Translate(Vec3 v);
+		void Translate(const Vec3& v);
 
 		glm::mat4 Transformation() const;
 

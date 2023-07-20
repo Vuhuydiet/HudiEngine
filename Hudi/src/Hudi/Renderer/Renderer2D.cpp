@@ -163,7 +163,11 @@ namespace Hudi {
 		float xoffset = quad.size.x * 0.5f;
 		float yoffset = quad.size.y * 0.5f;
 		glm::vec2 vertexPos[4] = { {-xoffset, -yoffset}, {xoffset, -yoffset}, {xoffset, yoffset}, {-xoffset, yoffset} };
-		glm::vec2 texCoords[4] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
+		
+		//glm::vec2 texCoords[4] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
+		glm::vec2 lowerBound = quad.texture->lowerBound;
+		glm::vec2 upperBound = quad.texture->upperBound;
+		glm::vec2 texCoords[4] = { lowerBound, {upperBound.x, lowerBound.y}, upperBound, {lowerBound.x, upperBound.y} };
 		int texIndex = GetTextureIndex(quad.texture);
 
 		uint32_t cur_pos = s_Data.quadCount * 4;
